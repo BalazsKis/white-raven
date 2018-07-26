@@ -1,0 +1,50 @@
+﻿body {
+    font-family: 'Raleway', 'Open Sans', 'Ubuntu', 'PT Sans', sans-serif;
+    color: white;
+    background: #333333;
+}
+
+h1, h2 {
+    font-family: inherit;
+    line-height: 1.1;
+    color: inherit;
+    margin: 0.1em 0.1em 0.2em;
+    font-weight: 400;
+    user-select: none;
+}
+
+h1 {
+    font-size: 52px;
+    /*text-shadow: 3px 3px 6px black;*/
+    padding-top: 10px;
+}
+
+h2 {
+    font-size: 32px;
+    /*text-shadow: 2px 2px 4px black;*/
+    padding-top: 8px;
+    margin-left: 0.45em;
+}
+
+.title-image {
+    height: 150px;
+}
+
+.title-box {
+    width: 475px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.title-inner-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.title-text-box {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}

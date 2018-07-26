@@ -1,0 +1,22 @@
+﻿[
+  {
+    "UserId": "amy-prc@mail.com",
+    "NoteId": "6e7c1ea961c840198d45c29af50c9226",
+    "ContributionType": 1
+  },
+  {
+    "UserId": "amy-prc@mail.com",
+    "NoteId": "ef3672e1f9324d87b5ea7ffd3eb92fcb",
+    "ContributionType": 3
+  },
+  {
+    "UserId": "joe-sm@mail.com",
+    "NoteId": "37f560696ace4a8f82628ebdbc00a9c2",
+    "ContributionType": 1
+  },
+  {
+    "UserId": "joe-sm@mail.com",
+    "NoteId": "e0259e2e65bd4d98b7132768c234584b",
+    "ContributionType": 2
+  }
+]

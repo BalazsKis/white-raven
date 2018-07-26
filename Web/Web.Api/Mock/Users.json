@@ -1,0 +1,18 @@
+﻿[
+  {
+    "Level": 3,
+    "FirstName": "John",
+    "LastName": "Smith",
+    "Email": "joe-sm@mail.com",
+    "BirthDate": "1966-06-06",
+    "HashedPassword": "YdS4DVCXXw5W550Lop45IV54FpIete+LUxdG26plzWMtOlx6"
+  },
+  {
+    "Level": 1,
+    "FirstName": "Amy",
+    "LastName": "Pierce",
+    "Email": "amy-prc@mail.com",
+    "BirthDate": "1989-07-07",
+    "HashedPassword": "YdS4DVCXXw5W550Lop45IV54FpIete+LUxdG26plzWMtOlx6"
+  }
+]
