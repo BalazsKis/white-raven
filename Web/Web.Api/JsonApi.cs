@@ -1,30 +1,31 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Newtonsoft.Json;
 using System.Net;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WhiteRaven.Web.Api
 {
     public class JsonApi
     {
-        public static ObjectResult ErrorObject(HttpStatusCode statusCode, string title, string detail)
+        public static string ErrorObject(HttpStatusCode statusCode, string title, string detail)
         {
-            var statusAsNumber = (int)statusCode;
-
-            var result = new ObjectResult(new
+            return JsonConvert.SerializeObject(new
             {
                 errors = new[]
                 {
                     new
                     {
-                        status = statusAsNumber.ToString(),
+                        status = ((int) statusCode).ToString(),
                         title,
                         detail
                     }
                 }
             });
-
-            result.StatusCode = statusAsNumber;
-
-            return result;
         }
+
+        public static object DataObject(object data) =>
+            new { data };
+
+        public static ObjectResult OkDataObject(object data) =>
+            new OkObjectResult(DataObject(data));
     }
 }

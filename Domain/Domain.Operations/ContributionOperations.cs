@@ -22,9 +22,7 @@ namespace WhiteRaven.Domain.Operations
         public async Task<Contribution> CreateContribution(string editorEmail, Contribution contribution)
         {
             if (contribution.ContributionType == ContributionType.Owner)
-                throw new ArgumentException(
-                    $"A contribution of type '{ContributionType.Owner}' cannot be inserted directly",
-                    nameof(contribution));
+                throw new ArgumentException($"A contribution of type '{ContributionType.Owner}' cannot be inserted directly");
 
             await CheckOwnerRight(editorEmail, contribution.NoteId);
             await _contributionRepository.Insert(contribution);
@@ -66,9 +64,7 @@ namespace WhiteRaven.Domain.Operations
         public async Task UpdateContribution(string editorEmail, Contribution contribution)
         {
             if (contribution.ContributionType == ContributionType.Owner)
-                throw new ArgumentException(
-                    $"A contribution cannot be upgraded to type '{ContributionType.Owner}'",
-                    nameof(contribution));
+                throw new ArgumentException($"A contribution cannot be upgraded to type '{ContributionType.Owner}'");
 
             await CheckOwnerRight(editorEmail, contribution.NoteId);
             await _contributionRepository.Update(contribution);
@@ -77,9 +73,7 @@ namespace WhiteRaven.Domain.Operations
         public async Task DeleteContribution(string editorEmail, Contribution contribution)
         {
             if (contribution.ContributionType == ContributionType.Owner)
-                throw new ArgumentException(
-                    $"A contribution of type '{ContributionType.Owner}' cannot be deleted directly",
-                    nameof(contribution));
+                throw new ArgumentException($"A contribution of type '{ContributionType.Owner}' cannot be deleted directly");
 
             await CheckOwnerRight(editorEmail, contribution.NoteId);
             await _contributionRepository.Delete(contribution);
@@ -106,7 +100,7 @@ namespace WhiteRaven.Domain.Operations
         public async Task CheckReadRight(string email, string noteId)
         {
             var contributions = await _contributionRepository.Select(c => c.NoteId == noteId && c.UserId == email);
-            
+
             if (contributions.Any(c => c.ContributionType >= ContributionType.Reader))
                 return;
 

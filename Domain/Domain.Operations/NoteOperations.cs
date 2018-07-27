@@ -52,7 +52,7 @@ namespace WhiteRaven.Domain.Operations
         public async Task<Note> UpdateNote(string editorEmail, string noteId, Commit commit)
         {
             if (commit.Title.IsBlank() && commit.Content.IsBlank())
-                throw new ArgumentException("Both title and content of a note cannot be blank", nameof(commit));
+                throw new ArgumentException("Both title and content of a note cannot be blank");
 
             await _contributionOperations.CheckEditRight(editorEmail, noteId);
 

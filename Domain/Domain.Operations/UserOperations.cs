@@ -27,8 +27,7 @@ namespace WhiteRaven.Domain.Operations
                 registration.LastName.IsBlank() ||
                 registration.Email.IsBlank() ||
                 registration.Password.IsBlank())
-                throw new ArgumentException("Some of the mandatory registration fields were not filled",
-                    nameof(registration));
+                throw new ArgumentException("Some of the mandatory registration fields were not filled");
 
             var user = new User(
                 UserLevel.User,
@@ -56,7 +55,7 @@ namespace WhiteRaven.Domain.Operations
             CheckEmail(login.Email);
             
             if(login.Password.IsBlank())
-                throw new ArgumentException("The user's password cannot be blank", nameof(login));
+                throw new ArgumentException("The user's password cannot be blank");
 
             var user = await GetUser(login.Email);
 
@@ -97,7 +96,7 @@ namespace WhiteRaven.Domain.Operations
             CheckEmail(email);
 
             if (passwordUpdate.OldPassword.IsBlank() || passwordUpdate.NewPassword.IsBlank())
-                throw new ArgumentException("The old or the new password field was not filled", nameof(passwordUpdate));
+                throw new ArgumentException("The old or the new password field was not filled");
 
             var user = await GetUser(email);
 
@@ -114,7 +113,7 @@ namespace WhiteRaven.Domain.Operations
         private void CheckEmail(string email)
         {
             if (email.IsBlank())
-                throw new ArgumentException("The user's email address (the user's unique ID) cannot be blank", nameof(email));
+                throw new ArgumentException("The user's email address (the user's unique ID) cannot be blank");
         }
     }
 }

@@ -44,7 +44,7 @@ namespace WhiteRaven.Web.Api.Controllers
         public async Task<IActionResult> GetById(string id)
         {
             var email = GetCurrentUserEmailAddress();
-            return Ok(await _noteOperations.GetNoteById(email, id));
+            return JsonApi.OkDataObject(await _noteOperations.GetNoteById(email, id));
         }
 
         [Authorize]
@@ -54,7 +54,7 @@ namespace WhiteRaven.Web.Api.Controllers
             var email = GetCurrentUserEmailAddress();
             var note = await _noteOperations.CreateNote(email, commit);
 
-            return CreatedAtAction(nameof(GetById), new { id = note.Id }, note);
+            return CreatedAtAction(nameof(GetById), new { id = note.Id }, JsonApi.DataObject(note));
         }
 
         [Authorize]
@@ -62,7 +62,7 @@ namespace WhiteRaven.Web.Api.Controllers
         public async Task<IActionResult> Update(string id, [FromBody] Commit commit)
         {
             var email = GetCurrentUserEmailAddress();
-            return Ok(await _noteOperations.UpdateNote(email, id, commit));
+            return JsonApi.OkDataObject(await _noteOperations.UpdateNote(email, id, commit));
         }
 
         [Authorize]
@@ -79,7 +79,7 @@ namespace WhiteRaven.Web.Api.Controllers
         private async Task<IActionResult> GetNotes(ContributionType? contributionType = null)
         {
             var email = GetCurrentUserEmailAddress();
-            return Ok(await _noteOperations.GetNotesByUser(email, contributionType));
+            return JsonApi.OkDataObject(await _noteOperations.GetNotesByUser(email, contributionType));
         }
     }
 }

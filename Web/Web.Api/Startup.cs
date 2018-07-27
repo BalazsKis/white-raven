@@ -85,6 +85,7 @@ namespace WhiteRaven.Web.Api
             app.UseStaticFiles();
             app.UseHttpsRedirection();
             app.UseAuthentication();
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseMvc();
         }
     }

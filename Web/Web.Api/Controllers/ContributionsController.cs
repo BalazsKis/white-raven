@@ -44,7 +44,7 @@ namespace WhiteRaven.Web.Api.Controllers
         public async Task<IActionResult> GetContributionsToNote(string id)
         {
             var email = GetCurrentUserEmailAddress();
-            return Ok(await _contributionOperations.GetContributionsByNote(email, id));
+            return JsonApi.OkDataObject(await _contributionOperations.GetContributionsByNote(email, id));
         }
 
         [Authorize]
@@ -81,7 +81,7 @@ namespace WhiteRaven.Web.Api.Controllers
         private async Task<IActionResult> GetContributions(ContributionType? contributionType = null)
         {
             var email = GetCurrentUserEmailAddress();
-            return Ok(await _contributionOperations.GetContributionsByUser(email, contributionType));
+            return JsonApi.OkDataObject(await _contributionOperations.GetContributionsByUser(email, contributionType));
         }
     }
 }

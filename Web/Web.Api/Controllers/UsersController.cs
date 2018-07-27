@@ -24,14 +24,14 @@ namespace WhiteRaven.Web.Api.Controllers
         public async Task<IActionResult> RegisterUser([FromBody] Registration registration)
         {
             var newUser = await _userOperations.CreateUser(registration);
-            return CreatedAtAction(nameof(GetUser), new { id = registration.Email }, newUser);
+            return CreatedAtAction(nameof(GetUser), new { id = registration.Email }, JsonApi.DataObject(newUser));
         }
 
         [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(string id)
         {
-            return Ok(await _userOperations.GetUser(id));
+            return JsonApi.OkDataObject(await _userOperations.GetUser(id));
         }
 
         [Authorize]
@@ -51,7 +51,7 @@ namespace WhiteRaven.Web.Api.Controllers
             var email = GetCurrentUserEmailAddress();
             var updatedUser = await _userOperations.UpdateUserInfo(email, newInfo);
 
-            return Ok(updatedUser);
+            return JsonApi.OkDataObject(updatedUser);
         }
     }
 }
