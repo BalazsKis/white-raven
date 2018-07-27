@@ -1,7 +1,13 @@
-﻿body {
+﻿html {
+    height: 100%;
+}
+
+body {
     font-family: 'Raleway', 'Open Sans', 'Ubuntu', 'PT Sans', sans-serif;
     color: white;
     background: #333333;
+    height: 100%;
+    margin: 0;
 }
 
 h1, h2 {
@@ -32,6 +38,7 @@ h2 {
 
 .title-box {
     width: 475px;
+    margin-top: 5px;
     margin-left: auto;
     margin-right: auto;
     display: flex;
@@ -47,4 +54,20 @@ h2 {
     flex: 1;
     display: flex;
     align-items: center;
+}
+
+.swagger-container {
+    display: flex;
+    margin: 0;
+}
+
+.swagger-frame {
+    min-height: 750px;
+    min-width: 600px;
+    margin-left: 25%;
+    margin-right: 25%;
+    width: 50%;
+    margin-top: 20px;
+    border: 2px solid;
+    border-color: #444444;
 }

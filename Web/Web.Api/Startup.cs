@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Swagger;
 using System.Text;
 using WhiteRaven.Domain.Models.Authentication;
 using WhiteRaven.Domain.Models.Note;
@@ -19,6 +22,8 @@ namespace WhiteRaven.Web.Api
 {
     public class Startup
     {
+        private const string SwaggerDocumentName = "v1";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -58,6 +63,28 @@ namespace WhiteRaven.Web.Api
                 .AddSingleton<INoteOperations, NoteOperations>()
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services
+                .AddSwaggerGen(c =>
+                {
+                    c.SwaggerDoc(SwaggerDocumentName, new Info
+                    {
+                        Title = "White Raven API",
+                        Version = SwaggerDocumentName
+                    });
+
+                    c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                    {
+                        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                        Name = "Authorization",
+                        In = "header",
+                        Type = "apiKey"
+                    });
+
+                    c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>> {
+                        { "Bearer", Enumerable.Empty<string>() },
+                    });
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -82,11 +109,41 @@ namespace WhiteRaven.Web.Api
                 app.UseHsts();
             }
 
+            // Enable static file serving for the index page and its contents
             app.UseStaticFiles();
+
+            // Redirect all requests to HTTPS
             app.UseHttpsRedirection();
+
+            // Use and require authentication
             app.UseAuthentication();
+
+            // Common exception catching for all controllers
             app.UseMiddleware<ErrorHandlingMiddleware>();
-            app.UseMvc();
+
+            // Use attribute-based routing (homepage route defined here, so it won't be part of the swagger document)
+            app.UseMvc(routes => { routes.MapRoute("", "{controller=Home}/{action=Index}"); });
+
+            // Configure the swagger document
+            app.UseSwagger(c =>
+            {
+                c.RouteTemplate = "/api/{documentName}";
+                c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
+                {
+                    swaggerDoc.Host = httpReq.Host.Value;
+                    swaggerDoc.Schemes = new List<string>{ "https" };
+                });
+            });
+
+            // Configure the swagger UI
+            app.UseSwaggerUI(c =>
+            {
+                c.InjectStylesheet("/swagger-ui/custom.css");
+                c.SwaggerEndpoint($"/api/{SwaggerDocumentName}", "White Raven API");
+                c.DefaultModelsExpandDepth(0);
+            });
+
+
         }
     }
 }

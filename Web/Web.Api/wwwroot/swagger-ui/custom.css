@@ -1,0 +1,91 @@
+﻿body {
+    background: #333333 !important;
+    color: #dddddd !important;
+}
+
+.swagger-ui .topbar {
+    background-color: #222222 !important;
+}
+
+.swagger-ui .scheme-container {
+    background: #222222 !important;
+}
+
+.swagger-ui .info {
+    display: none !important;
+}
+
+.swagger-ui .opblock-tag.no-desc span {
+    color: #cccccc !important;
+}
+
+.swagger-ui a.nostyle, .swagger-ui a.nostyle:visited {
+    color: #cccccc !important;
+}
+
+.swagger-ui .opblock .opblock-section-header, .swagger-ui .opblock .opblock-section-header label {
+    background: #888888 !important;
+}
+
+.swagger-ui .btn.authorize {
+    color: #49cc90 !important;
+    border-color: #49cc90 !important;
+}
+
+    .swagger-ui .btn.authorize svg {
+        fill: #49cc90 !important;
+    }
+
+    .swagger-ui .btn.authorize span {
+        color: #49cc90 !important;
+    }
+
+.swagger-ui .scheme-container .schemes>label {
+    color: #cccccc !important;
+}
+
+.swagger-ui label {
+    color: #cccccc !important;
+}
+
+.swagger-ui section.models {
+    background: #aaaaaa !important;
+}
+
+.swagger-ui .table-container {
+    background: #cccccc !important;
+}
+
+.swagger-ui .execute-wrapper {
+    background: #cccccc !important;
+}
+
+.swagger-ui .responses-inner {
+    background: #cccccc !important;
+}
+
+.swagger-ui .opblock-description-wrapper, .swagger-ui .opblock-external-docs-wrapper, .swagger-ui .opblock-title_normal {
+    background: #cccccc !important;
+    margin: 0 !important;
+}
+
+.swagger-ui .btn.cancel {
+    border-color: #c63939 !important;
+    color: #c63939 !important;
+}
+
+.swagger-ui .btn-group {
+    background: #cccccc !important;
+}
+
+.authorization__btn.unlocked {
+    fill: #ffffff !important;
+}
+
+.authorization__btn.locked {
+    fill: #ffffff !important;
+}
+
+.swagger-ui .expand-methods, .swagger-ui .expand-operation {
+    fill: #cccccc !important;
+}
