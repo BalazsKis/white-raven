@@ -19,11 +19,13 @@
     color: #cccccc !important;
 }
 
-.swagger-ui a.nostyle, .swagger-ui a.nostyle:visited {
+.swagger-ui a.nostyle,
+.swagger-ui a.nostyle:visited {
     color: #cccccc !important;
 }
 
-.swagger-ui .opblock .opblock-section-header, .swagger-ui .opblock .opblock-section-header label {
+.swagger-ui .opblock .opblock-section-header,
+.swagger-ui .opblock .opblock-section-header label {
     background: #888888 !important;
 }
 
@@ -40,7 +42,7 @@
         color: #49cc90 !important;
     }
 
-.swagger-ui .scheme-container .schemes>label {
+.swagger-ui .scheme-container .schemes > label {
     color: #cccccc !important;
 }
 
@@ -64,7 +66,9 @@
     background: #cccccc !important;
 }
 
-.swagger-ui .opblock-description-wrapper, .swagger-ui .opblock-external-docs-wrapper, .swagger-ui .opblock-title_normal {
+.swagger-ui .opblock-description-wrapper,
+.swagger-ui .opblock-external-docs-wrapper,
+.swagger-ui .opblock-title_normal {
     background: #cccccc !important;
     margin: 0 !important;
 }
@@ -86,6 +90,7 @@
     fill: #ffffff !important;
 }
 
-.swagger-ui .expand-methods, .swagger-ui .expand-operation {
+.swagger-ui .expand-methods,
+.swagger-ui .expand-operation {
     fill: #cccccc !important;
 }

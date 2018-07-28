@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Examples;
 using System.Threading.Tasks;
 using WhiteRaven.Domain.Models.Note;
 using WhiteRaven.Domain.Operations.Interfaces;
+using WhiteRaven.Web.Api.Examples;
 
 namespace WhiteRaven.Web.Api.Controllers
 {
@@ -49,6 +51,7 @@ namespace WhiteRaven.Web.Api.Controllers
 
         [Authorize]
         [HttpPost]
+        [SwaggerRequestExample(typeof(Contribution), typeof(ContributionExample))]
         public async Task<IActionResult> Create([FromBody]Contribution contribution)
         {
             var email = GetCurrentUserEmailAddress();
@@ -59,6 +62,7 @@ namespace WhiteRaven.Web.Api.Controllers
 
         [Authorize]
         [HttpPatch]
+        [SwaggerRequestExample(typeof(Contribution), typeof(ContributionExample))]
         public async Task<IActionResult> Update([FromBody]Contribution contribution)
         {
             var email = GetCurrentUserEmailAddress();
@@ -69,6 +73,7 @@ namespace WhiteRaven.Web.Api.Controllers
 
         [Authorize]
         [HttpDelete]
+        [SwaggerRequestExample(typeof(Contribution), typeof(ContributionExample))]
         public async Task<IActionResult> Delete([FromBody] Contribution contribution)
         {
             var email = GetCurrentUserEmailAddress();

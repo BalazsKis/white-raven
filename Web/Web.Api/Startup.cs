@@ -17,6 +17,7 @@ using WhiteRaven.Repository.Contract;
 using WhiteRaven.Repository.InMemory;
 using WhiteRaven.Shared.Basics.Cryptography;
 using WhiteRaven.Web.Api.Mock;
+using Swashbuckle.AspNetCore.Examples;
 
 namespace WhiteRaven.Web.Api
 {
@@ -84,6 +85,8 @@ namespace WhiteRaven.Web.Api
                     c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>> {
                         { "Bearer", Enumerable.Empty<string>() },
                     });
+
+                    c.OperationFilter<ExamplesOperationFilter>();
                 });
         }
 
@@ -132,7 +135,7 @@ namespace WhiteRaven.Web.Api
                 {
                     swaggerDoc.Host = httpReq.Host.Value;
                     swaggerDoc.Schemes = new List<string>{ "https" };
-                });
+                });                
             });
 
             // Configure the swagger UI
@@ -140,10 +143,8 @@ namespace WhiteRaven.Web.Api
             {
                 c.InjectStylesheet("/swagger-ui/custom.css");
                 c.SwaggerEndpoint($"/api/{SwaggerDocumentName}", "White Raven API");
-                c.DefaultModelsExpandDepth(0);
+                c.DefaultModelsExpandDepth(0);                
             });
-
-
         }
     }
 }

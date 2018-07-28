@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Examples;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WhiteRaven.Domain.Models.Authentication;
 using WhiteRaven.Domain.Operations.Interfaces;
+using WhiteRaven.Web.Api.Examples;
 
 namespace WhiteRaven.Web.Api.Controllers
 {
@@ -31,6 +33,7 @@ namespace WhiteRaven.Web.Api.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [SwaggerRequestExample(typeof(Login), typeof(LoginExample))]
         public async Task<IActionResult> CreateToken([FromBody]Login login)
         {
             var user = await _userOperations.ValidateLogin(login);

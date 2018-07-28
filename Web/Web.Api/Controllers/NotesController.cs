@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Examples;
 using System.Threading.Tasks;
 using WhiteRaven.Domain.Models.Note;
 using WhiteRaven.Domain.Operations.Interfaces;
+using WhiteRaven.Web.Api.Examples;
 
 namespace WhiteRaven.Web.Api.Controllers
 {
@@ -49,6 +51,7 @@ namespace WhiteRaven.Web.Api.Controllers
 
         [Authorize]
         [HttpPost]
+        [SwaggerRequestExample(typeof(Commit), typeof(CommitExample))]
         public async Task<IActionResult> Create([FromBody]Commit commit)
         {
             var email = GetCurrentUserEmailAddress();
@@ -59,6 +62,7 @@ namespace WhiteRaven.Web.Api.Controllers
 
         [Authorize]
         [HttpPatch("{id}")]
+        [SwaggerRequestExample(typeof(Commit), typeof(CommitExample))]
         public async Task<IActionResult> Update(string id, [FromBody] Commit commit)
         {
             var email = GetCurrentUserEmailAddress();
