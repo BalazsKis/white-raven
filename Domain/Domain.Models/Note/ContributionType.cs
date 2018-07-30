@@ -3,7 +3,7 @@
     public enum ContributionType
     {
         Reader = 1,
-        Contributor = 2,
+        Writer = 2,
         Owner = 3
     }
 }

@@ -32,14 +32,14 @@ namespace WhiteRaven.Web.Api.Controllers
             GetContributions(ContributionType.Owner);
 
         [Authorize]
-        [HttpGet("shared/view")]
+        [HttpGet("shared/read")]
         public Task<IActionResult> GetSharedReadOnlyContributions() =>
             GetContributions(ContributionType.Reader);
 
         [Authorize]
-        [HttpGet("shared/contribute")]
+        [HttpGet("shared/write")]
         public Task<IActionResult> GetSharedWritableContributions() =>
-            GetContributions(ContributionType.Contributor);
+            GetContributions(ContributionType.Writer);
 
         [Authorize]
         [HttpGet("to/note/{id}")]

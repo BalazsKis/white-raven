@@ -32,14 +32,14 @@ namespace WhiteRaven.Web.Api.Controllers
             GetNotes(ContributionType.Owner);
 
         [Authorize]
-        [HttpGet("shared/view")]
+        [HttpGet("shared/read")]
         public Task<IActionResult> GetSharedReadOnlyNotes() =>
             GetNotes(ContributionType.Reader);
 
         [Authorize]
-        [HttpGet("shared/contribute")]
+        [HttpGet("shared/write")]
         public Task<IActionResult> GetSharedWritableNotes() =>
-            GetNotes(ContributionType.Contributor);
+            GetNotes(ContributionType.Writer);
 
         [Authorize]
         [HttpGet("{id}")]

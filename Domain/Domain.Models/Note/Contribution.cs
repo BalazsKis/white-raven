@@ -1,6 +1,4 @@
-﻿using WhiteRaven.Domain.Models.Authentication;
-
-namespace WhiteRaven.Domain.Models.Note
+﻿namespace WhiteRaven.Domain.Models.Note
 {
     public class Contribution
     {

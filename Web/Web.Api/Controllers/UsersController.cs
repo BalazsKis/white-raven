@@ -32,10 +32,28 @@ namespace WhiteRaven.Web.Api.Controllers
 
         [Authorize]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser(string id)
-        {
-            return JsonApi.OkDataObject(await _userOperations.GetUser(id));
-        }
+        public async Task<IActionResult> GetUser(string id) =>
+            JsonApi.OkDataObject(await _userOperations.GetUser(id));
+
+        [Authorize]
+        [HttpGet("search/email/{partialEmail}")]
+        public async Task<IActionResult> SearchUsersByEmail(string partialEmail) =>
+            JsonApi.OkDataObject(await _userOperations.SearchUserByEmail(partialEmail));
+
+        [Authorize]
+        [HttpGet("search/firstname/{partialFirstName}")]
+        public Task<IActionResult> SearchUsersByFirstName(string partialFirstName) =>
+            SearchUser(partialFirstName, null);
+
+        [Authorize]
+        [HttpGet("search/lastname/{partialLastName}")]
+        public Task<IActionResult> SearchUsersByLastName(string partialLastName) =>
+            SearchUser(null, partialLastName);
+
+        [Authorize]
+        [HttpGet("search/firstname/{partialFirstName}/lastname/{partialLastName}")]
+        public Task<IActionResult> SearchUsersByFullName(string partialFirstName, string partialLastName) =>
+            SearchUser(partialFirstName, partialLastName);
 
         [Authorize]
         [HttpPatch("update/password")]
@@ -59,6 +77,8 @@ namespace WhiteRaven.Web.Api.Controllers
             return JsonApi.OkDataObject(updatedUser);
         }
 
-        // TODO: Add 'user search by email' method!
+
+        private async Task<IActionResult> SearchUser(string partialFirstName, string partialLastName) =>
+            JsonApi.OkDataObject(await _userOperations.SearchUserByName(partialFirstName, partialLastName));
     }
 }

@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Examples;
 using Swashbuckle.AspNetCore.Swagger;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using WhiteRaven.Domain.Models.Authentication;
 using WhiteRaven.Domain.Models.Note;
@@ -17,7 +18,6 @@ using WhiteRaven.Repository.Contract;
 using WhiteRaven.Repository.InMemory;
 using WhiteRaven.Shared.Basics.Cryptography;
 using WhiteRaven.Web.Api.Mock;
-using Swashbuckle.AspNetCore.Examples;
 
 namespace WhiteRaven.Web.Api
 {
@@ -134,8 +134,13 @@ namespace WhiteRaven.Web.Api
                 c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
                 {
                     swaggerDoc.Host = httpReq.Host.Value;
-                    swaggerDoc.Schemes = new List<string>{ "https" };
-                });                
+                    swaggerDoc.Schemes = new List<string> { "https" };
+                });
+
+                c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
+                {
+                    swaggerDoc.Paths = swaggerDoc.Paths.ToDictionary(p => p.Key.ToLowerInvariant(), p => p.Value);
+                });
             });
 
             // Configure the swagger UI
@@ -143,7 +148,7 @@ namespace WhiteRaven.Web.Api
             {
                 c.InjectStylesheet("/swagger-ui/custom.css");
                 c.SwaggerEndpoint($"/api/{SwaggerDocumentName}", "White Raven API");
-                c.DefaultModelsExpandDepth(0);                
+                c.DefaultModelsExpandDepth(0);
             });
         }
     }

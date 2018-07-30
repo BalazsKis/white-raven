@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using WhiteRaven.Domain.Models.Authentication;
 using WhiteRaven.Domain.Operations.Interfaces;
@@ -33,7 +35,7 @@ namespace WhiteRaven.Domain.Operations
                 UserLevel.User,
                 registration.FirstName,
                 registration.LastName,
-                registration.Email,
+                registration.Email.ToLower(),
                 registration.BirthDate,
                 DateTime.UtcNow,
                 _passwordGuard.GeneratePasswordHash(registration.Password));
@@ -45,19 +47,53 @@ namespace WhiteRaven.Domain.Operations
 
         public async Task<User> GetUser(string email)
         {
-            CheckEmail(email);
+            return (await GetUserWithPasswordHash(email)).WithoutPasswordHash();
+        }
+        
+        public async Task<IEnumerable<User>> SearchUserByEmail(string partialEmail)
+        {
+            if (partialEmail.IsBlank())
+                throw new ArgumentException("The search term for the email address cannot be blank");
 
-            return await _userRepository.SelectByKey(email);
+            var emailTerm = partialEmail.ToLower();
+            var result = await _userRepository.Select(u => u.Email.Contains(emailTerm));
+
+            return result.Select(u => u.WithoutPasswordHash());
+        }
+
+        public async Task<IEnumerable<User>> SearchUserByName(string partialFirstName, string partialLastName)
+        {
+            IEnumerable<User> result = null;
+
+            if (!partialFirstName.IsBlank())
+            {
+                var firstNameTerm = partialFirstName.ToLower();
+                result = await _userRepository.Select(u => u.FirstName.ToLower().Contains(firstNameTerm));
+            }
+
+            if (!partialLastName.IsBlank())
+            {
+                var lastNameTerm = partialLastName.ToLower();
+
+                result = result == null
+                    ? await _userRepository.Select(u => u.LastName.ToLower().Contains(lastNameTerm))
+                    : result.Where(u => u.LastName.ToLower().Contains(lastNameTerm));
+            }
+
+            if (result == null)
+                throw new ArgumentException("The search term for both the first and last name cannot be blank");
+
+            return result.Select(u => u.WithoutPasswordHash());
         }
 
         public async Task<User> ValidateLogin(Login login)
         {
             CheckEmail(login.Email);
-            
-            if(login.Password.IsBlank())
+
+            if (login.Password.IsBlank())
                 throw new ArgumentException("The user's password cannot be blank");
 
-            var user = await GetUser(login.Email);
+            var user = await GetUserWithPasswordHash(login.Email);
 
             if (!_passwordGuard.IsUserPasswordValid(user.HashedPassword, login.Password))
                 throw new UnauthorizedAccessException("The password was incorrect");
@@ -98,7 +134,7 @@ namespace WhiteRaven.Domain.Operations
             if (passwordUpdate.OldPassword.IsBlank() || passwordUpdate.NewPassword.IsBlank())
                 throw new ArgumentException("The old or the new password field was not filled");
 
-            var user = await GetUser(email);
+            var user = await GetUserWithPasswordHash(email);
 
             if (!_passwordGuard.IsUserPasswordValid(user.HashedPassword, passwordUpdate.OldPassword))
                 throw new UnauthorizedAccessException("The current password was incorrect");
@@ -114,6 +150,13 @@ namespace WhiteRaven.Domain.Operations
         {
             if (email.IsBlank())
                 throw new ArgumentException("The user's email address (the user's unique ID) cannot be blank");
+        }
+
+        private async Task<User> GetUserWithPasswordHash(string email)
+        {
+            CheckEmail(email);
+
+            return await _userRepository.SelectByKey(email);
         }
     }
 }

@@ -111,7 +111,7 @@ namespace WhiteRaven.Domain.Operations
         {
             var contributions = await _contributionRepository.Select(c => c.NoteId == noteId && c.UserId == email);
 
-            if (contributions.Any(c => c.ContributionType >= ContributionType.Contributor))
+            if (contributions.Any(c => c.ContributionType >= ContributionType.Writer))
                 return;
 
             throw new UnauthorizedAccessException("The user has no right to edit this note");

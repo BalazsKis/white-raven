@@ -1,10 +1,11 @@
 ﻿[
   {
-    "Level": 3,
+    "Level": 2,
     "FirstName": "John",
     "LastName": "Smith",
     "Email": "joe-sm@mail.com",
     "BirthDate": "1966-06-06",
+    "RegistrationDate": "2018-07-01",
     "HashedPassword": "YdS4DVCXXw5W550Lop45IV54FpIete+LUxdG26plzWMtOlx6"
   },
   {
@@ -13,6 +14,25 @@
     "LastName": "Pierce",
     "Email": "amy-prc@mail.com",
     "BirthDate": "1989-07-07",
+    "RegistrationDate": "2018-07-03",
+    "HashedPassword": "YdS4DVCXXw5W550Lop45IV54FpIete+LUxdG26plzWMtOlx6"
+  },
+  {
+    "Level": 1,
+    "FirstName": "Amy",
+    "LastName": "Smith",
+    "Email": "amy-sm@mail.com",
+    "BirthDate": "1984-03-28",
+    "RegistrationDate": "2018-07-05",
+    "HashedPassword": "YdS4DVCXXw5W550Lop45IV54FpIete+LUxdG26plzWMtOlx6"
+  },
+  {
+    "Level": 3,
+    "FirstName": "Balázs",
+    "LastName": "Kis",
+    "Email": "uibali@gmail.com",
+    "BirthDate": "1990-04-06",
+    "RegistrationDate": "2018-04-14",
     "HashedPassword": "YdS4DVCXXw5W550Lop45IV54FpIete+LUxdG26plzWMtOlx6"
   }
 ]
