@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Examples;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -14,6 +15,9 @@ using WhiteRaven.Web.Api.Examples;
 
 namespace WhiteRaven.Web.Api.Controllers
 {
+    /// <summary>
+    /// API controller for login and token generation
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class TokenController : ControllerBase
@@ -21,7 +25,11 @@ namespace WhiteRaven.Web.Api.Controllers
         private readonly IConfiguration _config;
         private readonly IUserOperations _userOperations;
 
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TokenController"/> class.
+        /// </summary>
+        /// <param name="config">The global configuration</param>
+        /// <param name="userOperations">The user operations</param>
         public TokenController(
             IConfiguration config,
             IUserOperations userOperations)
@@ -30,11 +38,15 @@ namespace WhiteRaven.Web.Api.Controllers
             _userOperations = userOperations;
         }
 
-
+        /// <summary>
+        /// Generates a personal access token
+        /// </summary>
+        /// <param name="login">The user's ID (email address) and password</param>
+        /// <returns>The personal access token</returns>
         [HttpPost]
         [AllowAnonymous]
         [SwaggerRequestExample(typeof(Login), typeof(LoginExample))]
-        public async Task<IActionResult> CreateToken([FromBody]Login login)
+        public async Task<IActionResult> CreateToken([Required, FromBody]Login login)
         {
             var user = await _userOperations.ValidateLogin(login);
             return Ok(new { token = BuildToken(user) });

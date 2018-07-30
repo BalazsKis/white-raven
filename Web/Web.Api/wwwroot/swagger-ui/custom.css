@@ -94,3 +94,9 @@
 .swagger-ui .expand-operation {
     fill: #cccccc !important;
 }
+
+.swagger-ui .opblock .opblock-summary-description {
+    color: #cccccc;
+    text-align: right;
+    padding-right: 15px;
+}

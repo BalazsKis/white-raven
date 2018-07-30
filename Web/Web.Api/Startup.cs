@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using System;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -8,8 +9,12 @@ using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Examples;
 using Swashbuckle.AspNetCore.Swagger;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Xml.XPath;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using WhiteRaven.Domain.Models.Authentication;
 using WhiteRaven.Domain.Models.Note;
 using WhiteRaven.Domain.Operations;
@@ -73,6 +78,14 @@ namespace WhiteRaven.Web.Api
                         Title = "White Raven API",
                         Version = SwaggerDocumentName
                     });
+
+                    c.DescribeAllEnumsAsStrings();
+
+                    var xmlPath = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
+                    if (File.Exists(xmlPath))
+                    {
+                        c.IncludeXmlComments(xmlPath);
+                    }
 
                     c.AddSecurityDefinition("Bearer", new ApiKeyScheme
                     {
