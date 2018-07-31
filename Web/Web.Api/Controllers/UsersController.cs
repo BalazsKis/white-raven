@@ -13,7 +13,7 @@ namespace WhiteRaven.Web.Api.Controllers
     /// API controller for User operations
     /// </summary>
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/users")]
     public class UsersController : Controller
     {
         private readonly IUserOperations _userOperations;

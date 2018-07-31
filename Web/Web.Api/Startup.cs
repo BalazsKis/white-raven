@@ -147,11 +147,6 @@ namespace WhiteRaven.Web.Api
                     swaggerDoc.Host = httpReq.Host.Value;
                     swaggerDoc.Schemes = new List<string> { "https" };
                 });
-
-                c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
-                {
-                    swaggerDoc.Paths = swaggerDoc.Paths.ToDictionary(p => p.Key.ToLowerInvariant(), p => p.Value);
-                });
             });
 
             // Configure the swagger UI

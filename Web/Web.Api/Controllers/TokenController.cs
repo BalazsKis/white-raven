@@ -19,7 +19,7 @@ namespace WhiteRaven.Web.Api.Controllers
     /// API controller for login and token generation
     /// </summary>
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/token")]
     public class TokenController : ControllerBase
     {
         private readonly IConfiguration _config;

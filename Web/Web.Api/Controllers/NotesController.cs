@@ -13,7 +13,7 @@ namespace WhiteRaven.Web.Api.Controllers
     /// API controller for Note operations
     /// </summary>
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/notes")]
     public class NotesController : Controller
     {
         private readonly INoteOperations _noteOperations;

@@ -13,7 +13,7 @@ namespace WhiteRaven.Web.Api.Controllers
     /// API controller for Contribution operations
     /// </summary>
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/contributions")]
     public class ContributionsController : Controller
     {
         private readonly IContributionOperations _contributionOperations;
