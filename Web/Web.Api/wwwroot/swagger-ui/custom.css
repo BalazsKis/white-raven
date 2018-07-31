@@ -100,3 +100,15 @@
     text-align: right;
     padding-right: 15px;
 }
+
+::-webkit-scrollbar {
+    width: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cccccc;
+}
+
+::-webkit-scrollbar-track {
+    background: #333333;
+}
