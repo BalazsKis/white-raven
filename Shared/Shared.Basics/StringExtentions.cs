@@ -1,5 +1,4 @@
-﻿// ReSharper disable once CheckNamespace
-namespace WhiteRaven.Shared.Basics
+﻿namespace WhiteRaven.Shared.Basics
 {
     public static class StringExtentions
     {
