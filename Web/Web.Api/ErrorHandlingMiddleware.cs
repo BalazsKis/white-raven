@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
 using WhiteRaven.Repository.Contract.Exceptions;
@@ -58,6 +59,15 @@ namespace WhiteRaven.Web.Api
                     context,
                     HttpStatusCode.UnprocessableEntity,
                     "The request content was empty or insufficient",
+                    ex.ToMessageWithInnerExceptions());
+            }
+
+            if (ex is ValidationException)
+            {
+                return SetResult(
+                    context,
+                    HttpStatusCode.UnprocessableEntity,
+                    "The request content failed the validation",
                     ex.ToMessageWithInnerExceptions());
             }
 

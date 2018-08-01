@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WhiteRaven.Domain.Models.Note;
 using WhiteRaven.Domain.Operations.Interfaces;
 using WhiteRaven.Repository.Contract;
-using WhiteRaven.Shared.Basics;
 
 namespace WhiteRaven.Domain.Operations
 {
@@ -13,14 +11,17 @@ namespace WhiteRaven.Domain.Operations
     {
         private readonly IRepository<Note> _noteRepository;
         private readonly IContributionOperations _contributionOperations;
+        private readonly INoteValidator _noteValidator;
 
 
         public NoteOperations(
             IRepository<Note> noteRepository,
-            IContributionOperations contributionOperations)
+            IContributionOperations contributionOperations,
+            INoteValidator noteValidator)
         {
             _noteRepository = noteRepository;
             _contributionOperations = contributionOperations;
+            _noteValidator = noteValidator;
         }
 
 
@@ -28,7 +29,10 @@ namespace WhiteRaven.Domain.Operations
         {
             var note = Note.Create(commit.Title, commit.Content);
 
+            _noteValidator.Validate(note);
+
             await _noteRepository.Insert(note);
+
             await _contributionOperations.NoteCreated(creatorEmail, note.Id);
 
             return note;
@@ -37,6 +41,7 @@ namespace WhiteRaven.Domain.Operations
         public async Task<Note> GetNoteById(string readerEmail, string noteId)
         {
             await _contributionOperations.CheckReadRight(readerEmail, noteId);
+
             return await _noteRepository.SelectByKey(noteId);
         }
 
@@ -51,14 +56,14 @@ namespace WhiteRaven.Domain.Operations
 
         public async Task<Note> UpdateNote(string editorEmail, string noteId, Commit commit)
         {
-            if (commit.Title.IsBlank() && commit.Content.IsBlank())
-                throw new ArgumentException("Both title and content of a note cannot be blank");
-
             await _contributionOperations.CheckEditRight(editorEmail, noteId);
 
             var note = await _noteRepository.SelectByKey(noteId);
 
             var updatedNote = note.UpdateTitleAndContent(commit.Title, commit.Content);
+
+            _noteValidator.Validate(updatedNote);
+
             await _noteRepository.Update(updatedNote);
 
             return updatedNote;

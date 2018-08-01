@@ -11,18 +11,22 @@ namespace WhiteRaven.Domain.Operations
     public class ContributionOperations : IContributionOperations
     {
         private readonly IRepository<Contribution> _contributionRepository;
+        private readonly IContributionValidator _contributionValidator;
 
 
-        public ContributionOperations(IRepository<Contribution> contributionRepository)
+        public ContributionOperations(
+            IRepository<Contribution> contributionRepository,
+            IContributionValidator contributionValidator)
         {
             _contributionRepository = contributionRepository;
+            _contributionValidator = contributionValidator;
         }
 
 
         public async Task<Contribution> CreateContribution(string editorEmail, Contribution contribution)
         {
-            if (contribution.ContributionType == ContributionType.Owner)
-                throw new ArgumentException($"A contribution of type '{ContributionType.Owner}' cannot be inserted directly");
+            _contributionValidator.Validate(contribution);
+            _contributionValidator.ValidateManualEdit(contribution);
 
             await CheckOwnerRight(editorEmail, contribution.NoteId);
             await _contributionRepository.Insert(contribution);
@@ -36,7 +40,9 @@ namespace WhiteRaven.Domain.Operations
             var contribution = contributions.SingleOrDefault();
 
             if (contribution == default(Contribution))
+            {
                 throw new KeyNotFoundException($"A contribution for the user '{email}' and the note '{noteId}' was not found");
+            }
 
             return contribution;
         }
@@ -63,8 +69,8 @@ namespace WhiteRaven.Domain.Operations
 
         public async Task UpdateContribution(string editorEmail, Contribution contribution)
         {
-            if (contribution.ContributionType == ContributionType.Owner)
-                throw new ArgumentException($"A contribution cannot be upgraded to type '{ContributionType.Owner}'");
+            _contributionValidator.Validate(contribution);
+            _contributionValidator.ValidateManualEdit(contribution);
 
             await CheckOwnerRight(editorEmail, contribution.NoteId);
             await _contributionRepository.Update(contribution);
@@ -72,9 +78,9 @@ namespace WhiteRaven.Domain.Operations
 
         public async Task DeleteContribution(string editorEmail, Contribution contribution)
         {
-            if (contribution.ContributionType == ContributionType.Owner)
-                throw new ArgumentException($"A contribution of type '{ContributionType.Owner}' cannot be deleted directly");
-
+            _contributionValidator.Validate(contribution);
+            _contributionValidator.ValidateManualEdit(contribution);
+            
             await CheckOwnerRight(editorEmail, contribution.NoteId);
             await _contributionRepository.Delete(contribution);
         }
@@ -88,7 +94,11 @@ namespace WhiteRaven.Domain.Operations
 
         public Task NoteCreated(string creatorEmail, string noteId)
         {
-            return _contributionRepository.Insert(Contribution.CreateOwnerContribution(noteId, creatorEmail));
+            var contribution = Contribution.CreateOwnerContribution(noteId, creatorEmail);
+
+            _contributionValidator.Validate(contribution);
+
+            return _contributionRepository.Insert(contribution);
         }
 
         public Task NoteDeleted(string noteId)
@@ -101,30 +111,30 @@ namespace WhiteRaven.Domain.Operations
         {
             var contributions = await _contributionRepository.Select(c => c.NoteId == noteId && c.UserId == email);
 
-            if (contributions.Any(c => c.ContributionType >= ContributionType.Reader))
-                return;
-
-            throw new UnauthorizedAccessException("The user has no contribution to this note, so cannot read it");
+            if (!contributions.Any(c => c.ContributionType >= ContributionType.Reader))
+            {
+                throw new UnauthorizedAccessException("The user has no contribution to this note, so cannot read it");
+            }
         }
 
         public async Task CheckEditRight(string email, string noteId)
         {
             var contributions = await _contributionRepository.Select(c => c.NoteId == noteId && c.UserId == email);
 
-            if (contributions.Any(c => c.ContributionType >= ContributionType.Writer))
-                return;
-
-            throw new UnauthorizedAccessException("The user has no right to edit this note");
+            if (!contributions.Any(c => c.ContributionType >= ContributionType.Writer))
+            {
+                throw new UnauthorizedAccessException("The user has no right to edit this note");
+            }
         }
 
         public async Task CheckOwnerRight(string email, string noteId)
         {
             var contributions = await _contributionRepository.Select(c => c.NoteId == noteId && c.UserId == email);
 
-            if (contributions.Any(c => c.ContributionType >= ContributionType.Owner))
-                return;
-
-            throw new UnauthorizedAccessException("The user is not the owner of the note");
+            if (!contributions.Any(c => c.ContributionType >= ContributionType.Owner))
+            {
+                throw new UnauthorizedAccessException("The user is not the owner of the note");
+            }
         }
     }
 }

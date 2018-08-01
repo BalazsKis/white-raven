@@ -3,7 +3,6 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using WhiteRaven.Domain.Models.Authentication;
-using WhiteRaven.Shared.Basics;
 
 namespace WhiteRaven.Web.Api.Controllers
 {
@@ -21,8 +20,10 @@ namespace WhiteRaven.Web.Api.Controllers
         {
             var email = HttpContext.User?.Claims?.SingleOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
 
-            if (email.IsBlank())
+            if (string.IsNullOrWhiteSpace(email))
+            {
                 throw new UnauthorizedAccessException("The user's email address was not included in the token");
+            }
 
             return email;
         }
@@ -41,12 +42,16 @@ namespace WhiteRaven.Web.Api.Controllers
             var roleFromClaim = HttpContext.User?.Claims?.SingleOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
 
             if (roleFromClaim == default(string))
+            {
                 throw new UnauthorizedAccessException("Could not read user role from the provided token");
+            }
 
             var levelParsed = int.TryParse(roleFromClaim, out var level);
 
             if (!levelParsed)
+            {
                 throw new UnauthorizedAccessException("Could not parse user role from the provided token");
+            }
 
             return (UserLevel)level;
         }

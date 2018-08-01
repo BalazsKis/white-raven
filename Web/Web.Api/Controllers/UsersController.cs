@@ -69,8 +69,8 @@ namespace WhiteRaven.Web.Api.Controllers
         /// <returns>A list of matching users</returns>
         [Authorize]
         [HttpGet("search/firstname/{firstName}")]
-        public Task<IActionResult> SearchUsersByFirstName([FromRoute]string firstName) =>
-            SearchUser(firstName, null);
+        public async Task<IActionResult> SearchUsersByFirstName([FromRoute]string firstName) =>
+            JsonApi.OkDataObject(await _userOperations.SearchUserByFirstName(firstName));
 
         /// <summary>
         /// Searches for users by (partial) last name
@@ -79,8 +79,8 @@ namespace WhiteRaven.Web.Api.Controllers
         /// <returns>A list of matching users</returns>
         [Authorize]
         [HttpGet("search/lastname/{lastName}")]
-        public Task<IActionResult> SearchUsersByLastName([FromRoute]string lastName) =>
-            SearchUser(null, lastName);
+        public async Task<IActionResult> SearchUsersByLastName([FromRoute]string lastName) =>
+            JsonApi.OkDataObject(await _userOperations.SearchUserByLastName(lastName));
 
         /// <summary>
         /// Searches for users by (partial) first and last names
@@ -89,9 +89,9 @@ namespace WhiteRaven.Web.Api.Controllers
         /// <param name="lastName">The (partial) last name</param>
         /// <returns>A list of matching users</returns>
         [Authorize]
-        [HttpGet("search/firstname/{firstName}/lastname/{lastName}")]
-        public Task<IActionResult> SearchUsersByFullName([FromRoute]string firstName, [FromRoute]string lastName) =>
-            SearchUser(firstName, lastName);
+        [HttpGet("search/fullname/{firstName}/{lastName}")]
+        public async Task<IActionResult> SearchUsersByFullName([FromRoute]string firstName, [FromRoute]string lastName) =>
+            JsonApi.OkDataObject(await _userOperations.SearchUserByFullName(firstName, lastName));
 
         /// <summary>
         /// Changes the user's password
@@ -124,9 +124,5 @@ namespace WhiteRaven.Web.Api.Controllers
 
             return JsonApi.OkDataObject(updatedUser);
         }
-
-
-        private async Task<IActionResult> SearchUser(string partialFirstName, string partialLastName) =>
-            JsonApi.OkDataObject(await _userOperations.SearchUserByName(partialFirstName, partialLastName));
     }
 }

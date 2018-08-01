@@ -9,6 +9,17 @@ namespace WhiteRaven.Shared.Basics.Cryptography
 
         public bool IsUserPasswordValid(string savedPasswordHash, string enteredPassword)
         {
+            // Validate input
+            if (string.IsNullOrWhiteSpace(savedPasswordHash))
+            {
+                throw new Exception("The password hash was blank");
+            }
+
+            if (string.IsNullOrWhiteSpace(enteredPassword))
+            {
+                throw new ArgumentException("The entered password was blank");
+            }
+
             // Extract the bytes
             var hashBytes = Convert.FromBase64String(savedPasswordHash);
 
@@ -34,6 +45,12 @@ namespace WhiteRaven.Shared.Basics.Cryptography
 
         public string GeneratePasswordHash(string password)
         {
+            // Validate input
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                throw new ArgumentException("Cannot generate hash for blank password");
+            }
+
             // Create the salt value with a cryptographic PRNG
             byte[] salt;
             new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);

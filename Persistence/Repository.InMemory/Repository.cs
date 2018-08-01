@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using WhiteRaven.Repository.Contract;
 using WhiteRaven.Repository.Contract.Exceptions;
-using WhiteRaven.Shared.Basics;
 
 namespace WhiteRaven.Repository.InMemory
 {
@@ -74,7 +73,7 @@ namespace WhiteRaven.Repository.InMemory
 
         public Task<T> SelectByKey(string key)
         {
-            if (key.IsBlank())
+            if (string.IsNullOrWhiteSpace(key))
             {
                 throw new ReadFailedException(_type, "The key cannot be null or empty");
             }
@@ -170,7 +169,7 @@ namespace WhiteRaven.Repository.InMemory
 
         public Task<bool> ContainsKey(string key)
         {
-            if (key.IsBlank())
+            if (string.IsNullOrWhiteSpace(key))
             {
                 throw new ReadFailedException(_type, "The key cannot be null or empty");
             }
@@ -280,7 +279,7 @@ namespace WhiteRaven.Repository.InMemory
 
         public Task DeleteByKey(string key)
         {
-            if (key.IsBlank())
+            if (string.IsNullOrWhiteSpace(key))
             {
                 throw new DeleteFailedException(_type, "The key cannot be null or empty");
             }

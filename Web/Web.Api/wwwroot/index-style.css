@@ -73,8 +73,9 @@ a {
     flex: 3;
     min-width: 600px;
     min-height: 500px;
-    border: 2px solid;
-    border-color: #444444;
+    border: 1px solid;
+    border-color: #666666;
+    border-radius: 4px;
 }
 
 .sw-block {
