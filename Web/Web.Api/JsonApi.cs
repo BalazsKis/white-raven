@@ -37,15 +37,19 @@ namespace WhiteRaven.Web.Api
         /// </summary>
         /// <param name="data">The data</param>
         /// <returns>A JSON API data object</returns>
-        public static object DataObject(object data) =>
-            new { data };
+        public static object DataObject(object data)
+        {
+            return new {data};
+        }
 
         /// <summary>
         /// Returns a JSON API OK data object
         /// </summary>
         /// <param name="data">The data</param>
         /// <returns>A JSON API OK data object</returns>
-        public static ObjectResult OkDataObject(object data) =>
-            new OkObjectResult(DataObject(data));
+        public static ObjectResult OkDataObject(object data)
+        {
+            return new OkObjectResult(DataObject(data));
+        }
     }
 }

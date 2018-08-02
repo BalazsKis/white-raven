@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WhiteRaven.Domain.Models.Authentication;
-using WhiteRaven.Domain.Operations.Interfaces;
+using WhiteRaven.Domain.Operations.Validation;
 using WhiteRaven.Repository.Contract;
 using WhiteRaven.Shared.Basics.Cryptography;
 

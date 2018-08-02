@@ -9,17 +9,35 @@ using WhiteRaven.Shared.Basics;
 
 namespace WhiteRaven.Web.Api
 {
+    /// <summary>
+    /// Provides error handling for controller actions; catches thrown exceptions
+    /// and returns JSON API error responses as described at http://jsonapi.org
+    /// </summary>
+    /// <example>
+    /// <code>
+    /// app.UseMiddleware&lt;ErrorHandlingMiddleware&gt;();
+    /// app.UseMvc(...);
+    /// </code>
+    /// </example>
     public class ErrorHandlingMiddleware
     {
         private readonly RequestDelegate _next;
 
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ErrorHandlingMiddleware"/> class
+        /// </summary>
+        /// <param name="next">The next request delegate</param>
         public ErrorHandlingMiddleware(RequestDelegate next)
         {
             _next = next;
         }
 
 
+        /// <summary>
+        /// Invokes the next request delegate with error handling
+        /// </summary>
+        /// <param name="context">The current HTTP context</param>
         public async Task Invoke(HttpContext context)
         {
             try

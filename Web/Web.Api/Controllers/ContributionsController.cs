@@ -4,7 +4,7 @@ using Swashbuckle.AspNetCore.Examples;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using WhiteRaven.Domain.Models.Note;
-using WhiteRaven.Domain.Operations.Interfaces;
+using WhiteRaven.Domain.Operations;
 using WhiteRaven.Web.Api.Examples;
 
 namespace WhiteRaven.Web.Api.Controllers
@@ -35,8 +35,10 @@ namespace WhiteRaven.Web.Api.Controllers
         /// <returns>All of the user's contributions</returns>
         [Authorize]
         [HttpGet("all")]
-        public Task<IActionResult> GetAllMyContributions() =>
-            GetContributions();
+        public Task<IActionResult> GetAllMyContributions()
+        {
+            return GetContributions();
+        }
 
         /// <summary>
         /// Returns all of the user's owner type contributions
@@ -44,8 +46,10 @@ namespace WhiteRaven.Web.Api.Controllers
         /// <returns>All of the user's owner type contributions</returns>
         [Authorize]
         [HttpGet("mine")]
-        public Task<IActionResult> GetMyOwnedContributions() =>
-            GetContributions(ContributionType.Owner);
+        public Task<IActionResult> GetMyOwnedContributions()
+        {
+            return GetContributions(ContributionType.Owner);
+        }
 
         /// <summary>
         /// Returns all of the user's read only contributions
@@ -53,8 +57,10 @@ namespace WhiteRaven.Web.Api.Controllers
         /// <returns>All of the user's read only contributions</returns>
         [Authorize]
         [HttpGet("shared/read")]
-        public Task<IActionResult> GetSharedReadOnlyContributions() =>
-            GetContributions(ContributionType.Reader);
+        public Task<IActionResult> GetSharedReadOnlyContributions()
+        {
+            return GetContributions(ContributionType.Reader);
+        }
 
         /// <summary>
         /// Returns all of the user's writable contributions
@@ -62,8 +68,10 @@ namespace WhiteRaven.Web.Api.Controllers
         /// <returns>All of the user's writable contributions</returns>
         [Authorize]
         [HttpGet("shared/write")]
-        public Task<IActionResult> GetSharedWritableContributions() =>
-            GetContributions(ContributionType.Writer);
+        public Task<IActionResult> GetSharedWritableContributions()
+        {
+            return GetContributions(ContributionType.Writer);
+        }
 
         /// <summary>
         /// Returns all contributions belonging to a note

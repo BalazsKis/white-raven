@@ -1,6 +1,6 @@
 ﻿using WhiteRaven.Domain.Models.Authentication;
 
-namespace WhiteRaven.Domain.Operations.Interfaces
+namespace WhiteRaven.Domain.Operations.Validation
 {
     public interface IUserValidator : IValidator<User>
     {

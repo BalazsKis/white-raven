@@ -1,9 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using WhiteRaven.Domain.Models.Note;
-using WhiteRaven.Domain.Operations.Interfaces;
 
-namespace WhiteRaven.Domain.Operations
+namespace WhiteRaven.Domain.Operations.Validation
 {
     public class NoteValidator : INoteValidator
     {

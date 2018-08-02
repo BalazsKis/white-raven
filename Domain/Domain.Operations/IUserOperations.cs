@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using WhiteRaven.Domain.Models.Authentication;
 
-namespace WhiteRaven.Domain.Operations.Interfaces
+namespace WhiteRaven.Domain.Operations
 {
     public interface IUserOperations
     {

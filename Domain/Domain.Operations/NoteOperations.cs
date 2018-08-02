@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using WhiteRaven.Domain.Models.Note;
-using WhiteRaven.Domain.Operations.Interfaces;
+using WhiteRaven.Domain.Operations.Validation;
 using WhiteRaven.Repository.Contract;
 
 namespace WhiteRaven.Domain.Operations

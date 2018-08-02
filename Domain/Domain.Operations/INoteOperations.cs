@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using WhiteRaven.Domain.Models.Note;
 
-namespace WhiteRaven.Domain.Operations.Interfaces
+namespace WhiteRaven.Domain.Operations
 {
     public interface INoteOperations
     {

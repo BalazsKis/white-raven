@@ -4,7 +4,7 @@ using Swashbuckle.AspNetCore.Examples;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using WhiteRaven.Domain.Models.Authentication;
-using WhiteRaven.Domain.Operations.Interfaces;
+using WhiteRaven.Domain.Operations;
 using WhiteRaven.Web.Api.Examples;
 
 namespace WhiteRaven.Web.Api.Controllers
@@ -49,8 +49,10 @@ namespace WhiteRaven.Web.Api.Controllers
         /// <returns>The user with the given ID</returns>
         [Authorize]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser([FromRoute]string id) =>
-            JsonApi.OkDataObject(await _userOperations.GetUser(id));
+        public async Task<IActionResult> GetUser([FromRoute]string id)
+        {
+            return JsonApi.OkDataObject(await _userOperations.GetUser(id));
+        }
 
         /// <summary>
         /// Searches for users by (partial) email address
@@ -59,8 +61,10 @@ namespace WhiteRaven.Web.Api.Controllers
         /// <returns>A list of matching users</returns>
         [Authorize]
         [HttpGet("search/email/{email}")]
-        public async Task<IActionResult> SearchUsersByEmail([FromRoute]string email) =>
-            JsonApi.OkDataObject(await _userOperations.SearchUserByEmail(email));
+        public async Task<IActionResult> SearchUsersByEmail([FromRoute]string email)
+        {
+            return JsonApi.OkDataObject(await _userOperations.SearchUserByEmail(email));
+        }
 
         /// <summary>
         /// Searches for users by (partial) first name
@@ -69,8 +73,10 @@ namespace WhiteRaven.Web.Api.Controllers
         /// <returns>A list of matching users</returns>
         [Authorize]
         [HttpGet("search/firstname/{firstName}")]
-        public async Task<IActionResult> SearchUsersByFirstName([FromRoute]string firstName) =>
-            JsonApi.OkDataObject(await _userOperations.SearchUserByFirstName(firstName));
+        public async Task<IActionResult> SearchUsersByFirstName([FromRoute]string firstName)
+        {
+            return JsonApi.OkDataObject(await _userOperations.SearchUserByFirstName(firstName));
+        }
 
         /// <summary>
         /// Searches for users by (partial) last name
@@ -79,8 +85,10 @@ namespace WhiteRaven.Web.Api.Controllers
         /// <returns>A list of matching users</returns>
         [Authorize]
         [HttpGet("search/lastname/{lastName}")]
-        public async Task<IActionResult> SearchUsersByLastName([FromRoute]string lastName) =>
-            JsonApi.OkDataObject(await _userOperations.SearchUserByLastName(lastName));
+        public async Task<IActionResult> SearchUsersByLastName([FromRoute]string lastName)
+        {
+            return JsonApi.OkDataObject(await _userOperations.SearchUserByLastName(lastName));
+        }
 
         /// <summary>
         /// Searches for users by (partial) first and last names
@@ -90,8 +98,10 @@ namespace WhiteRaven.Web.Api.Controllers
         /// <returns>A list of matching users</returns>
         [Authorize]
         [HttpGet("search/fullname/{firstName}/{lastName}")]
-        public async Task<IActionResult> SearchUsersByFullName([FromRoute]string firstName, [FromRoute]string lastName) =>
-            JsonApi.OkDataObject(await _userOperations.SearchUserByFullName(firstName, lastName));
+        public async Task<IActionResult> SearchUsersByFullName([FromRoute]string firstName, [FromRoute]string lastName)
+        {
+            return JsonApi.OkDataObject(await _userOperations.SearchUserByFullName(firstName, lastName));
+        }
 
         /// <summary>
         /// Changes the user's password

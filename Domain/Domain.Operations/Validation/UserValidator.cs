@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
 using WhiteRaven.Domain.Models.Authentication;
-using WhiteRaven.Domain.Operations.Interfaces;
+using WhiteRaven.Domain.Operations.Validation;
 
 namespace WhiteRaven.Domain.Operations
 {

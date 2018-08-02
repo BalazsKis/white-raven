@@ -10,7 +10,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using WhiteRaven.Domain.Models.Authentication;
-using WhiteRaven.Domain.Operations.Interfaces;
+using WhiteRaven.Domain.Operations;
 using WhiteRaven.Web.Api.Examples;
 
 namespace WhiteRaven.Web.Api.Controllers
@@ -25,6 +25,7 @@ namespace WhiteRaven.Web.Api.Controllers
         private readonly IConfiguration _config;
         private readonly IUserOperations _userOperations;
 
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TokenController"/> class.
         /// </summary>
@@ -37,6 +38,7 @@ namespace WhiteRaven.Web.Api.Controllers
             _config = config;
             _userOperations = userOperations;
         }
+
 
         /// <summary>
         /// Generates a personal access token

@@ -4,7 +4,7 @@ using Swashbuckle.AspNetCore.Examples;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using WhiteRaven.Domain.Models.Note;
-using WhiteRaven.Domain.Operations.Interfaces;
+using WhiteRaven.Domain.Operations;
 using WhiteRaven.Web.Api.Examples;
 
 namespace WhiteRaven.Web.Api.Controllers
@@ -28,14 +28,17 @@ namespace WhiteRaven.Web.Api.Controllers
             _noteOperations = noteOperations;
         }
 
+
         /// <summary>
         /// Returns all of the user's notes
         /// </summary>
         /// <returns>All of the user's notes</returns>
         [Authorize]
         [HttpGet("all")]
-        public Task<IActionResult> GetAllNotes() =>
-            GetNotes();
+        public Task<IActionResult> GetAllNotes()
+        {
+            return GetNotes();
+        }
 
         /// <summary>
         /// Returns all notes owned by the user
@@ -43,8 +46,10 @@ namespace WhiteRaven.Web.Api.Controllers
         /// <returns>All notes owned by the user</returns>
         [Authorize]
         [HttpGet("mine")]
-        public Task<IActionResult> GetMyNotes() =>
-            GetNotes(ContributionType.Owner);
+        public Task<IActionResult> GetMyNotes()
+        {
+            return GetNotes(ContributionType.Owner);
+        }
 
         /// <summary>
         /// Returns all notes shared with the user to read
@@ -52,8 +57,10 @@ namespace WhiteRaven.Web.Api.Controllers
         /// <returns>All notes shared with the user to read</returns>
         [Authorize]
         [HttpGet("shared/read")]
-        public Task<IActionResult> GetSharedReadOnlyNotes() =>
-            GetNotes(ContributionType.Reader);
+        public Task<IActionResult> GetSharedReadOnlyNotes()
+        {
+            return GetNotes(ContributionType.Reader);
+        }
 
         /// <summary>
         /// Returns all notes shared with the user to read and write
@@ -61,8 +68,10 @@ namespace WhiteRaven.Web.Api.Controllers
         /// <returns>All notes shared with the user to read and write</returns>
         [Authorize]
         [HttpGet("shared/write")]
-        public Task<IActionResult> GetSharedWritableNotes() =>
-            GetNotes(ContributionType.Writer);
+        public Task<IActionResult> GetSharedWritableNotes()
+        {
+            return GetNotes(ContributionType.Writer);
+        }
 
         /// <summary>
         /// Returns a note by its unique ID

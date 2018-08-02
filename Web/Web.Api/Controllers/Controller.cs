@@ -7,7 +7,7 @@ using WhiteRaven.Domain.Models.Authentication;
 namespace WhiteRaven.Web.Api.Controllers
 {
     /// <summary>
-    /// Abstract base class 
+    /// Abstract controller base class 
     /// </summary>
     public abstract class Controller : ControllerBase
     {

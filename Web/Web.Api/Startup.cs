@@ -16,7 +16,7 @@ using System.Text;
 using WhiteRaven.Domain.Models.Authentication;
 using WhiteRaven.Domain.Models.Note;
 using WhiteRaven.Domain.Operations;
-using WhiteRaven.Domain.Operations.Interfaces;
+using WhiteRaven.Domain.Operations.Validation;
 using WhiteRaven.Repository.Contract;
 using WhiteRaven.Repository.InMemory;
 using WhiteRaven.Shared.Basics.Cryptography;
