@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <AssemblyName>WhiteRaven.Shared.Basics</AssemblyName>
-    <RootNamespace>WhiteRaven.Shared.Basics</RootNamespace>
+    <AssemblyName>WhiteRaven.Shared.Cryptography</AssemblyName>
+    <RootNamespace>WhiteRaven.Shared.Cryptography</RootNamespace>
   </PropertyGroup>
 
 </Project>

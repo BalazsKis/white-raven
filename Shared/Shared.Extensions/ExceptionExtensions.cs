@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace WhiteRaven.Shared.Basics
+namespace WhiteRaven.Shared.Extensions
 {
-    public static class ExceptionExtentions
+    public static class ExceptionExtensions
     {
         /// <summary>
         /// Creates a human-readable message from the exception containing its type,

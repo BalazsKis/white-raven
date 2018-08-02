@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
 using WhiteRaven.Repository.Contract.Exceptions;
-using WhiteRaven.Shared.Basics;
+using WhiteRaven.Shared.Extensions;
 
 namespace WhiteRaven.Web.Api
 {

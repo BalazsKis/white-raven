@@ -1,4 +1,4 @@
-﻿namespace WhiteRaven.Shared.Basics.Cryptography
+﻿namespace WhiteRaven.Shared.Cryptography
 {
     public interface IPasswordGuard
     {

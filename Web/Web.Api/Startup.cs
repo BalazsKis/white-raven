@@ -19,7 +19,7 @@ using WhiteRaven.Domain.Operations;
 using WhiteRaven.Domain.Operations.Validation;
 using WhiteRaven.Repository.Contract;
 using WhiteRaven.Repository.InMemory;
-using WhiteRaven.Shared.Basics.Cryptography;
+using WhiteRaven.Shared.Cryptography;
 using WhiteRaven.Web.Api.Mock;
 
 namespace WhiteRaven.Web.Api

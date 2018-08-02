@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace WhiteRaven.Shared.Basics.Cryptography
+namespace WhiteRaven.Shared.Cryptography
 {
     public class PasswordGuard : IPasswordGuard
     {
