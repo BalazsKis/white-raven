@@ -1,26 +1,14 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using Swashbuckle.AspNetCore.Examples;
-using Swashbuckle.AspNetCore.Swagger;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using WhiteRaven.Domain.Models.Authentication;
 using WhiteRaven.Domain.Models.Note;
 using WhiteRaven.Domain.Operations;
-using WhiteRaven.Domain.Operations.Validation;
 using WhiteRaven.Repository.Contract;
-using WhiteRaven.Repository.InMemory;
-using WhiteRaven.Shared.Cryptography;
-using WhiteRaven.Web.Api.Mock;
+using WhiteRaven.Web.Api.Modules;
 
 namespace WhiteRaven.Web.Api
 {
@@ -38,70 +26,15 @@ namespace WhiteRaven.Web.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateLifetime = true,
-                        ValidateAudience = false,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = Configuration["Jwt:Issuer"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
-                    };
-                });
+            new TokenAuthenticationModule(Configuration).Load(services);
+            new PasswordModule(Configuration).Load(services);
+            new MemoryRepositoryModule(Configuration).Load(services);
+            new DomainOperationsModule(Configuration).Load(services);
+            new SwaggerModule(Configuration).Load(services);
 
             services
-                .AddSingleton<IPasswordGuard, PasswordGuard>()
-                .AddSingleton<IContentInitializer, JsonFileContentIntitializer>()
-                .AddSingleton<IKeyFor<User>, UserKey>()
-                .AddSingleton<IKeyFor<Note>, NoteKey>()
-                .AddSingleton<IKeyFor<Contribution>, ContributionKey>()
-                .AddTransient<IRepository<User>, Repository<User>>()
-                .AddTransient<IRepository<Note>, Repository<Note>>()
-                .AddTransient<IRepository<Contribution>, Repository<Contribution>>()
-                .AddSingleton<IUserValidator, UserValidator>()
-                .AddSingleton<IContributionValidator, ContributionValidator>()
-                .AddSingleton<INoteValidator, NoteValidator>()
-                .AddSingleton<IUserOperations, UserOperations>()
-                .AddSingleton<IContributionOperations, ContributionOperations>()
-                .AddSingleton<INoteOperations, NoteOperations>()
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-            services
-                .AddSwaggerGen(c =>
-                {
-                    c.SwaggerDoc(SwaggerDocumentName, new Info
-                    {
-                        Title = "White Raven API",
-                        Version = SwaggerDocumentName
-                    });
-
-                    c.DescribeAllEnumsAsStrings();
-
-                    var xmlPath = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
-                    if (File.Exists(xmlPath))
-                    {
-                        c.IncludeXmlComments(xmlPath);
-                    }
-
-                    c.AddSecurityDefinition("Bearer", new ApiKeyScheme
-                    {
-                        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-                        Name = "Authorization",
-                        In = "header",
-                        Type = "apiKey"
-                    });
-
-                    c.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>> {
-                        { "Bearer", Enumerable.Empty<string>() },
-                    });
-
-                    c.OperationFilter<ExamplesOperationFilter>();
-                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -109,17 +42,7 @@ namespace WhiteRaven.Web.Api
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-
-                var repoInitializer = app.ApplicationServices.GetService<IContentInitializer>();
-
-                var userRepo = app.ApplicationServices.GetService<IRepository<User>>();
-                var noteRepo = app.ApplicationServices.GetService<IRepository<Note>>();
-                var contributionRepo = app.ApplicationServices.GetService<IRepository<Contribution>>();
-
-                repoInitializer.LoadContent("Mock/Users.json", userRepo);
-                repoInitializer.LoadContent("Mock/Notes.json", noteRepo);
-                repoInitializer.LoadContent("Mock/Contributions.json", contributionRepo);
+                //app.UseDeveloperExceptionPage();
             }
             else
             {
@@ -159,6 +82,16 @@ namespace WhiteRaven.Web.Api
                 c.SwaggerEndpoint($"/api/{SwaggerDocumentName}", "White Raven API");
                 c.DefaultModelsExpandDepth(0);
             });
+
+            var repoInitializer = app.ApplicationServices.GetService<IContentInitializer>();
+
+            var userRepo = app.ApplicationServices.GetService<IRepository<User>>();
+            var noteRepo = app.ApplicationServices.GetService<IRepository<Note>>();
+            var contributionRepo = app.ApplicationServices.GetService<IRepository<Contribution>>();
+
+            repoInitializer.LoadContent("Mock/Users.json", userRepo);
+            repoInitializer.LoadContent("Mock/Notes.json", noteRepo);
+            repoInitializer.LoadContent("Mock/Contributions.json", contributionRepo);
         }
     }
 }
