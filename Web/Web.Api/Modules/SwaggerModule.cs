@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Examples;
 using Swashbuckle.AspNetCore.Swagger;
@@ -11,24 +12,36 @@ using WhiteRaven.Shared.DependencyInjection;
 
 namespace WhiteRaven.Web.Api.Modules
 {
+    /// <summary>
+    /// Contains registrations and configurations for the Swagger documentation
+    /// </summary>
+    /// <seealso cref="ModuleBase"/>
     public class SwaggerModule : ModuleBase
     {
+        private readonly string _swaggerName;
+
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SwaggerModule"/> class.
+        /// </summary>
         public SwaggerModule(IConfiguration configuration) : base(configuration)
         {
+            _swaggerName = Configuration["Swagger:ApiVersion"];
         }
 
+
+        /// <summary>
+        /// Registers the swagger generation
+        /// </summary>
         public override void Load(IServiceCollection serviceCollection)
         {
-            // Register swagger generation:
             serviceCollection
                 .AddSwaggerGen(c =>
                 {
-                    var name = Configuration["Swagger:ApiVersion"];
-
-                    c.SwaggerDoc(name, new Info
+                    c.SwaggerDoc(_swaggerName, new Info
                     {
                         Title = "White Raven API",
-                        Version = name
+                        Version = _swaggerName
                     });
 
                     c.DescribeAllEnumsAsStrings();
@@ -55,6 +68,29 @@ namespace WhiteRaven.Web.Api.Modules
 
                     c.OperationFilter<ExamplesOperationFilter>();
                 });
+        }
+
+        /// <summary>
+        /// Configures the swagger document and the swagger UI
+        /// </summary>
+        public override void Configure(bool isDevelopmentEnvironment, IApplicationBuilder app)
+        {
+            app.UseSwagger(c =>
+            {
+                c.RouteTemplate = "/api/{documentName}";
+                c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
+                {
+                    swaggerDoc.Host = httpReq.Host.Value;
+                    swaggerDoc.Schemes = new List<string> { "https" };
+                });
+            });
+
+            app.UseSwaggerUI(c =>
+            {
+                c.InjectStylesheet("/swagger-ui/custom.css");
+                c.SwaggerEndpoint($"/api/{_swaggerName}", "White Raven API");
+                c.DefaultModelsExpandDepth(0);
+            });
         }
     }
 }

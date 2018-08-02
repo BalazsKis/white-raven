@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace WhiteRaven.Shared.DependencyInjection
@@ -13,5 +14,9 @@ namespace WhiteRaven.Shared.DependencyInjection
         }
 
         public abstract void Load(IServiceCollection serviceCollection);
+
+        public virtual void Configure(bool isDevelopmentEnvironment, IApplicationBuilder app)
+        {
+        }
     }
 }
