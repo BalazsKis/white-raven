@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WhiteRaven.Shared.DependencyInjection;
+using WhiteRaven.Shared.Library.Configuration;
+using WhiteRaven.Web.Api.ConfigurationObjects;
 
 namespace WhiteRaven.Web.Api.Modules
 {
@@ -11,6 +13,7 @@ namespace WhiteRaven.Web.Api.Modules
     /// Contains registrations and configurations for the token-based authentication
     /// </summary>
     /// <seealso cref="ModuleBase"/>
+    [ForEnvironment(Environment.Development, Environment.Staging, Environment.Production)]
     public class TokenAuthenticationModule : ModuleBase
     {
         /// <summary>
@@ -26,6 +29,8 @@ namespace WhiteRaven.Web.Api.Modules
         /// </summary>
         public override void Load(IServiceCollection serviceCollection)
         {
+            var tokenParams = Configuration.GetSection("Jwt").Get<TokenGenerationParameters>();
+
             serviceCollection
                 .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -36,8 +41,8 @@ namespace WhiteRaven.Web.Api.Modules
                         ValidateLifetime = true,
                         ValidateAudience = false,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = Configuration["Jwt:Issuer"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                        ValidIssuer = tokenParams.Issuer,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenParams.Key))
                     };
                 });
         }

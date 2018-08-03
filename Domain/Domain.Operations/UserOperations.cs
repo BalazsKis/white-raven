@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using WhiteRaven.Domain.Models.Authentication;
 using WhiteRaven.Domain.Operations.Validation;
 using WhiteRaven.Repository.Contract;
-using WhiteRaven.Shared.Cryptography;
+using WhiteRaven.Shared.Library.Cryptography;
 
 namespace WhiteRaven.Domain.Operations
 {

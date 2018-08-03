@@ -6,6 +6,7 @@ using WhiteRaven.Domain.Models.Note;
 using WhiteRaven.Repository.Contract;
 using WhiteRaven.Repository.InMemory;
 using WhiteRaven.Shared.DependencyInjection;
+using WhiteRaven.Shared.Library.Configuration;
 using WhiteRaven.Web.Api.Mock;
 
 namespace WhiteRaven.Web.Api.Modules
@@ -14,6 +15,7 @@ namespace WhiteRaven.Web.Api.Modules
     /// Contains registrations and configurations for the in-memory repository
     /// </summary>
     /// <seealso cref="ModuleBase"/>
+    [ForEnvironment(Environment.Development, Environment.Staging)]
     public class MemoryRepositoryModule : ModuleBase
     {
         /// <summary>

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WhiteRaven.Shared.Extensions
+namespace WhiteRaven.Shared.Library.Extensions
 {
     public static class ExceptionExtensions
     {

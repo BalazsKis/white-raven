@@ -8,10 +8,12 @@ namespace WhiteRaven.Shared.DependencyInjection
     {
         protected IConfiguration Configuration { get; }
 
+
         protected ModuleBase(IConfiguration configuration)
         {
             Configuration = configuration;
         }
+
 
         public abstract void Load(IServiceCollection serviceCollection);
 

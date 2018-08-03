@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using WhiteRaven.Domain.Operations;
 using WhiteRaven.Shared.DependencyInjection;
+using WhiteRaven.Shared.Library.Configuration;
 using WhiteRaven.Web.Api.Modules;
 
 namespace WhiteRaven.Web.Api
@@ -23,6 +24,8 @@ namespace WhiteRaven.Web.Api
         /// </summary>
         public Startup(IConfiguration configuration)
         {
+            var env = configuration.GetValue<Environment>("Environment");
+
             // ToDo: Get from assemblies with reflection
             _modules = new List<ModuleBase>
             {

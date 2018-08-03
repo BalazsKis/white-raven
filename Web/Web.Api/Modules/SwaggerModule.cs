@@ -3,12 +3,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Examples;
 using Swashbuckle.AspNetCore.Swagger;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using WhiteRaven.Shared.DependencyInjection;
+using WhiteRaven.Shared.Library.Configuration;
+using WhiteRaven.Web.Api.ConfigurationObjects;
 
 namespace WhiteRaven.Web.Api.Modules
 {
@@ -16,9 +17,10 @@ namespace WhiteRaven.Web.Api.Modules
     /// Contains registrations and configurations for the Swagger documentation
     /// </summary>
     /// <seealso cref="ModuleBase"/>
+    [ForEnvironment(Environment.Development, Environment.Staging, Environment.Production)]
     public class SwaggerModule : ModuleBase
     {
-        private readonly string _swaggerName;
+        private readonly SwaggerParameters _swaggerParameters;
 
 
         /// <summary>
@@ -26,7 +28,7 @@ namespace WhiteRaven.Web.Api.Modules
         /// </summary>
         public SwaggerModule(IConfiguration configuration) : base(configuration)
         {
-            _swaggerName = Configuration["Swagger:ApiVersion"];
+            _swaggerParameters = configuration.GetSection("Swagger").Get<SwaggerParameters>();
         }
 
 
@@ -38,15 +40,15 @@ namespace WhiteRaven.Web.Api.Modules
             serviceCollection
                 .AddSwaggerGen(c =>
                 {
-                    c.SwaggerDoc(_swaggerName, new Info
+                    c.SwaggerDoc(_swaggerParameters.ApiVersion, new Info
                     {
-                        Title = "White Raven API",
-                        Version = _swaggerName
+                        Title = _swaggerParameters.ApiName,
+                        Version = _swaggerParameters.ApiVersion
                     });
 
                     c.DescribeAllEnumsAsStrings();
 
-                    var xmlPath = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
+                    var xmlPath = Path.Combine(System.AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");
                     if (File.Exists(xmlPath))
                     {
                         c.IncludeXmlComments(xmlPath);
@@ -88,7 +90,7 @@ namespace WhiteRaven.Web.Api.Modules
             app.UseSwaggerUI(c =>
             {
                 c.InjectStylesheet("/swagger-ui/custom.css");
-                c.SwaggerEndpoint($"/api/{_swaggerName}", "White Raven API");
+                c.SwaggerEndpoint($"/api/{_swaggerParameters.ApiVersion}", _swaggerParameters.ApiName);
                 c.DefaultModelsExpandDepth(0);
             });
         }

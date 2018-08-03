@@ -8,8 +8,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Persistence\Repository.Contract\Repository.Contract.csproj" />
-    <ProjectReference Include="..\..\Shared\Shared.Cryptography\Shared.Cryptography.csproj" />
     <ProjectReference Include="..\..\Shared\Shared.DependencyInjection\Shared.DependencyInjection.csproj" />
+    <ProjectReference Include="..\..\Shared\Shared.Library\Shared.Library.csproj" />
     <ProjectReference Include="..\Domain.Models\Domain.Models.csproj" />
   </ItemGroup>
 

@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using WhiteRaven.Shared.Cryptography;
 using WhiteRaven.Shared.DependencyInjection;
+using WhiteRaven.Shared.Library.Configuration;
+using WhiteRaven.Shared.Library.Cryptography;
 
 namespace WhiteRaven.Web.Api.Modules
 {
@@ -9,6 +10,7 @@ namespace WhiteRaven.Web.Api.Modules
     /// Contains registrations and configurations for the password manager
     /// </summary>
     /// <seealso cref="ModuleBase"/>
+    [ForEnvironment(Environment.Development, Environment.Staging, Environment.Production)]
     public class PasswordModule : ModuleBase
     {
         /// <summary>
