@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
-using WhiteRaven.Domain.Operations;
+using System.Linq;
+using System.Reflection;
 using WhiteRaven.Shared.DependencyInjection;
 using WhiteRaven.Shared.Library.Configuration;
-using WhiteRaven.Web.Api.Modules;
+using WhiteRaven.Shared.Library.Extensions;
 
 namespace WhiteRaven.Web.Api
 {
@@ -24,17 +25,16 @@ namespace WhiteRaven.Web.Api
         /// </summary>
         public Startup(IConfiguration configuration)
         {
-            var env = configuration.GetValue<Environment>("Environment");
-
-            // ToDo: Get from assemblies with reflection
-            _modules = new List<ModuleBase>
-            {
-                new TokenAuthenticationModule(configuration),
-                new PasswordModule(configuration),
-                new MemoryRepositoryModule(configuration),
-                new DomainOperationsModule(configuration),
-                new SwaggerModule(configuration)
-            };
+            _modules =
+                Assembly
+                    .GetEntryAssembly()
+                    .GetReferencedAssemblies()
+                    .Add(Assembly.GetEntryAssembly().GetName())
+                    .Select(Assembly.Load)
+                    .SelectMany(a => a.DefinedTypes)
+                    .Where(type => FilterModulesToLoad(type, configuration.GetValue<Environment>("Environment")))
+                    .Select(m => System.Activator.CreateInstance(m, configuration) as ModuleBase)
+                    .ToList();
         }
 
 
@@ -43,7 +43,7 @@ namespace WhiteRaven.Web.Api
         /// </summary>
         public void ConfigureServices(IServiceCollection services)
         {
-            // Run the configuration method of each module
+            // Call the loading method of each module
             _modules.ForEach(m => m.Load(services));
 
             services
@@ -78,8 +78,25 @@ namespace WhiteRaven.Web.Api
             // Use attribute-based routing (homepage route defined here, so it won't be part of the swagger document)
             app.UseMvc(routes => { routes.MapRoute("", "{controller=Home}/{action=Index}"); });
 
-            // Run the configuration method of each module
-            _modules.ForEach(m => m.Configure(isDev, app));
+            // Call the configuration method of each module
+            _modules.ForEach(m => m.Configure(app));
+        }
+
+
+        private static bool FilterModulesToLoad(System.Type type, Environment currentEnvironment)
+        {
+            if (!typeof(ModuleBase).IsAssignableFrom(type))
+            {
+                return false;
+            }
+
+            if (type.IsAbstract)
+            {
+                return false;
+            }
+
+            var attribute = type.GetCustomAttribute<ForEnvironmentAttribute>();
+            return attribute != null && attribute.IsForEnvironment(currentEnvironment);
         }
     }
 }

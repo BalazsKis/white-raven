@@ -15,7 +15,7 @@ namespace WhiteRaven.Web.Api.Modules
     /// Contains registrations and configurations for the in-memory repository
     /// </summary>
     /// <seealso cref="ModuleBase"/>
-    [ForEnvironment(Environment.Development, Environment.Staging)]
+    [ForEnvironment(Environment.Development)]
     public class MemoryRepositoryModule : ModuleBase
     {
         /// <summary>
@@ -47,7 +47,7 @@ namespace WhiteRaven.Web.Api.Modules
         /// <summary>
         /// Initialize the repository with content from the mock json files
         /// </summary>
-        public override void Configure(bool isDevelopmentEnvironment, IApplicationBuilder app)
+        public override void Configure(IApplicationBuilder app)
         {
             var repoInitializer = app.ApplicationServices.GetService<IContentInitializer>();
 

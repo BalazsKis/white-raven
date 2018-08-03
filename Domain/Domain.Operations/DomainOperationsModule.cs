@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using WhiteRaven.Domain.Operations.Validation;
 using WhiteRaven.Shared.DependencyInjection;
+using WhiteRaven.Shared.Library.Configuration;
 
 namespace WhiteRaven.Domain.Operations
 {
@@ -9,6 +10,7 @@ namespace WhiteRaven.Domain.Operations
     /// Contains registrations and configurations for the domain operations
     /// </summary>
     /// <seealso cref="ModuleBase"/>
+    [ForEnvironment(Environment.Development, Environment.Staging, Environment.Production)]
     public class DomainOperationsModule : ModuleBase
     {
         /// <summary>

@@ -17,7 +17,7 @@ namespace WhiteRaven.Shared.DependencyInjection
 
         public abstract void Load(IServiceCollection serviceCollection);
 
-        public virtual void Configure(bool isDevelopmentEnvironment, IApplicationBuilder app)
+        public virtual void Configure(IApplicationBuilder app)
         {
         }
     }

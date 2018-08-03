@@ -75,7 +75,7 @@ namespace WhiteRaven.Web.Api.Modules
         /// <summary>
         /// Configures the swagger document and the swagger UI
         /// </summary>
-        public override void Configure(bool isDevelopmentEnvironment, IApplicationBuilder app)
+        public override void Configure(IApplicationBuilder app)
         {
             app.UseSwagger(c =>
             {
