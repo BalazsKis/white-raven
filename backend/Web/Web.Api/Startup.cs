@@ -72,6 +72,9 @@ namespace WhiteRaven.Web.Api
             // Use and require authentication
             app.UseAuthentication();
 
+            // Allow cross-domain requests
+            app.UseCors();
+
             // Common exception catching for all controllers
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
