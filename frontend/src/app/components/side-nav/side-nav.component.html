@@ -1,14 +1,58 @@
 <mat-sidenav-container class="app-sidenav-container">
 
   <mat-sidenav #sidenav class="app-sidenav mat-elevation-z10" [opened]="!isScreenSmall()" [mode]="isScreenSmall() ? 'over' : 'side'">
+
     <mat-toolbar color="primary">
       Notes
     </mat-toolbar>
-    <mat-list role="list">
-      <mat-list-item role="listitem">Item 1</mat-list-item>
-      <mat-list-item role="listitem">Item 2</mat-list-item>
-      <mat-list-item role="listitem">Item 3</mat-list-item>
-    </mat-list>
+
+    <mat-expansion-panel class="note-list-panel">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          My notes
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-list role="list">
+        <mat-list-item role="listitem">Item 1</mat-list-item>
+        <mat-list-item role="listitem">Item 2</mat-list-item>
+        <mat-list-item role="listitem">Item 3</mat-list-item>
+      </mat-list>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel  class="note-list-panel">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Shared with me
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-expansion-panel  class="note-list-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            To edit
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list role="list">
+          <mat-list-item role="listitem">Item 1</mat-list-item>
+          <mat-list-item role="listitem">Item 2</mat-list-item>
+          <mat-list-item role="listitem">Item 3</mat-list-item>
+        </mat-list>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel  class="note-list-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            To read
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-list role="list">
+          <mat-list-item role="listitem">Item 1</mat-list-item>
+          <mat-list-item role="listitem">Item 2</mat-list-item>
+          <mat-list-item role="listitem">Item 3</mat-list-item>
+        </mat-list>
+      </mat-expansion-panel>
+    </mat-expansion-panel>
+
   </mat-sidenav>
 
   <mat-sidenav-content class="app-sidenav-content">

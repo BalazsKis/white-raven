@@ -20,3 +20,7 @@
 .wrapper{
   margin: 15px;
 }
+
+::ng-deep .note-list-panel .mat-expansion-panel-body {
+  padding: 0;
+}

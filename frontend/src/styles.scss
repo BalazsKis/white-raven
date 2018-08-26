@@ -1,5 +1,5 @@
-/*@import '~@angular/material/prebuilt-themes/indigo-pink.css';*/
-@import '~@angular/material/prebuilt-themes/purple-green.css';
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+//@import '~@angular/material/prebuilt-themes/purple-green.css';
 
 @import '~@angular/material/theming';
 
@@ -9,4 +9,13 @@ $custom-typography: mat-typography-config($font-family: 'Raleway');
 body{
     margin: 0;
     font-family: 'Raleway', sans-serif;
+}
+
+::-webkit-scrollbar {
+    height: 4px;
+    width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,.26);
 }
