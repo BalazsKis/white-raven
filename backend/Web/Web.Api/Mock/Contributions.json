@@ -18,5 +18,20 @@
     "UserId": "joe-sm@mail.com",
     "NoteId": "e0259e2e65bd4d98b7132768c234584b",
     "ContributionType": 2
+  },
+  {
+    "UserId": "joe-sm@mail.com",
+    "NoteId": "6e7c1ea961c840198d45c29af50c9226",
+    "ContributionType": 2
+  },
+  {
+    "UserId": "joe-sm@mail.com",
+    "NoteId": "d6517fb6e74c4855a6fc3eb25b364d97",
+    "ContributionType": 1
+  },
+  {
+    "UserId": "joe-sm@mail.com",
+    "NoteId": "ef3672e1f9324d87b5ea7ffd3eb92fcb",
+    "ContributionType": 1
   }
 ]
