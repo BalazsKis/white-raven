@@ -1,4 +1,6 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { MatSidenav } from '@angular/material';
 import { Observable } from 'rxjs';
 
 import { Note } from '../../models/note';
@@ -21,9 +23,12 @@ export class SideNavComponent implements OnInit {
 
   constructor(
     zone: NgZone,
-    private noteService: NoteService) {
+    private noteService: NoteService,
+    private router: Router) {
     this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
   }
+
+  @ViewChild(MatSidenav) sidenav: MatSidenav;
 
   ngOnInit() {
     this.myNotes = this.noteService.myNotes;
@@ -33,15 +38,15 @@ export class SideNavComponent implements OnInit {
     this.noteService.loadAll();
 
     this.myNotes.subscribe(data => {
-      console.log(data);
+      if (data && data.length && this.router.url === '/') {
+        this.router.navigate(['/', data[0].id]);
+      }
     });
 
-    this.readOnlyNotes.subscribe(data => {
-      console.log(data);
-    });
-
-    this.editableNotes.subscribe(data => {
-      console.log(data);
+    this.router.events.subscribe(() => {
+      if (this.isScreenSmall()) {
+        this.sidenav.close();
+      }
     });
   }
 

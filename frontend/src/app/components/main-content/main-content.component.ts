@@ -21,7 +21,16 @@ export class MainContentComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       const id = params['id'];
-      this.note = this.noteService.noteById(id);
+      this.note = null;
+
+      this.noteService.allNotes.subscribe(notes => {
+        if (notes && notes.length) {
+          // setTimeout(() => {
+            this.note = this.noteService.noteById(id);
+          // }, 1500);
+        }
+      });
+
     });
   }
 

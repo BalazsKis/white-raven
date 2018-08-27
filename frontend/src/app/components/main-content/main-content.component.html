@@ -1,5 +1,5 @@
-<div *ngIf="!note">
-    Please select a note from your list
+<div *ngIf="!note" class="loader-container">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
 
 <div *ngIf="note">
