@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+import { Note } from '../../models/note';
+import { NoteService } from '../../services/note.service';
 
 @Component({
   selector: 'wr-main-content',
@@ -7,9 +11,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainContentComponent implements OnInit {
 
-  constructor() { }
+  note: Note;
+
+  constructor(
+    private route: ActivatedRoute,
+    private noteService: NoteService
+  ) { }
 
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      const id = params['id'];
+      this.note = this.noteService.noteById(id);
+    });
   }
 
 }

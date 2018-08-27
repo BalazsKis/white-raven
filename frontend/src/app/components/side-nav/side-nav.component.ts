@@ -15,17 +15,32 @@ export class SideNavComponent implements OnInit {
 
   private mediaMatcher: MediaQueryList = matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
 
-  notes: Observable<Note[]>;
+  myNotes: Observable<Note[]>;
+  readOnlyNotes: Observable<Note[]>;
+  editableNotes: Observable<Note[]>;
 
-  constructor(zone: NgZone, private noteService: NoteService) {
+  constructor(
+    zone: NgZone,
+    private noteService: NoteService) {
     this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
   }
 
   ngOnInit() {
-    this.notes = this.noteService.notes;
+    this.myNotes = this.noteService.myNotes;
+    this.readOnlyNotes = this.noteService.readOnlyNotes;
+    this.editableNotes = this.noteService.editableNotes;
+
     this.noteService.loadAll();
 
-    this.notes.subscribe(data => {
+    this.myNotes.subscribe(data => {
+      console.log(data);
+    });
+
+    this.readOnlyNotes.subscribe(data => {
+      console.log(data);
+    });
+
+    this.editableNotes.subscribe(data => {
       console.log(data);
     });
   }

@@ -1,4 +1,21 @@
-<mat-card>
-  <h1>Main content</h1>
-  Main content will appear here.
-</mat-card>
+<div *ngIf="!note">
+    Please select a note from your list
+</div>
+
+<div *ngIf="note">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>
+                {{ note.title }}
+            </mat-card-title>
+            <mat-card-subtitle>
+                Last modified: {{ note.lastModifiedUtc | date:'medium' }}
+            </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p>
+                {{ note.content }}
+            </p>
+        </mat-card-content>
+    </mat-card>
+</div>

@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { MainContentComponent } from './components/main-content/main-content.component';
 
 const routes: Routes = [
+  { path: ':id', component: MainContentComponent },
   { path: '', component: MainContentComponent },
   { path: '**', redirectTo: '' }
 ];
