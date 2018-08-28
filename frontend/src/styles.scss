@@ -2,11 +2,10 @@
 //@import '~@angular/material/prebuilt-themes/purple-green.css';
 
 @import '~@angular/material/theming';
-
 $custom-typography: mat-typography-config($font-family: 'Raleway');
 @include mat-core($custom-typography);
 
-body{
+body {
     margin: 0;
     font-family: 'Raleway', sans-serif;
 }
@@ -17,5 +16,5 @@ body{
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(0,0,0,.26);
+    background: rgba(0, 0, 0, .26);
 }

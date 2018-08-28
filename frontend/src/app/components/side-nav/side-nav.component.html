@@ -1,69 +1,17 @@
 <mat-sidenav-container class="app-sidenav-container">
 
-    <mat-sidenav #sidenav class="app-sidenav mat-elevation-z10" [opened]="!isScreenSmall()" [mode]="isScreenSmall() ? 'over' : 'side'">
+  <mat-sidenav #sidenav class="app-sidenav mat-elevation-z10" [opened]="!isScreenSmall()" [mode]="isScreenSmall() ? 'over' : 'side'">
+    <mat-toolbar color="primary">
+      Notes
+    </mat-toolbar>
+    <wr-note-list></wr-note-list>
+  </mat-sidenav>
 
-        <mat-toolbar color="primary">
-            Notes
-        </mat-toolbar>
-
-        <mat-expansion-panel [expanded]="true" class="note-list-panel">
-            <mat-expansion-panel-header>
-                <mat-panel-title>
-                    <i class="material-icons">person</i>
-                    <span class="section-title">My notes</span>
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-            <mat-nav-list>
-                <mat-list-item *ngFor="let note of myNotes | async ">
-                    <a matLine [routerLink]="['', note.id]">{{ note.title }}</a>
-                </mat-list-item>
-            </mat-nav-list>
-        </mat-expansion-panel>
-
-        <mat-expansion-panel class="note-list-panel">
-            <mat-expansion-panel-header>
-                <mat-panel-title>
-                    <i class="material-icons">share</i>
-                    <span class="section-title">Shared with me</span>
-                </mat-panel-title>
-            </mat-expansion-panel-header>
-
-            <mat-expansion-panel class="note-list-panel">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        <i class="material-icons">create</i>
-                        <span class="section-title">To edit</span>
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <mat-nav-list>
-                    <mat-list-item *ngFor="let note of editableNotes | async ">
-                        <a matLine [routerLink]="['', note.id]">{{ note.title }}</a>
-                    </mat-list-item>
-                </mat-nav-list>
-            </mat-expansion-panel>
-
-            <mat-expansion-panel class="note-list-panel">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        <i class="material-icons">search</i>
-                        <span class="section-title">To read</span>
-                    </mat-panel-title>
-                </mat-expansion-panel-header>
-                <mat-nav-list>
-                    <mat-list-item *ngFor="let note of readOnlyNotes | async ">
-                        <a matLine [routerLink]="['', note.id]">{{ note.title }}</a>
-                    </mat-list-item>
-                </mat-nav-list>
-            </mat-expansion-panel>
-        </mat-expansion-panel>
-
-    </mat-sidenav>
-
-    <mat-sidenav-content class="app-sidenav-content">
-        <wr-toolbar (toggleSidenav)="sidenav.toggle()"></wr-toolbar>
-        <div class="wrapper">
-            <router-outlet></router-outlet>
-        </div>
-    </mat-sidenav-content>
+  <mat-sidenav-content class="app-sidenav-content">
+    <wr-toolbar (toggleSidenav)="sidenav.toggle()"></wr-toolbar>
+    <div class="wrapper">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
 
 </mat-sidenav-container>

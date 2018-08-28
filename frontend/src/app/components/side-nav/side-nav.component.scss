@@ -1,3 +1,5 @@
+@import '../../shared/variables.scss';
+
 .app-sidenav-container {
     flex: 1;
     position: fixed;
@@ -8,29 +10,24 @@
 }
 
 .app-sidenav {
-    width: 240px;
+  width: 280px;
 }
 
 .app-sidenav-content {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-.section-title {
-    line-height: 24px;
-    font-weight: 600;
-    padding-left: 10px;
-}
-
-.mat-expansion-panel-header {
-    padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
 }
 
 .wrapper {
-    margin: 15px;
-}
-
-::ng-deep .note-list-panel .mat-expansion-panel-body {
-    padding: 0;
+  position: absolute;
+  top: $TOOLBAR_HEIGHT;
+  right: 0;
+  bottom: 0;
+  left:0;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  padding: $MAIN_CONTENT_MARGIN;
 }

@@ -11,16 +11,26 @@ import { MaterialModule } from './shared/material.module';
 
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
-import { MainContentComponent } from './components/main-content/main-content.component';
+import { NoContentComponent } from './components/no-content/no-content.component';
 import { SideNavComponent } from './components/side-nav/side-nav.component';
 import { TokenInterceptor } from './auth/token-interceptor';
+import { NoteListComponent } from './components/note-list/note-list.component';
+import { NoteReadComponent } from './components/note-read/note-read.component';
+import { NoteEditComponent } from './components/note-edit/note-edit.component';
+import { ClickStopPropagationDirective } from './directives/click-stop-propagation.directive';
+import { TruncatePipe } from './pipes/truncate.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     ToolbarComponent,
-    MainContentComponent,
-    SideNavComponent
+    NoContentComponent,
+    SideNavComponent,
+    NoteListComponent,
+    NoteReadComponent,
+    NoteEditComponent,
+    ClickStopPropagationDirective,
+    TruncatePipe
   ],
   imports: [
     CommonModule,

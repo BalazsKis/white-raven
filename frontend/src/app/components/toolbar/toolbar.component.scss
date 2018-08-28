@@ -1,17 +1,17 @@
-$ICON_WIDTH: 64px;
+@import '../../shared/variables.scss';
 
-.sidenav-toggle{
+.sidenav-toggle {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
   margin: 0 16px 0 -16px;
-  min-width: $ICON_WIDTH;
+  min-width: $TOOLBAR_HEIGHT;
 }
 
-mat-icon{
+mat-icon {
   font-size: 30px;
-  height: $ICON_WIDTH;
-  width: $ICON_WIDTH;
-  line-height: $ICON_WIDTH;
+  height: $TOOLBAR_HEIGHT;
+  width: $TOOLBAR_HEIGHT;
+  line-height: $TOOLBAR_HEIGHT;
 }

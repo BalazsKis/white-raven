@@ -1,0 +1,38 @@
+@import '../../shared/variables.scss';
+
+.loader-container {
+  margin: -$MAIN_CONTENT_MARGIN;
+}
+
+::ng-deep .mat-card-header-text {
+  margin: 0 0 10px 0 !important;
+  width: 100%;
+}
+
+.mat-card-title {
+  font-weight: 600;
+  font-size: 1.6em;
+  margin: -18px 0;
+}
+
+.mat-card-subtitle {
+  font-size: 0.8em;
+}
+
+.mat-card-content {
+  font-size: 1.06em;
+}
+
+.full-width {
+  width: 100%;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.button-text {
+  display: inline-block;
+  line-height: 24px;
+  margin-left: 5px;
+}

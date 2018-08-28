@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AppComponent } from './app.component';
-import { MainContentComponent } from './components/main-content/main-content.component';
+import { NoContentComponent } from './components/no-content/no-content.component';
+import { NoteReadComponent } from './components/note-read/note-read.component';
+import { NoteEditComponent } from './components/note-edit/note-edit.component';
 
 const routes: Routes = [
-  { path: ':id', component: MainContentComponent },
-  { path: '', component: MainContentComponent },
+  { path: 'read/:id', component: NoteReadComponent },
+  { path: 'edit/:id', component: NoteEditComponent },
+  { path: '', component: NoContentComponent },
   { path: '**', redirectTo: '' }
 ];
 

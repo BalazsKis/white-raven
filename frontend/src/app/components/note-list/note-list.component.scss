@@ -1,0 +1,35 @@
+$LIST_ITEM_HEIGHT: 48px;
+
+.section-title {
+  line-height: 24px;
+  font-weight: 600;
+  padding-left: 10px;
+}
+
+.mat-expansion-panel-header {
+  padding-left: 10px;
+}
+
+button {
+  position: absolute;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  min-width: $LIST_ITEM_HEIGHT;
+}
+
+.edit-icon{
+  height: $LIST_ITEM_HEIGHT;
+  width: $LIST_ITEM_HEIGHT;
+  line-height: $LIST_ITEM_HEIGHT;
+}
+
+::ng-deep .note-list-panel .mat-expansion-panel-body {
+  padding: 0;
+}
+
+
+
