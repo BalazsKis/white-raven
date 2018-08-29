@@ -5,14 +5,16 @@
       <span class="section-title">My notes</span>
     </mat-panel-title>
   </mat-expansion-panel-header>
-  <mat-nav-list>
-    <mat-list-item *ngFor="let note of myNotes | async" [routerLink]="['read', note.id]">
-      <p>{{ note.title | truncate:21 }}</p>
-      <button wrClickStopPropagation mat-button [routerLink]="['edit', note.id]">
+  <mat-list>
+    <mat-list-item *ngFor="let note of myNotes | async">
+      <button mat-button class="title-button" [routerLink]="['read', note.id]">
+        {{ note.title | truncate:21 }}
+      </button>
+      <button mat-button class="edit-button" [routerLink]="['edit', note.id]">
         <mat-icon class="edit-icon">edit</mat-icon>
       </button>
     </mat-list-item>
-  </mat-nav-list>
+  </mat-list>
 </mat-expansion-panel>
 
 <mat-expansion-panel class="note-list-panel">
@@ -26,30 +28,34 @@
   <mat-expansion-panel class="note-list-panel">
     <mat-expansion-panel-header>
       <mat-panel-title>
-          <mat-icon>create</mat-icon>
+        <mat-icon>create</mat-icon>
         <span class="section-title">To edit</span>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <mat-nav-list>
-      <mat-list-item *ngFor="let note of editableNotes | async" [routerLink]="['read', note.id]">
-        <p>{{ note.title | truncate:21 }}</p>
-        <button wrClickStopPropagation mat-button [routerLink]="['edit', note.id]">
+    <mat-list>
+      <mat-list-item *ngFor="let note of editableNotes | async">
+        <button mat-button class="title-button" [routerLink]="['read', note.id]">
+          {{ note.title | truncate:21 }}
+        </button>
+        <button mat-button class="edit-button" [routerLink]="['edit', note.id]">
           <mat-icon class="edit-icon">edit</mat-icon>
         </button>
       </mat-list-item>
-    </mat-nav-list>
+    </mat-list>
   </mat-expansion-panel>
 
   <mat-expansion-panel class="note-list-panel">
     <mat-expansion-panel-header>
       <mat-panel-title>
-          <mat-icon>visibility</mat-icon>
+        <mat-icon>visibility</mat-icon>
         <span class="section-title">To read</span>
       </mat-panel-title>
     </mat-expansion-panel-header>
     <mat-nav-list>
-      <mat-list-item *ngFor="let note of readOnlyNotes | async" [routerLink]="['read', note.id]">
-        <p>{{ note.title | truncate:21 }}</p>
+      <mat-list-item *ngFor="let note of readOnlyNotes | async">
+        <button mat-button class="title-button" [routerLink]="['read', note.id]">
+          {{ note.title | truncate:24 }}
+        </button>
       </mat-list-item>
     </mat-nav-list>
   </mat-expansion-panel>

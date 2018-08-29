@@ -17,7 +17,6 @@ import { TokenInterceptor } from './auth/token-interceptor';
 import { NoteListComponent } from './components/note-list/note-list.component';
 import { NoteReadComponent } from './components/note-read/note-read.component';
 import { NoteEditComponent } from './components/note-edit/note-edit.component';
-import { ClickStopPropagationDirective } from './directives/click-stop-propagation.directive';
 import { TruncatePipe } from './pipes/truncate.pipe';
 
 @NgModule({
@@ -29,7 +28,6 @@ import { TruncatePipe } from './pipes/truncate.pipe';
     NoteListComponent,
     NoteReadComponent,
     NoteEditComponent,
-    ClickStopPropagationDirective,
     TruncatePipe
   ],
   imports: [
