@@ -9,9 +9,13 @@
   min-width: $TOOLBAR_HEIGHT;
 }
 
-mat-icon {
+.menu-icon {
   font-size: 30px;
   height: $TOOLBAR_HEIGHT;
   width: $TOOLBAR_HEIGHT;
   line-height: $TOOLBAR_HEIGHT;
+}
+
+.spacer {
+  flex: 1 1 auto;
 }

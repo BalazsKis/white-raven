@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Note } from '../../models/note';
 import { Contribution } from '../../models/contribution';
@@ -29,25 +29,38 @@ export class NoteReadComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private noteService: NoteService
+    private noteService: NoteService,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       const id = params['id'];
-      this.note = null;
 
-      this.noteService.allNotes.subscribe(notes => {
-        if (notes && notes.length) {
-          // setTimeout(() => {
+      this.noteService.allNotes
+        .subscribe(notes => {
+          if (notes && notes.length && id) {
+            this.note = null;
+
             this.contribution = this.noteService.getContributionForNote(id);
             this.note = this.noteService.getNoteById(id);
-            this.note.content = this.note.content.replace(/\n/g, '<br />');
-          // }, 1500);
-        }
-      });
+            if (this.note.content) {
+              this.note.content = this.note.content.replace(/\n/g, '<br />');
+            }
+          }
+        });
 
+      this.noteService.contributions
+        .subscribe(() => this.contribution = this.noteService.getContributionForNote(id));
     });
+  }
+
+  delete(): void {
+    const id = this.note.id;
+    this.note = null;
+
+    this.noteService.deleteNoteById(id)
+      .subscribe(() => this.router.navigate(['']));
   }
 
 }

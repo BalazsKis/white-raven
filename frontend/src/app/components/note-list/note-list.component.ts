@@ -24,12 +24,6 @@ export class NoteListComponent implements OnInit {
     this.editableNotes = this.noteService.editableNotes;
 
     this.noteService.loadAll();
-
-    this.myNotes.subscribe(data => {
-      if (data && data.length && this.router.url === '/') {
-        this.router.navigate(['read/', data[0].id]);
-      }
-    });
   }
 
 }

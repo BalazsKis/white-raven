@@ -26,7 +26,7 @@
         <mat-icon>share</mat-icon>
         <span class="button-text">SHARE</span>
       </button>
-      <button mat-button *ngIf="canDelete">
+      <button mat-button *ngIf="canDelete" (click)="delete()">
         <mat-icon>delete</mat-icon>
         <span class="button-text">DELETE</span>
       </button>

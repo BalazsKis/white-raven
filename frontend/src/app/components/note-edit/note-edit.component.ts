@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Note } from '../../models/note';
 import { NoteService } from '../../services/note.service';
@@ -15,7 +15,8 @@ export class NoteEditComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private noteService: NoteService
+    private noteService: NoteService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -25,9 +26,7 @@ export class NoteEditComponent implements OnInit {
 
       this.noteService.allNotes.subscribe(notes => {
         if (notes && notes.length) {
-          // setTimeout(() => {
-            this.note = this.noteService.getNoteById(id);
-          // }, 1500);
+          this.note = this.noteService.getNoteById(id);
         }
       });
 
@@ -35,7 +34,10 @@ export class NoteEditComponent implements OnInit {
   }
 
   saveChanges() {
-    this.noteService.updateNote(this.note);
+    this.noteService.updateNote(this.note)
+      .subscribe(r => this.router.navigate(['/read', this.note.id]));
+
+    this.note = null;
   }
 
 }
