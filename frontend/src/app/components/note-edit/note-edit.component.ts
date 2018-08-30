@@ -27,6 +27,10 @@ export class NoteEditComponent implements OnInit {
       this.noteService.allNotes.subscribe(notes => {
         if (notes && notes.length) {
           this.note = this.noteService.getNoteById(id);
+
+          if (this.note.content) {
+            this.note.content = this.note.content.replace(/<br\s*[\/]?>/gi, '\n');
+          }
         }
       });
 
@@ -34,7 +38,10 @@ export class NoteEditComponent implements OnInit {
   }
 
   saveChanges() {
-    this.noteService.updateNote(this.note)
+    const n = Object.assign(new Note(), this.note);
+    n.content = this.note.content.replace(/\n/g, '<br>');
+
+    this.noteService.updateNote(n)
       .subscribe(r => this.router.navigate(['/read', this.note.id]));
 
     this.note = null;

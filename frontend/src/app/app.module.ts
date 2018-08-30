@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -19,6 +19,7 @@ import { NoteReadComponent } from './components/note-read/note-read.component';
 import { NoteEditComponent } from './components/note-edit/note-edit.component';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { AddShareComponent } from './components/add-share/add-share.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
     NoteReadComponent,
     NoteEditComponent,
     TruncatePipe,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    AddShareComponent
   ],
   imports: [
     CommonModule,
@@ -39,6 +41,7 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
     BrowserAnimationsModule,
     MaterialModule,
     FormsModule,
+    ReactiveFormsModule,
     FlexLayoutModule,
     AppRoutingModule
   ],
@@ -50,6 +53,9 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
     }
   ],
   bootstrap: [AppComponent],
-  entryComponents: [ConfirmDialogComponent]
+  entryComponents: [
+    ConfirmDialogComponent,
+    AddShareComponent
+  ]
 })
 export class AppModule { }

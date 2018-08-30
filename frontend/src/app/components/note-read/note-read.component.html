@@ -22,7 +22,7 @@
         <mat-icon>edit</mat-icon>
         <span class="button-text">EDIT</span>
       </button>
-      <button mat-button *ngIf="canShare">
+      <button mat-button *ngIf="canShare" (click)="share()">
         <mat-icon>share</mat-icon>
         <span class="button-text">SHARE</span>
       </button>

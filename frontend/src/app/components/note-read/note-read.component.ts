@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 
 import { Note } from '../../models/note';
 import { Contribution } from '../../models/contribution';
 import { NoteService } from '../../services/note.service';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { AddShareComponent } from '../add-share/add-share.component';
 
 @Component({
   selector: 'wr-note-read',
@@ -33,7 +34,8 @@ export class NoteReadComponent implements OnInit {
     private route: ActivatedRoute,
     private noteService: NoteService,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {
@@ -47,14 +49,19 @@ export class NoteReadComponent implements OnInit {
 
             this.contribution = this.noteService.getContributionForNote(id);
             this.note = this.noteService.getNoteById(id);
-            if (this.note.content) {
-              this.note.content = this.note.content.replace(/\n/g, '<br />');
-            }
           }
         });
 
       this.noteService.contributions
         .subscribe(() => this.contribution = this.noteService.getContributionForNote(id));
+    });
+  }
+
+  share(): void {
+    const dialogRef = this.dialog.open(AddShareComponent, { });
+
+    dialogRef.afterClosed().subscribe(selected => {
+      console.log(JSON.stringify(selected));
     });
   }
 
@@ -73,7 +80,10 @@ export class NoteReadComponent implements OnInit {
     this.note = null;
 
     this.noteService.deleteNoteById(id)
-      .subscribe(() => this.router.navigate(['']));
+      .subscribe(() => {
+        this.router.navigate(['']);
+        this.snackBar.open('Note deleted', null, { duration: 1500 });
+    });
   }
 
 }
