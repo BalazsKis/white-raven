@@ -58,15 +58,17 @@ export class NoteReadComponent implements OnInit {
   }
 
   share(): void {
-    const dialogRef = this.dialog.open(AddShareComponent, { });
+    const dialogRef = this.dialog.open(AddShareComponent, {});
 
-    dialogRef.afterClosed().subscribe(selected => {
-      console.log(JSON.stringify(selected));
+    dialogRef.afterClosed().subscribe(shared => {
+      if (shared) {
+        this.showMessageInSnack('Note shared');
+      }
     });
   }
 
   delete(): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, { });
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {});
 
     dialogRef.afterClosed().subscribe(isConfirmed => {
       if (isConfirmed) {
@@ -82,8 +84,12 @@ export class NoteReadComponent implements OnInit {
     this.noteService.deleteNoteById(id)
       .subscribe(() => {
         this.router.navigate(['']);
-        this.snackBar.open('Note deleted', null, { duration: 1500 });
-    });
+        this.showMessageInSnack('Note deleted');
+      });
+  }
+
+  private showMessageInSnack(message: string) {
+    this.snackBar.open(message, null, { duration: 1500 });
   }
 
 }

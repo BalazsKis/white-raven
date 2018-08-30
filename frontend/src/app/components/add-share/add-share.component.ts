@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 
 import { UserService } from '../../services/user.service';
 import { Observable } from 'rxjs';
 import { User } from '../../models/user';
+import { MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'wr-add-share',
@@ -14,19 +15,32 @@ import { User } from '../../models/user';
 export class AddShareComponent implements OnInit {
 
   emailField: FormControl = new FormControl();
+  nameForm: FormGroup = new FormGroup({ firstName: new FormControl(), lastName: new FormControl() });
 
-  results: Observable<User[]> = new Observable<User[]>();
+  emailSearchResults: Observable<User[]> = new Observable<User[]>();
+  nameSearchResults: Observable<User[]> = new Observable<User[]>();
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private dialogRef: MatDialogRef<AddShareComponent>) { }
 
   ngOnInit() {
-    this.results = this.emailField.valueChanges
-    .pipe(
-      filter(x => x.length >= 3),
-      debounceTime(1000),
-      distinctUntilChanged(),
-      switchMap((query) =>  this.userService.searchByEmail(query))
-    );
+    this.emailSearchResults = this.emailField.valueChanges
+      .pipe(
+        debounceTime(1000),
+        distinctUntilChanged(),
+        switchMap((query) => this.userService.searchByEmail(query))
+      );
+
+    this.nameSearchResults = this.nameForm.valueChanges
+      .pipe(
+        debounceTime(1000),
+        distinctUntilChanged(),
+        switchMap((query) => this.userService.searchByName(query.firstName, query.lastName))
+      );
+  }
+
+  share(): void {
+    // TODO: call sharing service here.
+    this.dialogRef.close(true);
   }
 
 }
