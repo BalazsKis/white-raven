@@ -18,6 +18,7 @@ import { NoteListComponent } from './components/note-list/note-list.component';
 import { NoteReadComponent } from './components/note-read/note-read.component';
 import { NoteEditComponent } from './components/note-edit/note-edit.component';
 import { TruncatePipe } from './pipes/truncate.pipe';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { TruncatePipe } from './pipes/truncate.pipe';
     NoteListComponent,
     NoteReadComponent,
     NoteEditComponent,
-    TruncatePipe
+    TruncatePipe,
+    ConfirmDialogComponent
   ],
   imports: [
     CommonModule,
@@ -47,6 +49,7 @@ import { TruncatePipe } from './pipes/truncate.pipe';
       multi: true
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ConfirmDialogComponent]
 })
 export class AppModule { }

@@ -1,5 +1,4 @@
 $LIST_ITEM_HEIGHT: 48px;
-$LIST-ITEM-MARGIN: 1px;
 
 .section-title {
   line-height: 24px;
@@ -15,7 +14,7 @@ $LIST-ITEM-MARGIN: 1px;
   display: flex;
   align-items: center;
   border-radius: 0;
-  margin: $LIST-ITEM-MARGIN 0;
+  margin: 0;
 }
 
 .title-button {
@@ -23,8 +22,8 @@ $LIST-ITEM-MARGIN: 1px;
   flex: 1;
   justify-content: left;
   padding: 0 10px;
-  height: $LIST_ITEM_HEIGHT - 2 * $LIST-ITEM-MARGIN;
-  line-height: $LIST_ITEM_HEIGHT - 2 * $LIST-ITEM-MARGIN;
+  height: $LIST_ITEM_HEIGHT;
+  line-height: $LIST_ITEM_HEIGHT;
   font-size: 1.1em;
 }
 
@@ -32,12 +31,12 @@ $LIST-ITEM-MARGIN: 1px;
   @extend .list-button;
   justify-content: center;
   padding: 0;
-  min-width: $LIST_ITEM_HEIGHT - 2 * $LIST-ITEM-MARGIN;
+  min-width: $LIST_ITEM_HEIGHT;
 }
 
 .edit-icon {
-  height: $LIST_ITEM_HEIGHT - 2 * $LIST-ITEM-MARGIN;
-  line-height: $LIST_ITEM_HEIGHT - 2 * $LIST-ITEM-MARGIN;
+  height: $LIST_ITEM_HEIGHT;
+  line-height: $LIST_ITEM_HEIGHT;
   width: $LIST_ITEM_HEIGHT;
 }
 

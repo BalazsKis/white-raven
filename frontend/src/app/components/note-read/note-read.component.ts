@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog } from '@angular/material';
 
 import { Note } from '../../models/note';
 import { Contribution } from '../../models/contribution';
 import { NoteService } from '../../services/note.service';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'wr-note-read',
@@ -30,7 +32,8 @@ export class NoteReadComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private noteService: NoteService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -56,6 +59,16 @@ export class NoteReadComponent implements OnInit {
   }
 
   delete(): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, { });
+
+    dialogRef.afterClosed().subscribe(isConfirmed => {
+      if (isConfirmed) {
+        this.doDelete();
+      }
+    });
+  }
+
+  private doDelete(): void {
     const id = this.note.id;
     this.note = null;
 
