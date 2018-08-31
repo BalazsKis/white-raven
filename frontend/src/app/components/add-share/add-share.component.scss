@@ -64,3 +64,8 @@ button {
   margin: 0;
   text-align: center;
 }
+
+.attach-container {
+  margin-top: -20px;
+  height: 3 * $LIST_ITEM_HEIGHT + 20;
+}

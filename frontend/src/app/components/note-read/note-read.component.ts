@@ -5,7 +5,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { Note } from '../../models/note';
 import { Contribution } from '../../models/contribution';
 import { NoteService } from '../../services/note.service';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { ConfirmDeleteComponent } from '../confirm-delete/confirm-delete.component';
 import { AddShareComponent } from '../add-share/add-share.component';
 
 @Component({
@@ -68,11 +68,12 @@ export class NoteReadComponent implements OnInit {
   }
 
   delete(): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {});
+    const dialogRef = this.dialog.open(ConfirmDeleteComponent, { data: { note: this.note } });
 
-    dialogRef.afterClosed().subscribe(isConfirmed => {
-      if (isConfirmed) {
-        this.doDelete();
+    dialogRef.afterClosed().subscribe(isDeleted => {
+      if (isDeleted) {
+        this.router.navigate(['']);
+        this.showMessageInSnack('Note deleted');
       }
     });
   }
@@ -83,8 +84,7 @@ export class NoteReadComponent implements OnInit {
 
     this.noteService.deleteNoteById(id)
       .subscribe(() => {
-        this.router.navigate(['']);
-        this.showMessageInSnack('Note deleted');
+
       });
   }
 

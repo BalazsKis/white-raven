@@ -18,7 +18,7 @@ import { NoteListComponent } from './components/note-list/note-list.component';
 import { NoteReadComponent } from './components/note-read/note-read.component';
 import { NoteEditComponent } from './components/note-edit/note-edit.component';
 import { TruncatePipe } from './pipes/truncate.pipe';
-import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { ConfirmDeleteComponent } from './components/confirm-delete/confirm-delete.component';
 import { AddShareComponent } from './components/add-share/add-share.component';
 
 @NgModule({
@@ -31,7 +31,7 @@ import { AddShareComponent } from './components/add-share/add-share.component';
     NoteReadComponent,
     NoteEditComponent,
     TruncatePipe,
-    ConfirmDialogComponent,
+    ConfirmDeleteComponent,
     AddShareComponent
   ],
   imports: [
@@ -54,7 +54,7 @@ import { AddShareComponent } from './components/add-share/add-share.component';
   ],
   bootstrap: [AppComponent],
   entryComponents: [
-    ConfirmDialogComponent,
+    ConfirmDeleteComponent,
     AddShareComponent
   ]
 })
