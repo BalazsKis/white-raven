@@ -15,15 +15,27 @@
   </form>
 
   <h2>email results:</h2>
-  <mat-list role="list">
-    <mat-list-item role="listitem" *ngFor="let user of emailSearchResults | async">
+  <div *ngIf="isEmailResultLoading">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+  <div *ngIf="!isEmailResultLoading && isEmailResultEmpty">
+    no results
+  </div>
+  <mat-list role="list" *ngIf="!isEmailResultLoading && !isEmailResultEmpty">
+    <mat-list-item role="listitem" *ngFor="let user of emailSearchResults">
       {{ user.lastName }}, {{ user.firstName }} ({{ user.email }})
     </mat-list-item>
   </mat-list>
 
   <h2>name results:</h2>
-  <mat-list role="list">
-    <mat-list-item role="listitem" *ngFor="let user of nameSearchResults | async">
+  <div *ngIf="isNameResultLoading">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+    <div *ngIf="!isNameResultLoading && isNameResultEmpty">
+      no results
+    </div>
+  <mat-list role="list" *ngIf="!isNameResultLoading && !isNameResultEmpty">
+    <mat-list-item role="listitem" *ngFor="let user of nameSearchResults">
       {{ user.lastName }}, {{ user.firstName }} ({{ user.email }})
     </mat-list-item>
   </mat-list>
