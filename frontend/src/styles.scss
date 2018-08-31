@@ -10,6 +10,11 @@ body {
     font-family: 'Raleway', sans-serif;
 }
 
+.full-width-dialog {
+  max-width: 425px !important;
+  width: 100vw !important;
+}
+
 ::-webkit-scrollbar {
     height: 4px;
     width: 4px;

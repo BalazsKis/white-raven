@@ -58,7 +58,7 @@ export class NoteReadComponent implements OnInit {
   }
 
   share(): void {
-    const dialogRef = this.dialog.open(AddShareComponent, {});
+    const dialogRef = this.dialog.open(AddShareComponent, { panelClass: 'full-width-dialog' });
 
     dialogRef.afterClosed().subscribe(shared => {
       if (shared) {

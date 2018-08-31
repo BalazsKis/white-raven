@@ -53,7 +53,7 @@ button {
 }
 
 .content-size {
-  width: 400px;
+  width: 100%;
   padding: 0 12px;
 }
 
@@ -66,6 +66,6 @@ button {
 }
 
 .attach-container {
-  margin-top: -20px;
-  height: 3 * $LIST_ITEM_HEIGHT + 20;
+  margin-top: -17px;
+  height: 3 * $LIST_ITEM_HEIGHT + 17;
 }

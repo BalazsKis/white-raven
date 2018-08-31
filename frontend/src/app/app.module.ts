@@ -20,6 +20,7 @@ import { NoteEditComponent } from './components/note-edit/note-edit.component';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { ConfirmDeleteComponent } from './components/confirm-delete/confirm-delete.component';
 import { AddShareComponent } from './components/add-share/add-share.component';
+import { ViewShareComponent } from './components/view-share/view-share.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { AddShareComponent } from './components/add-share/add-share.component';
     NoteEditComponent,
     TruncatePipe,
     ConfirmDeleteComponent,
-    AddShareComponent
+    AddShareComponent,
+    ViewShareComponent
   ],
   imports: [
     CommonModule,
@@ -55,7 +57,8 @@ import { AddShareComponent } from './components/add-share/add-share.component';
   bootstrap: [AppComponent],
   entryComponents: [
     ConfirmDeleteComponent,
-    AddShareComponent
+    AddShareComponent,
+    ViewShareComponent
   ]
 })
 export class AppModule { }
