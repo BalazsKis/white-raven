@@ -16,6 +16,12 @@ export class AddShareComponent implements OnInit {
   emailField: FormControl = new FormControl();
   nameForm: FormGroup = new FormGroup({ firstName: new FormControl(), lastName: new FormControl() });
 
+
+  selectedTabIndex = 0;
+
+  selectedByEmail = '';
+  selectedByName = '';
+
   emailSearchResults: User[] = [];
   nameSearchResults: User[] = [];
 
@@ -26,12 +32,56 @@ export class AddShareComponent implements OnInit {
 
   constructor(private userService: UserService, private dialogRef: MatDialogRef<AddShareComponent>) { }
 
+  canShare(): boolean {
+    switch (this.selectedTabIndex) {
+      case 0: return this.selectedByEmail && this.selectedByEmail !== '';
+      case 1: return this.selectByName && this.selectedByName !== '';
+      default: return false;
+    }
+  }
+
+  getSelectedUser(): User {
+    switch (this.selectedTabIndex) {
+      case 0: return this.emailSearchResults.find(x => x.email === this.selectedByEmail);
+      case 1: return this.nameSearchResults.find(x => x.email === this.selectedByName);
+      default: return null;
+    }
+  }
+
+  share(): void {
+    // TODO: call sharing service here.
+    // this.selected.
+    console.log('Selected user: ' + (JSON.stringify(this.getSelectedUser())));
+
+    this.dialogRef.close(true);
+  }
+
+  selectByName(user: User): void {
+    this.selectedByName = user.email;
+  }
+
+  isSelectedByName(user: User): boolean {
+    return this.selectedByName === user.email;
+  }
+
+  selectByEmail(user: User): void {
+    this.selectedByEmail = user.email;
+  }
+
+  isSelectedByEmail(user: User): boolean {
+    return this.selectedByEmail === user.email;
+  }
+
   ngOnInit() {
     this.emailField.valueChanges
       .pipe(
         debounceTime(1000),
         distinctUntilChanged(),
-        tap(() => this.isEmailResultLoading = true),
+        tap(() => {
+          this.isEmailResultLoading = true;
+          this.isEmailResultEmpty = true;
+          this.selectedByEmail = '';
+        }),
         switchMap((query) => this.userService.searchByEmail(query))
       )
       .subscribe(r => {
@@ -44,7 +94,11 @@ export class AddShareComponent implements OnInit {
       .pipe(
         debounceTime(1000),
         distinctUntilChanged(),
-        tap(() => this.isNameResultLoading = true),
+        tap(() => {
+          this.isNameResultLoading = true;
+          this.isNameResultEmpty = true;
+          this.selectedByName = '';
+        }),
         switchMap((query) => this.userService.searchByName(query.firstName, query.lastName))
       )
       .subscribe(r => {
@@ -52,11 +106,6 @@ export class AddShareComponent implements OnInit {
         this.isNameResultEmpty = r && r.length === 0;
         this.isNameResultLoading = false;
       });
-  }
-
-  share(): void {
-    // TODO: call sharing service here.
-    this.dialogRef.close(true);
   }
 
 }

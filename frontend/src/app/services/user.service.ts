@@ -20,8 +20,8 @@ export class UserService {
       return from(this.emptyResult);
     }
 
-    const userSearchByEmaulUrl = `https://whiteraven.azurewebsites.net/api/users/search/email/${emailFragment}`;
-    return this.http.get<Response<User[]>>(userSearchByEmaulUrl).pipe(map(r => r.data));
+    const userSearchByEmailUrl = `https://whiteraven.azurewebsites.net/api/users/search/email/${emailFragment}`;
+    return this.http.get<Response<User[]>>(userSearchByEmailUrl).pipe(map(r => r.data));
   }
 
   public searchByName(firstName?: string, lastName?: string): Observable<User[]> {

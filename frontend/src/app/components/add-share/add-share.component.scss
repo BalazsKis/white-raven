@@ -1,13 +1,15 @@
+$LIST_ITEM_HEIGHT: 48px;
+
 .mat-dialog-title {
   font-weight: 600;
   margin: 0 0 18px 0;
 }
-  
+
 button {
   flex: 1;
   margin: 8px;
 }
-  
+
 .button-text {
   display: inline-block;
   height: 24px;
@@ -15,6 +17,50 @@ button {
   padding-left: 6px;
 }
 
-.mat-dialog-content {
+.full-width {
   width: 100%;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-element-one {
+  flex: 1;
+}
+
+.flex-element-half {
+  flex: .5;
+}
+
+.list-button {
+  height: 100%;
+  margin: 0;
+  border-radius: 0;
+}
+
+.top-margin {
+  margin-top: 15px;
+}
+
+.result-container {
+  height: 3 * $LIST_ITEM_HEIGHT;
+  overflow: auto;
+}
+
+.result-list {
+  padding: 0;
+}
+
+.content-size {
+  width: 400px;
+  padding: 0 12px;
+}
+
+.no-result-par {
+  opacity: 0.25;
+  font-size: 2em;
+  width: 100%;
+  margin: 0;
+  text-align: center;
 }

@@ -1,53 +1,78 @@
 <h1 mat-dialog-title>Share note</h1>
 
-<div mat-dialog-content>
-  <mat-form-field>
-    <input matInput [formControl]="emailField" type="text" id="email" placeholder="Email address" autofocus>
-  </mat-form-field>
+<div mat-dialog-content class="content-size ">
+  <mat-tab-group (selectedIndexChange)="selectedTabIndex = $event">
+    <mat-tab label="Search by email">
+      <div class="top-margin full-width flex">
+        <mat-form-field class="flex-element-one">
+          <input matInput [formControl]="emailField" type="text" id="email" placeholder="Email address" autocomplete="off">
+        </mat-form-field>
+      </div>
 
-  <form [formGroup]="nameForm">
-    <mat-form-field>
-      <input matInput formControlName="firstName" type="text" placeholder="First name" autofocus>
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput formControlName="lastName" type="text" placeholder="Last name" autofocus>
-    </mat-form-field>
-  </form>
+      <div *ngIf="isEmailResultLoading" class="result-container full-width">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </div>
 
-  <h2>email results:</h2>
-  <div *ngIf="isEmailResultLoading">
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-  </div>
-  <div *ngIf="!isEmailResultLoading && isEmailResultEmpty">
-    no results
-  </div>
-  <mat-list role="list" *ngIf="!isEmailResultLoading && !isEmailResultEmpty">
-    <mat-list-item role="listitem" *ngFor="let user of emailSearchResults">
-      {{ user.lastName }}, {{ user.firstName }} ({{ user.email }})
-    </mat-list-item>
-  </mat-list>
+      <div *ngIf="!isEmailResultLoading && isEmailResultEmpty" class="result-container full-width">
+        <p class="no-result-par">no results</p>
+      </div>
 
-  <h2>name results:</h2>
-  <div *ngIf="isNameResultLoading">
-      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-    </div>
-    <div *ngIf="!isNameResultLoading && isNameResultEmpty">
-      no results
-    </div>
-  <mat-list role="list" *ngIf="!isNameResultLoading && !isNameResultEmpty">
-    <mat-list-item role="listitem" *ngFor="let user of nameSearchResults">
-      {{ user.lastName }}, {{ user.firstName }} ({{ user.email }})
-    </mat-list-item>
-  </mat-list>
+      <div class="result-container full-width" *ngIf="!isEmailResultLoading && !isEmailResultEmpty">
+        <mat-list class="result-list">
+          <mat-list-item *ngFor="let user of emailSearchResults">
+            <button mat-button class="list-button" (click)="selectByEmail(user)" color="{{ isSelectedByEmail(user) ? 'accent' : '' }}">
+              {{ user.firstName }} {{ user.lastName }} ({{ user.email }})
+            </button>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Search by name">
+      <form [formGroup]="nameForm" class="top-margin full-width flex">
+        <mat-form-field class="flex-element-one">
+          <input matInput formControlName="firstName" type="text" placeholder="First name" autocomplete="off">
+        </mat-form-field>
+        <mat-form-field class="flex-element-one">
+          <input matInput formControlName="lastName" type="text" placeholder="Last name" autocomplete="off">
+        </mat-form-field>
+      </form>
+
+      <div *ngIf="isNameResultLoading" class="result-container full-width">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </div>
+
+      <div *ngIf="!isNameResultLoading && isNameResultEmpty" class="result-container full-width">
+        <p class="no-result-par">no results</p>
+      </div>
+
+      <div class="result-container full-width" *ngIf="!isNameResultLoading && !isNameResultEmpty">
+        <mat-list class="result-list">
+          <mat-list-item *ngFor="let user of nameSearchResults">
+            <button mat-button class="list-button" (click)="selectByName(user)" color="{{ isSelectedByName(user) ? 'accent' : '' }}">
+              {{ user.firstName }} {{ user.lastName }} ({{ user.email }})
+            </button>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
 </div>
 
 <div mat-dialog-actions class="button-container">
+  <div class="flex-element-half"></div>
+
   <button mat-button [mat-dialog-close]="false" tabindex="-1">
     <mat-icon>arrow_back</mat-icon>
     <span class="button-text">CANCEL</span>
   </button>
-  <button mat-flat-button (click)="share()" color="primary" tabindex="-1">
+
+  <div class="flex-element-half"></div>
+
+  <button mat-flat-button [disabled]="!canShare()" (click)="share()" color="primary" tabindex="-1">
     <mat-icon>share</mat-icon>
     <span class="button-text">SHARE</span>
   </button>
+
+  <div class="flex-element-half"></div>
 </div>
