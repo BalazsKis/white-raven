@@ -1,6 +1,6 @@
 <h1 mat-dialog-title>Share note</h1>
 
-<div mat-dialog-content class="content-size ">
+<div mat-dialog-content class="content-size">
   <mat-tab-group (selectedIndexChange)="selectedTabIndex = $event">
     <mat-tab label="Search by email">
       <div class="top-margin full-width flex">
@@ -38,7 +38,7 @@
         </mat-form-field>
       </form>
 
-      <div *ngIf="isNameResultLoading" class="attach-container full-width attach">
+      <div *ngIf="isNameResultLoading" class="attach-container full-width">
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
       </div>
 
@@ -59,7 +59,7 @@
   </mat-tab-group>
 </div>
 
-<div mat-dialog-actions class="button-container">
+<div mat-dialog-actions>
   <div class="flex-element-half"></div>
 
   <button mat-button [mat-dialog-close]="false" tabindex="-1">

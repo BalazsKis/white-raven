@@ -1,0 +1,54 @@
+$LIST_ITEM_HEIGHT: 48px;
+
+.mat-dialog-title {
+  font-weight: 600;
+  margin: 0 0 18px 0;
+}
+
+button {
+  flex: 1;
+  margin: 8px;
+}
+
+.button-text {
+  display: inline-block;
+  height: 24px;
+  line-height: 24px;
+  padding-left: 6px;
+}
+
+.content-size {
+  width: 100%;
+  padding: 0 12px;
+}
+
+.attach-container {
+  margin-top: -17px;
+  height: 3 * $LIST_ITEM_HEIGHT + 17;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.result-container {
+  height: 3 * $LIST_ITEM_HEIGHT;
+  overflow: auto;
+}
+
+.no-result-par {
+  opacity: 0.25;
+  font-size: 2em;
+  width: 100%;
+  margin: 0;
+  text-align: center;
+}
+
+.result-list {
+  padding: 0;
+}
+
+.flex-element-one {
+  flex: 1;
+}
+

@@ -4,11 +4,12 @@
   Are you sure? This cannot be undone.
 </div>
 
-<div mat-dialog-actions class="button-container">
+<div mat-dialog-actions>
   <button mat-button [mat-dialog-close]="false" tabindex="-1">
     <mat-icon>arrow_back</mat-icon>
     <span class="button-text">CANCEL</span>
   </button>
+
   <button mat-flat-button (click)="doDelete()" [disabled]="inProgress" color="warn" tabindex="-1">
     <mat-icon *ngIf="!inProgress">delete</mat-icon>
     <mat-progress-spinner [diameter]="24" mode="indeterminate" class="button-spinner" *ngIf="inProgress"></mat-progress-spinner>

@@ -1,3 +1,33 @@
-<p>
-  view-share works!
-</p>
+<h1 mat-dialog-title>Shared with...</h1>
+
+<div mat-dialog-content class="content-size">
+  <div *ngIf="isShareListLoading" class="attach-container full-width">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+
+  <div *ngIf="!isShareListEmpty" class="result-container full-width">
+    <p class="no-result-par">This note is not shared with anyone</p>
+  </div>
+
+  <div class="result-container full-width" *ngIf="!isShareListLoading && !isShareListEmpty">
+    <mat-list class="result-list">
+      <mat-list-item *ngFor="let user of shareList">
+        <span>{{ user.firstName }} {{ user.lastName }} ({{ user.email }})</span>
+        <button mat-icon-button *ngIf="canRemoveShare" (click)="removeShare(user)" matTooltip="Remove user">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>
+
+<div mat-dialog-actions>
+  <div class="flex-element-one"></div>
+
+  <button mat-button [mat-dialog-close]="true" tabindex="-1">
+    <mat-icon>arrow_back</mat-icon>
+    <span class="button-text">CLOSE</span>
+  </button>
+
+  <div class="flex-element-one"></div>
+</div>
