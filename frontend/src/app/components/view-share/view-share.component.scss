@@ -5,7 +5,7 @@ $LIST_ITEM_HEIGHT: 48px;
   margin: 0 0 18px 0;
 }
 
-button {
+.footer-button {
   flex: 1;
   margin: 8px;
 }
@@ -18,13 +18,7 @@ button {
 }
 
 .content-size {
-  width: 100%;
   padding: 0 12px;
-}
-
-.attach-container {
-  margin-top: -17px;
-  height: 3 * $LIST_ITEM_HEIGHT + 17;
 }
 
 .full-width {
@@ -52,3 +46,19 @@ button {
   flex: 1;
 }
 
+.delete-button {
+  height: $LIST_ITEM_HEIGHT - 2;
+  width: $LIST_ITEM_HEIGHT - 2;
+  margin: 1px;
+}
+
+.list-item-text {  
+  flex: 1;
+  margin: 0 8px;
+  height: $LIST_ITEM_HEIGHT;
+  line-height: $LIST_ITEM_HEIGHT;  
+}
+
+.list-item-text:hover {
+  cursor: default;
+}

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 
 import { User } from '../../models/user';
 import { UserService } from '../../services/user.service';
+import { ShareService } from '../../services/share.service';
 
 @Component({
   selector: 'wr-add-share',
@@ -13,9 +14,10 @@ import { UserService } from '../../services/user.service';
 })
 export class AddShareComponent implements OnInit {
 
+  noteId: string;
+
   emailField: FormControl = new FormControl();
   nameForm: FormGroup = new FormGroup({ firstName: new FormControl(), lastName: new FormControl() });
-
 
   selectedTabIndex = 0;
 
@@ -25,12 +27,21 @@ export class AddShareComponent implements OnInit {
   emailSearchResults: User[] = [];
   nameSearchResults: User[] = [];
 
+  addEditInProgress = false;
+  addReadInProgress = false;
+
   isEmailResultLoading = false;
   isEmailResultEmpty = false;
   isNameResultLoading = false;
   isNameResultEmpty = false;
 
-  constructor(private userService: UserService, private dialogRef: MatDialogRef<AddShareComponent>) { }
+  constructor(
+    @Inject(MAT_DIALOG_DATA) data: any,
+    private userService: UserService,
+    private shareService: ShareService,
+    private dialogRef: MatDialogRef<AddShareComponent>) {
+    this.noteId = data.noteId;
+  }
 
   canShare(): boolean {
     switch (this.selectedTabIndex) {
@@ -48,12 +59,16 @@ export class AddShareComponent implements OnInit {
     }
   }
 
-  share(): void {
-    // TODO: call sharing service here.
-    // this.selected.
-    console.log('Selected user: ' + (JSON.stringify(this.getSelectedUser())));
+  shareToRead(): void {
+    this.addReadInProgress = true;
+    this.shareService.createShare(this.noteId, this.getSelectedUser(), 1)
+      .subscribe(() => this.dialogRef.close(true));
+  }
 
-    this.dialogRef.close(true);
+  shareToEdit(): void {
+    this.addEditInProgress = true;
+    this.shareService.createShare(this.noteId, this.getSelectedUser(), 2)
+      .subscribe(() => this.dialogRef.close(true));
   }
 
   selectByName(user: User): void {

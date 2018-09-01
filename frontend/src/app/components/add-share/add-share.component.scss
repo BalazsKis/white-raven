@@ -1,5 +1,9 @@
 $LIST_ITEM_HEIGHT: 48px;
 
+::ng-deep .mat-tab-body-content {
+  overflow: hidden !important;
+}
+
 .mat-dialog-title {
   font-weight: 600;
   margin: 0 0 18px 0;

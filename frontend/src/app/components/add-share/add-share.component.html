@@ -60,19 +60,20 @@
 </div>
 
 <div mat-dialog-actions>
-  <div class="flex-element-half"></div>
-
   <button mat-button [mat-dialog-close]="false" tabindex="-1">
     <mat-icon>arrow_back</mat-icon>
     <span class="button-text">CANCEL</span>
   </button>
 
-  <div class="flex-element-half"></div>
-
-  <button mat-flat-button [disabled]="!canShare()" (click)="share()" color="primary" tabindex="-1">
-    <mat-icon>share</mat-icon>
+  <button mat-flat-button [disabled]="!canShare() || addReadInProgress || addEditInProgress" (click)="shareToRead()" color="primary" tabindex="-1" matTooltip="Allow this person to read your note">
+    <mat-icon *ngIf="!addReadInProgress">visibility</mat-icon>
+    <mat-progress-spinner [diameter]="24" mode="indeterminate" class="button-spinner" *ngIf="addReadInProgress"></mat-progress-spinner>
     <span class="button-text">SHARE</span>
   </button>
 
-  <div class="flex-element-half"></div>
+  <button mat-flat-button [disabled]="!canShare() || addReadInProgress || addEditInProgress" (click)="shareToEdit()" color="primary" tabindex="-1" matTooltip="Allow this person to edit your note">     
+    <mat-icon *ngIf="!addEditInProgress">create</mat-icon>
+    <mat-progress-spinner [diameter]="24" mode="indeterminate" class="button-spinner" *ngIf="addEditInProgress"></mat-progress-spinner>
+    <span class="button-text">SHARE</span>
+  </button>
 </div>

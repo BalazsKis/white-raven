@@ -7,6 +7,7 @@ import { Contribution } from '../../models/contribution';
 import { NoteService } from '../../services/note.service';
 import { ConfirmDeleteComponent } from '../confirm-delete/confirm-delete.component';
 import { AddShareComponent } from '../add-share/add-share.component';
+import { ViewShareComponent } from '../view-share/view-share.component';
 
 @Component({
   selector: 'wr-note-read',
@@ -57,8 +58,14 @@ export class NoteReadComponent implements OnInit {
     });
   }
 
-  share(): void {
-    const dialogRef = this.dialog.open(AddShareComponent, { panelClass: 'full-width-dialog' });
+  addShare(): void {
+    const dialogRef = this.dialog.open(AddShareComponent,
+      {
+        data: {
+          noteId: this.note.id
+        },
+        panelClass: 'full-width-dialog'
+      });
 
     dialogRef.afterClosed().subscribe(shared => {
       if (shared) {
@@ -67,8 +74,25 @@ export class NoteReadComponent implements OnInit {
     });
   }
 
+  viewShare(): void {
+    this.dialog.open(ViewShareComponent,
+      {
+        data: {
+          noteId: this.note.id,
+          canRemoveShare: this.canDelete
+        },
+        panelClass: 'full-width-dialog'
+      });
+  }
+
   delete(): void {
-    const dialogRef = this.dialog.open(ConfirmDeleteComponent, { data: { note: this.note } });
+    const dialogRef = this.dialog.open(ConfirmDeleteComponent,
+      {
+        data: {
+          objectName: 'note',
+          deleteOperation: () => this.noteService.deleteNoteById(this.note.id)
+        }
+      });
 
     dialogRef.afterClosed().subscribe(isDeleted => {
       if (isDeleted) {

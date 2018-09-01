@@ -15,6 +15,11 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
+  public getUserByEmail(fullEmailAddress: string): Observable<User> {
+    const getUserUrl = `https://whiteraven.azurewebsites.net/api/users/${fullEmailAddress}`;
+    return this.http.get<Response<User>>(getUserUrl).pipe(map(r => r.data));
+  }
+
   public searchByEmail(emailFragment: string): Observable<User[]> {
     if (!emailFragment || emailFragment.length < 3) {
       return from(this.emptyResult);
@@ -50,4 +55,5 @@ export class UserService {
     const userSearchByLastName = `https://whiteraven.azurewebsites.net/api/users/search/lastname/${lastName}`;
     return this.http.get<Response<User[]>>(userSearchByLastName).pipe(map(r => r.data));
   }
+
 }

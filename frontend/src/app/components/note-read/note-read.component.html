@@ -22,10 +22,14 @@
         <mat-icon>edit</mat-icon>
         <span class="button-text">EDIT</span>
       </button>
-      <button mat-button *ngIf="canShare" (click)="share()">
+      <button mat-button *ngIf="canShare" (click)="addShare()">
         <mat-icon>share</mat-icon>
         <span class="button-text">SHARE</span>
       </button>
+      <button mat-button *ngIf="canEdit" (click)="viewShare()">
+          <mat-icon>list</mat-icon>
+          <span class="button-text">SHARED WITH...</span>
+        </button>
       <button mat-button *ngIf="canDelete" (click)="delete()">
         <mat-icon>delete</mat-icon>
         <span class="button-text">DELETE</span>
