@@ -5,7 +5,8 @@
     <mat-tab label="Search by email">
       <div class="top-margin full-width flex">
         <mat-form-field class="flex-element-one">
-          <input matInput [formControl]="emailField" type="text" id="email" placeholder="Email address" autocomplete="off">
+          <input matInput [formControl]="emailField" required minlength="3" type="text" id="email" placeholder="Email address" autocomplete="off">
+          <mat-error *ngIf="emailField.invalid">The search term must be at least 3 characters long</mat-error>
         </mat-form-field>
       </div>
 

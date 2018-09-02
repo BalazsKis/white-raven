@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 
@@ -13,6 +13,8 @@ import { ShareService } from '../../services/share.service';
   styleUrls: ['./add-share.component.scss']
 })
 export class AddShareComponent implements OnInit {
+
+  emailFieldPrestine = true;
 
   noteId: string;
 
@@ -90,12 +92,17 @@ export class AddShareComponent implements OnInit {
   ngOnInit() {
     this.emailField.valueChanges
       .pipe(
-        debounceTime(1000),
+        debounceTime(750),
         distinctUntilChanged(),
-        tap(() => {
+        tap(e => {
           this.isEmailResultLoading = true;
           this.isEmailResultEmpty = true;
           this.selectedByEmail = '';
+
+          if (this.emailFieldPrestine && e && e.length) {
+            this.emailField.markAsTouched();
+            this.emailFieldPrestine = false;
+           }
         }),
         switchMap((query) => this.userService.searchByEmail(query))
       )
@@ -107,7 +114,7 @@ export class AddShareComponent implements OnInit {
 
     this.nameForm.valueChanges
       .pipe(
-        debounceTime(1000),
+        debounceTime(750),
         distinctUntilChanged(),
         tap(() => {
           this.isNameResultLoading = true;

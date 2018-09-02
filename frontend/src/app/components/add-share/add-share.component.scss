@@ -64,6 +64,8 @@ button {
 .no-result-par {
   opacity: 0.25;
   font-size: 2em;
+  height: 3 * $LIST_ITEM_HEIGHT;
+  line-height: 3 * $LIST_ITEM_HEIGHT;
   width: 100%;
   margin: 0;
   text-align: center;
