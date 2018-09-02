@@ -1,13 +1,30 @@
-@import '~@angular/material/prebuilt-themes/indigo-pink.css';
-//@import '~@angular/material/prebuilt-themes/purple-green.css';
-
 @import '~@angular/material/theming';
 $custom-typography: mat-typography-config($font-family: 'Raleway');
 @include mat-core($custom-typography);
 
+.custom-theme {
+  $dark-app-primary: mat-palette($mat-purple, 700);
+  $dark-app-accent: mat-palette($mat-green);
+  $dark-app-warn: mat-palette($mat-red);
+
+  $dark-app-theme: mat-dark-theme($dark-app-primary, $dark-app-accent, $dark-app-warn);
+
+  @include angular-material-theme($dark-app-theme);
+}
+
+.light-custom-theme {
+  $light-app-primary: mat-palette($mat-indigo);
+  $light-app-accent:  mat-palette($mat-pink, A200, A100, A400);
+  $light-app-warn:    mat-palette($mat-red);
+  
+  $light-app-theme: mat-light-theme($light-app-primary, $light-app-accent, $light-app-warn);
+  
+  @include angular-material-theme($light-app-theme);
+}
+
 body {
-    margin: 0;
-    font-family: 'Raleway', sans-serif;
+  margin: 0;
+  font-family: 'Raleway', sans-serif;
 }
 
 .full-width-dialog {
@@ -16,14 +33,14 @@ body {
 }
 
 .button-spinner {
-    display: inline-block !important;
-  }
+  display: inline-block !important;
+}
 
 ::-webkit-scrollbar {
-    height: 4px;
-    width: 4px;
+  height: 4px;
+  width: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, .26);
+  background: rgba(0, 0, 0, .26);
 }

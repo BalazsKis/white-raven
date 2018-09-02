@@ -12,6 +12,7 @@ import { Note } from '../../models/note';
 export class ToolbarComponent implements OnInit {
 
   @Output() toggleSidenav = new EventEmitter<void>();
+  @Output() toggleTheme = new EventEmitter<void>();
 
   constructor(private router: Router, private noteService: NoteService) { }
 

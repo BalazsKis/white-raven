@@ -9,11 +9,8 @@
   min-width: $TOOLBAR_HEIGHT;
 }
 
-.menu-icon {
-  font-size: 30px;
-  height: $TOOLBAR_HEIGHT;
-  width: $TOOLBAR_HEIGHT;
-  line-height: $TOOLBAR_HEIGHT;
+.toolbar-button {
+  margin-left: 12px;
 }
 
 .spacer {

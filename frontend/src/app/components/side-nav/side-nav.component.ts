@@ -1,6 +1,7 @@
 import { Component, OnInit, NgZone, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSidenav } from '@angular/material';
+import { OverlayContainer } from '@angular/cdk/overlay';
 
 const SMALL_WIDTH_BREAKPOINT = 720;
 
@@ -13,13 +14,19 @@ export class SideNavComponent implements OnInit {
 
   private mediaMatcher: MediaQueryList = matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
 
-  constructor(zone: NgZone, private router: Router) {
+  constructor(
+    zone: NgZone,
+    private router: Router,
+    private overlay: OverlayContainer) {
     this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
   }
 
   @ViewChild(MatSidenav) sidenav: MatSidenav;
 
   ngOnInit() {
+    document.body.classList.add('light-custom-theme', 'mat-app-background');
+    this.overlay.getContainerElement().classList.add('light-custom-theme');
+
     this.router.events.subscribe(() => {
       if (this.isScreenSmall()) {
         this.sidenav.close();
@@ -29,6 +36,28 @@ export class SideNavComponent implements OnInit {
 
   isScreenSmall(): boolean {
     return this.mediaMatcher.matches;
+  }
+
+  toggleTheme(): void {
+    if (this.overlay.getContainerElement().classList.contains('custom-theme')) {
+      this.overlay.getContainerElement().classList.remove('custom-theme');
+      this.overlay.getContainerElement().classList.add('light-custom-theme');
+    } else if (this.overlay.getContainerElement().classList.contains('light-custom-theme')) {
+      this.overlay.getContainerElement().classList.remove('light-custom-theme');
+      this.overlay.getContainerElement().classList.add('custom-theme');
+    } else {
+      this.overlay.getContainerElement().classList.add('light-custom-theme');
+    }
+
+    if (document.body.classList.contains('custom-theme')) {
+      document.body.classList.remove('custom-theme');
+      document.body.classList.add('light-custom-theme');
+    } else if (document.body.classList.contains('light-custom-theme')) {
+      document.body.classList.remove('light-custom-theme');
+      document.body.classList.add('custom-theme');
+    } else {
+      document.body.classList.add('light-custom-theme');
+    }
   }
 
 }

@@ -7,16 +7,16 @@
   <span>White Raven</span>
   <span class="spacer"></span>
 
-  <button mat-icon-button (click)="createNote()" matTooltip="Create note">
+  <button mat-icon-button class="toolbar-button" (click)="createNote()" matTooltip="Create note">
     <mat-icon>add</mat-icon>
   </button>
 
-  <!-- <button mat-icon-button [matMenuTriggerFor]="menu">
+  <button mat-icon-button class="toolbar-button" [matMenuTriggerFor]="menu">
     <mat-icon>more_vert</mat-icon>
   </button>
 
   <mat-menu #menu="matMenu">
-    <button mat-menu-item (click)="createNote()">New note</button>
-  </mat-menu> -->
+    <button mat-menu-item (click)="toggleTheme.emit()">Switch theme</button>
+  </mat-menu>
 
 </mat-toolbar>
