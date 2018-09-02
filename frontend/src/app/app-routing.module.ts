@@ -7,6 +7,7 @@ import { NoteEditComponent } from './components/note-edit/note-edit.component';
 import { SideNavComponent } from './components/side-nav/side-nav.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
+import { SplashComponent } from './components/splash/splash.component';
 
 const routes: Routes = [
   {
@@ -18,8 +19,8 @@ const routes: Routes = [
   },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: '**', redirectTo: 'login' }
+  { path: '', component: SplashComponent },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

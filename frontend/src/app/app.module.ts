@@ -23,6 +23,7 @@ import { AddShareComponent } from './components/add-share/add-share.component';
 import { ViewShareComponent } from './components/view-share/view-share.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
+import { SplashComponent } from './components/splash/splash.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { RegisterComponent } from './components/register/register.component';
     AddShareComponent,
     ViewShareComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    SplashComponent
   ],
   imports: [
     CommonModule,
