@@ -22,7 +22,12 @@ $custom-typography: mat-typography-config($font-family: 'Raleway');
   @include angular-material-theme($light-app-theme);
 }
 
+html {
+  height: 100%;
+}
+
 body {
+  height: 100%;
   margin: 0;
   font-family: 'Raleway', sans-serif;
 }

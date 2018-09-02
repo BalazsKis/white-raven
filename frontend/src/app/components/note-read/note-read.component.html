@@ -18,7 +18,7 @@
     </mat-card-content>
 
     <mat-card-actions>
-      <button mat-button [routerLink]="['/edit', note.id]" *ngIf="canEdit">
+      <button mat-button [routerLink]="['/app/edit', note.id]" *ngIf="canEdit">
         <mat-icon>edit</mat-icon>
         <span class="button-text">EDIT</span>
       </button>

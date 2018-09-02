@@ -96,7 +96,7 @@ export class NoteReadComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(isDeleted => {
       if (isDeleted) {
-        this.router.navigate(['']);
+        this.router.navigate(['/app']);
         this.showMessageInSnack('Note deleted');
       }
     });

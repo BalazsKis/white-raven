@@ -21,6 +21,8 @@ import { TruncatePipe } from './pipes/truncate.pipe';
 import { ConfirmDeleteComponent } from './components/confirm-delete/confirm-delete.component';
 import { AddShareComponent } from './components/add-share/add-share.component';
 import { ViewShareComponent } from './components/view-share/view-share.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { ViewShareComponent } from './components/view-share/view-share.component
     TruncatePipe,
     ConfirmDeleteComponent,
     AddShareComponent,
-    ViewShareComponent
+    ViewShareComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     CommonModule,

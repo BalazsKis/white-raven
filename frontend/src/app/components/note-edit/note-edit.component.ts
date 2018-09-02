@@ -42,7 +42,7 @@ export class NoteEditComponent implements OnInit {
     n.content = this.note.content.replace(/\n/g, '<br>');
 
     this.noteService.updateNote(n)
-      .subscribe(r => this.router.navigate(['/read', this.note.id]));
+      .subscribe(r => this.router.navigate(['/app/read', this.note.id]));
 
     this.note = null;
   }

@@ -8,7 +8,7 @@
   </mat-sidenav>
 
   <mat-sidenav-content class="app-sidenav-content">
-    <wr-toolbar (toggleSidenav)="sidenav.toggle()" (toggleTheme)="toggleTheme()"></wr-toolbar>
+    <wr-toolbar (toggleSidenav)="sidenav.toggle()" (toggleTheme)="toggleTheme()" (logOut)="logOut()"></wr-toolbar>
     <div class="wrapper">
       <router-outlet></router-outlet>
     </div>

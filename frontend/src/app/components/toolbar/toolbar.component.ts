@@ -13,6 +13,7 @@ export class ToolbarComponent implements OnInit {
 
   @Output() toggleSidenav = new EventEmitter<void>();
   @Output() toggleTheme = new EventEmitter<void>();
+  @Output() logOut = new EventEmitter<void>();
 
   constructor(private router: Router, private noteService: NoteService) { }
 
@@ -26,7 +27,7 @@ export class ToolbarComponent implements OnInit {
 
     this.noteService.createNote(n)
       .subscribe(createdNote => {
-        if (createdNote && createdNote.id) { this.router.navigate(['/edit', createdNote.id]); }
+        if (createdNote && createdNote.id) { this.router.navigate(['/app/edit', createdNote.id]); }
       });
   }
 

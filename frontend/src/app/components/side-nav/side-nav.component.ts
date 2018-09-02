@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { MatSidenav } from '@angular/material';
 import { OverlayContainer } from '@angular/cdk/overlay';
 
+import { TokenService } from '../../services/token.service';
+
 const SMALL_WIDTH_BREAKPOINT = 720;
 
 @Component({
@@ -17,6 +19,7 @@ export class SideNavComponent implements OnInit {
   constructor(
     zone: NgZone,
     private router: Router,
+    private tokenService: TokenService,
     private overlay: OverlayContainer) {
     this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
   }
@@ -24,9 +27,6 @@ export class SideNavComponent implements OnInit {
   @ViewChild(MatSidenav) sidenav: MatSidenav;
 
   ngOnInit() {
-    document.body.classList.add('light-custom-theme', 'mat-app-background');
-    this.overlay.getContainerElement().classList.add('light-custom-theme');
-
     this.router.events.subscribe(() => {
       if (this.isScreenSmall()) {
         this.sidenav.close();
@@ -58,6 +58,11 @@ export class SideNavComponent implements OnInit {
     } else {
       document.body.classList.add('light-custom-theme');
     }
+  }
+
+  logOut(): void {
+    this.tokenService.removeToken();
+    this.router.navigate(['/login']);
   }
 
 }

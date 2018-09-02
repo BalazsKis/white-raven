@@ -18,7 +18,7 @@ export class NoContentComponent implements OnInit {
   ngOnInit(): void {
     this.noteService.myNotes.subscribe(n => {
       if (n && n.length) {
-        this.router.navigate(['read/', n[0].id]);
+        this.router.navigate(['/app/read/', n[0].id]);
       }
     });
   }

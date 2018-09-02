@@ -1,0 +1,71 @@
+<div class="container">
+
+  <mat-card class="register-card">
+    <mat-card-title>Sign up for White Raven</mat-card-title>
+    <mat-card-subtitle>Please fill in your info</mat-card-subtitle>
+
+    <mat-card-content>
+      <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+        <div class="card-row">
+          <mat-form-field class="flex-element-one">
+            <input matInput formControlName="firstName" type="text" placeholder="First name" autocomplete="off">
+            <mat-error *ngIf="registrationForm.controls.firstName.invalid">The first name is required</mat-error>
+          </mat-form-field>
+          <mat-form-field class="flex-element-one">
+            <input matInput formControlName="lastName" type="text" placeholder="Last name" autocomplete="off">
+            <mat-error *ngIf="registrationForm.controls.lastName.invalid">The last name is required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="card-row">
+          <mat-form-field class="flex-element-one">
+            <input matInput formControlName="email" type="email" placeholder="Email address" autocomplete="off">
+            <mat-error *ngIf="registrationForm.controls.email.invalid">This is required, and must be a valid email address</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="card-row">
+          <mat-form-field class="flex-element-one">
+            <input matInput formControlName="birthdate" [matDatepicker]="picker" placeholder="Birthdate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker startView="year"></mat-datepicker>
+            <mat-error *ngIf="registrationForm.controls.birthdate.invalid">Hmm... That seems unlikely</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="card-row">
+          <mat-form-field class="flex-element-one">
+            <input matInput formControlName="password1" type="password" placeholder="Password" autocomplete="off">
+            <mat-error *ngIf="registrationForm.controls.password1.invalid">
+              A password is required, and it mus be at least 8 characters long
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="flex-element-one">
+            <input matInput formControlName="password2" type="password" placeholder="Retype password" autocomplete="off">
+            <mat-error *ngIf="registrationForm.hasError('passwordsmatch')">The passwords don't match</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="card-row">
+          <button mat-raised-button color="primary" [disabled]="!registrationForm.valid || isSubmitting" type="submit">
+            <mat-icon *ngIf="!isSubmitting">person_add</mat-icon>
+            <mat-progress-spinner [diameter]="24" mode="indeterminate" class="button-spinner" *ngIf="isSubmitting"></mat-progress-spinner>
+            <span class="button-text">SIGN UP</span>
+          </button>
+        </div>
+      </form>
+
+      <mat-divider></mat-divider>
+      <div class="card-row">
+        <p class="login-message">Already a member?</p>
+      </div>
+      <div class="card-row">
+        <button mat-raised-button color="primary" [routerLink]="['/login']">
+          <mat-icon>how_to_reg</mat-icon>
+          <span class="button-text">SIGN IN</span>
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+</div>
