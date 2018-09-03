@@ -9,9 +9,9 @@
     <mat-list class="result-list">
       <mat-list-item *ngFor="let share of shareList">
         <span [ngSwitch]="share.contributionType">
-          <mat-icon *ngSwitchCase="1" matTooltip="This user can see this note">visibility</mat-icon>
-          <mat-icon *ngSwitchCase="2" matTooltip="This user can edit this note">create</mat-icon>
-          <mat-icon *ngSwitchCase="3" matTooltip="This user owns this note">person</mat-icon>
+          <mat-icon *ngSwitchCase="1" matTooltip="Reader">visibility</mat-icon>
+          <mat-icon *ngSwitchCase="2" matTooltip="Contributor">create</mat-icon>
+          <mat-icon *ngSwitchCase="3" matTooltip="Owner">person</mat-icon>
         </span>
         <span class="list-item-text">{{ share.user.firstName }} {{ share.user.lastName }} ({{ share.user.email }})</span>
         <button mat-icon-button class="delete-button" *ngIf="canRemoveShare && share.contributionType != 3" (click)="removeShare(share)" matTooltip="Remove user" tabindex="-1">

@@ -39,26 +39,26 @@ export class SidenavComponent implements OnInit {
   }
 
   toggleTheme(): void {
-    if (this.overlay.getContainerElement().classList.contains('custom-theme')) {
-      this.overlay.getContainerElement().classList.remove('custom-theme');
-      this.overlay.getContainerElement().classList.add('light-custom-theme');
-    } else if (this.overlay.getContainerElement().classList.contains('light-custom-theme')) {
-      this.overlay.getContainerElement().classList.remove('light-custom-theme');
-      this.overlay.getContainerElement().classList.add('custom-theme');
-    } else {
-      this.overlay.getContainerElement().classList.add('light-custom-theme');
+    this.switchThemeOnElementClassList(this.overlay.getContainerElement().classList);
+    this.switchThemeOnElementClassList(document.body.classList);
+  }
+
+  private switchThemeOnElementClassList(classList: DOMTokenList): void {
+    if (classList.contains('custom-theme')) {
+      classList.remove('custom-theme');
+      classList.add('light-custom-theme');
+      return;
     }
 
-    if (document.body.classList.contains('custom-theme')) {
-      document.body.classList.remove('custom-theme');
-      document.body.classList.add('light-custom-theme');
-    } else if (document.body.classList.contains('light-custom-theme')) {
-      document.body.classList.remove('light-custom-theme');
-      document.body.classList.add('custom-theme');
-    } else {
-      document.body.classList.add('light-custom-theme');
+    if (classList.contains('light-custom-theme')) {
+      classList.remove('light-custom-theme');
+      classList.add('custom-theme');
+      return;
     }
+
+    classList.add('light-custom-theme');
   }
+
 
   logOut(): void {
     this.tokenService.removeToken();
