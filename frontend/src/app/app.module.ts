@@ -24,6 +24,7 @@ import { ShareListComponent } from './components/share-list/share-list.component
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { SplashComponent } from './components/splash/splash.component';
+import { ConfirmLeaveComponent } from './components/confirm-leave/confirm-leave.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { SplashComponent } from './components/splash/splash.component';
     ShareListComponent,
     LoginComponent,
     RegisterComponent,
-    SplashComponent
+    SplashComponent,
+    ConfirmLeaveComponent
   ],
   imports: [
     CommonModule,
@@ -64,7 +66,8 @@ import { SplashComponent } from './components/splash/splash.component';
   entryComponents: [
     ConfirmDeleteComponent,
     ShareAddComponent,
-    ShareListComponent
+    ShareListComponent,
+    ConfirmLeaveComponent
   ]
 })
 export class AppModule { }

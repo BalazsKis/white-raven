@@ -9,6 +9,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { SplashComponent } from './components/splash/splash.component';
 import { AuthGuardService } from './services/auth-guard.service';
+import { NoteGuardService } from './services/note-guard.service';
 
 const routes: Routes = [
   {
@@ -17,7 +18,7 @@ const routes: Routes = [
     component: SidenavComponent,
     children: [
       { path: 'read/:id', component: NoteReadComponent },
-      { path: 'edit/:id', component: NoteEditComponent },
+      { path: 'edit/:id', component: NoteEditComponent, canDeactivate: [NoteGuardService] },
       { path: '', component: NoContentComponent }
     ]
   },

@@ -21,7 +21,7 @@
 
         <div class="card-row">
           <button mat-raised-button color="primary" [disabled]="!loginForm.valid || isSubmitting" type="submit">
-            <mat-icon *ngIf="!isSubmitting">how_to_reg</mat-icon>
+            <mat-icon *ngIf="!isSubmitting">exit_to_app</mat-icon>
             <mat-progress-spinner [diameter]="24" mode="indeterminate" class="button-spinner" *ngIf="isSubmitting"></mat-progress-spinner>
             <span class="button-text">SIGN IN</span>
           </button>

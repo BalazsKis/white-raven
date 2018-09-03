@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Note } from '../../models/note';
 import { NoteService } from '../../services/note.service';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'wr-note-edit',
@@ -12,6 +13,9 @@ import { NoteService } from '../../services/note.service';
 export class NoteEditComponent implements OnInit {
 
   note: Note;
+  editForm: FormGroup;
+
+  private isSaved = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -28,21 +32,32 @@ export class NoteEditComponent implements OnInit {
         if (notes && notes.length) {
           this.note = this.noteService.getNoteById(id);
 
-          if (this.note.content) {
-            this.note.content = this.note.content.replace(/<br\s*[\/]?>/gi, '\n');
-          }
+          this.editForm = new FormGroup({
+            title: new FormControl(this.note.title),
+            content: new FormControl(this.note.content ? this.note.content.replace(/<br\s*[\/]?>/gi, '\n') : '')
+          });
         }
       });
-
     });
   }
 
+  public areChangesSaved(): boolean {
+    return this.isSaved || this.editForm.pristine;
+  }
+
   saveChanges() {
-    const n = Object.assign(new Note(), this.note);
-    n.content = this.note.content.replace(/\n/g, '<br>');
+    const n = new Note();
+    n.id = this.note.id;
+    n.title = this.editForm.controls.title.value;
+    n.content = this.editForm.controls.content.value
+      ? this.editForm.controls.content.value.replace(/\n/g, '<br>')
+      : '';
 
     this.noteService.updateNote(n)
-      .subscribe(r => this.router.navigate(['/app/read', this.note.id]));
+      .subscribe(r => {
+        this.isSaved = true;
+        this.router.navigate(['/app/read', this.note.id]);
+      });
 
     this.note = null;
   }
