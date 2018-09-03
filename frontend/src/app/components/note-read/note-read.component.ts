@@ -6,8 +6,8 @@ import { Note } from '../../models/note';
 import { Contribution } from '../../models/contribution';
 import { NoteService } from '../../services/note.service';
 import { ConfirmDeleteComponent } from '../confirm-delete/confirm-delete.component';
-import { AddShareComponent } from '../add-share/add-share.component';
-import { ViewShareComponent } from '../view-share/view-share.component';
+import { ShareAddComponent } from '../share-add/share-add.component';
+import { ShareListComponent } from '../share-list/share-list.component';
 
 @Component({
   selector: 'wr-note-read',
@@ -59,7 +59,7 @@ export class NoteReadComponent implements OnInit {
   }
 
   addShare(): void {
-    const dialogRef = this.dialog.open(AddShareComponent,
+    const dialogRef = this.dialog.open(ShareAddComponent,
       {
         data: {
           noteId: this.note.id
@@ -75,7 +75,7 @@ export class NoteReadComponent implements OnInit {
   }
 
   viewShare(): void {
-    this.dialog.open(ViewShareComponent,
+    this.dialog.open(ShareListComponent,
       {
         data: {
           noteId: this.note.id,
@@ -100,16 +100,6 @@ export class NoteReadComponent implements OnInit {
         this.showMessageInSnack('Note deleted');
       }
     });
-  }
-
-  private doDelete(): void {
-    const id = this.note.id;
-    this.note = null;
-
-    this.noteService.deleteNoteById(id)
-      .subscribe(() => {
-
-      });
   }
 
   private showMessageInSnack(message: string) {

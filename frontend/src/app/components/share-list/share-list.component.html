@@ -1,0 +1,34 @@
+<h1 mat-dialog-title>Shared with...</h1>
+
+<div mat-dialog-content class="content-size">
+  <div *ngIf="isShareListLoading" class="result-container full-width">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+
+  <div class="result-container full-width" *ngIf="!isShareListLoading">
+    <mat-list class="result-list">
+      <mat-list-item *ngFor="let share of shareList">
+        <span [ngSwitch]="share.contributionType">
+          <mat-icon *ngSwitchCase="1" matTooltip="This user can see this note">visibility</mat-icon>
+          <mat-icon *ngSwitchCase="2" matTooltip="This user can edit this note">create</mat-icon>
+          <mat-icon *ngSwitchCase="3" matTooltip="This user owns this note">person</mat-icon>
+        </span>
+        <span class="list-item-text">{{ share.user.firstName }} {{ share.user.lastName }} ({{ share.user.email }})</span>
+        <button mat-icon-button class="delete-button" *ngIf="canRemoveShare && share.contributionType != 3" (click)="removeShare(share)" matTooltip="Remove user" tabindex="-1">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>
+
+<div mat-dialog-actions>
+  <div class="flex-element-one"></div>
+
+  <button mat-button class="footer-button" [mat-dialog-close]="true" tabindex="-1">
+    <mat-icon>arrow_back</mat-icon>
+    <span class="button-text">CLOSE</span>
+  </button>
+
+  <div class="flex-element-one"></div>
+</div>

@@ -16,9 +16,9 @@ $custom-typography: mat-typography-config($font-family: 'Raleway');
   $light-app-primary: mat-palette($mat-indigo);
   $light-app-accent:  mat-palette($mat-pink, A200, A100, A400);
   $light-app-warn:    mat-palette($mat-red);
-  
+
   $light-app-theme: mat-light-theme($light-app-primary, $light-app-accent, $light-app-warn);
-  
+
   @include angular-material-theme($light-app-theme);
 }
 

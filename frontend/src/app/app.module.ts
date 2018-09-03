@@ -12,15 +12,15 @@ import { MaterialModule } from './shared/material.module';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { NoContentComponent } from './components/no-content/no-content.component';
-import { SideNavComponent } from './components/side-nav/side-nav.component';
+import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { TokenInterceptor } from './auth/token-interceptor';
 import { NoteListComponent } from './components/note-list/note-list.component';
 import { NoteReadComponent } from './components/note-read/note-read.component';
 import { NoteEditComponent } from './components/note-edit/note-edit.component';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { ConfirmDeleteComponent } from './components/confirm-delete/confirm-delete.component';
-import { AddShareComponent } from './components/add-share/add-share.component';
-import { ViewShareComponent } from './components/view-share/view-share.component';
+import { ShareAddComponent } from './components/share-add/share-add.component';
+import { ShareListComponent } from './components/share-list/share-list.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { SplashComponent } from './components/splash/splash.component';
@@ -30,14 +30,14 @@ import { SplashComponent } from './components/splash/splash.component';
     AppComponent,
     ToolbarComponent,
     NoContentComponent,
-    SideNavComponent,
+    SidenavComponent,
     NoteListComponent,
     NoteReadComponent,
     NoteEditComponent,
     TruncatePipe,
     ConfirmDeleteComponent,
-    AddShareComponent,
-    ViewShareComponent,
+    ShareAddComponent,
+    ShareListComponent,
     LoginComponent,
     RegisterComponent,
     SplashComponent
@@ -63,8 +63,8 @@ import { SplashComponent } from './components/splash/splash.component';
   bootstrap: [AppComponent],
   entryComponents: [
     ConfirmDeleteComponent,
-    AddShareComponent,
-    ViewShareComponent
+    ShareAddComponent,
+    ShareListComponent
   ]
 })
 export class AppModule { }
