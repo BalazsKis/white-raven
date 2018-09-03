@@ -19,13 +19,13 @@ export class SplashComponent implements OnInit {
 
   ngOnInit() {
     if (this.tokenService.hasToken()) {
-      this.loginService.checkTokenValidity()
-        .subscribe(
-          () => this.toApp(),
-          error => {
-            this.tokenService.removeToken();
-            this.toLoginPage();
-          });
+      this.loginService.checkTokenValidity(
+        () => this.toApp(),
+        () => {
+          this.tokenService.removeToken();
+          this.toLoginPage();
+        }
+      );
     } else {
       this.toLoginPage();
     }

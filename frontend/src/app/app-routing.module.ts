@@ -8,10 +8,14 @@ import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { SplashComponent } from './components/splash/splash.component';
+import { AuthGuardService } from './services/auth-guard.service';
 
 const routes: Routes = [
   {
-    path: 'app', component: SidenavComponent, children: [
+    path: 'app',
+    canActivate: [AuthGuardService],
+    component: SidenavComponent,
+    children: [
       { path: 'read/:id', component: NoteReadComponent },
       { path: 'edit/:id', component: NoteEditComponent },
       { path: '', component: NoContentComponent }

@@ -9,6 +9,8 @@ import { User } from '../models/user';
 })
 export class LoginService {
 
+  isLoggedIn = false;
+
   constructor(private http: HttpClient) { }
 
   public registerUser(user: User): Observable<any> {
@@ -21,9 +23,24 @@ export class LoginService {
     return this.http.post<{ token: string }>(tokenUrl, { email, password });
   }
 
-  public checkTokenValidity(): Observable<any> {
+  public checkTokenValidity(onValid: Function, onInvalid: Function): void {
     const checkUrl = 'https://whiteraven.azurewebsites.net/api/contributions/mine';
-    return this.http.get(checkUrl);
+
+    this.http.get(checkUrl)
+      .subscribe(
+        () => {
+          this.isLoggedIn = true;
+          onValid();
+        },
+        () => {
+          this.isLoggedIn = false;
+          onInvalid();
+        }
+      );
+  }
+
+  public isUserLoggedIn(): boolean {
+    return this.isLoggedIn;
   }
 
 }
