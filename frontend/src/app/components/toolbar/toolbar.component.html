@@ -1,17 +1,17 @@
 <mat-toolbar color="primary">
 
-  <button mat-button class="sidenav-toggle" (click)="toggleSidenav.emit()">
+  <button mat-button class="sidenav-toggle" (click)="toggleSidenav.emit()" tabindex="-1">
     <mat-icon class="menu-icon">menu</mat-icon>
   </button>
 
   <span>White Raven</span>
   <span class="spacer"></span>
 
-  <button mat-icon-button class="toolbar-button" (click)="createNote()" matTooltip="Create note">
+  <button mat-icon-button class="toolbar-button" (click)="createNote()" matTooltip="Create note" tabindex="-1">
     <mat-icon>add</mat-icon>
   </button>
 
-  <button mat-icon-button class="toolbar-button" [matMenuTriggerFor]="menu">
+  <button mat-icon-button class="toolbar-button" [matMenuTriggerFor]="menu" tabindex="-1">
     <mat-icon>more_vert</mat-icon>
   </button>
 

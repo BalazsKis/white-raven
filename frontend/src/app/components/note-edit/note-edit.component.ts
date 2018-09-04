@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormGroup, FormControl } from '@angular/forms';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 import { Note } from '../../models/note';
 import { NoteService } from '../../services/note.service';
-import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'wr-note-edit',
   templateUrl: './note-edit.component.html',
   styleUrls: ['./note-edit.component.scss']
 })
-export class NoteEditComponent implements OnInit {
+export class NoteEditComponent implements OnInit, OnDestroy {
 
   note: Note;
   editForm: FormGroup;
@@ -24,11 +25,15 @@ export class NoteEditComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
+    this.route.params
+    .pipe(untilDestroyed(this))
+    .subscribe(params => {
       const id = params['id'];
       this.note = null;
 
-      this.noteService.allNotes.subscribe(notes => {
+      this.noteService.allNotes
+      .pipe(untilDestroyed(this))
+      .subscribe(notes => {
         if (notes && notes.length) {
           this.note = this.noteService.getNoteById(id);
 
@@ -54,12 +59,16 @@ export class NoteEditComponent implements OnInit {
       : '';
 
     this.noteService.updateNote(n)
+    .pipe(untilDestroyed(this))
       .subscribe(r => {
         this.isSaved = true;
         this.router.navigate(['/app/read', this.note.id]);
       });
 
     this.note = null;
+  }
+
+  ngOnDestroy() {
   }
 
 }

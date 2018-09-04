@@ -1,5 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatSnackBar } from '@angular/material';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 import { ShareService } from '../../services/share.service';
 import { Share } from '../../models/share';
@@ -10,7 +11,7 @@ import { ConfirmDeleteComponent } from '../confirm-delete/confirm-delete.compone
   templateUrl: './share-list.component.html',
   styleUrls: ['./share-list.component.scss']
 })
-export class ShareListComponent implements OnInit {
+export class ShareListComponent implements OnInit, OnDestroy {
 
   noteId: string;
   canRemoveShare: boolean;
@@ -32,6 +33,7 @@ export class ShareListComponent implements OnInit {
     this.isShareListLoading = true;
 
     this.shareService.getSharesForNote(this.noteId)
+      .pipe(untilDestroyed(this))
       .subscribe(shares => {
         this.shareList = shares.sort((a, b) => b.contributionType - a.contributionType);
         this.isShareListLoading = false;
@@ -47,16 +49,21 @@ export class ShareListComponent implements OnInit {
         }
       });
 
-    dialogRef.afterClosed().subscribe(isDeleted => {
-      if (isDeleted) {
-        this.loadShares();
-        this.snackBar.open('User removed', null, { duration: 1500 });
-      }
-    });
+    dialogRef.afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe(isDeleted => {
+        if (isDeleted) {
+          this.loadShares();
+          this.snackBar.open('User removed', null, { duration: 1500 });
+        }
+      });
   }
 
   ngOnInit() {
     this.loadShares();
+  }
+
+  ngOnDestroy() {
   }
 
 }

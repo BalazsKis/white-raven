@@ -1,12 +1,13 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 @Component({
   selector: 'wr-confirm-dialog',
   templateUrl: './confirm-delete.component.html',
   styleUrls: ['./confirm-delete.component.scss']
 })
-export class ConfirmDeleteComponent {
+export class ConfirmDeleteComponent implements OnDestroy {
 
   inProgress = false;
 
@@ -23,7 +24,12 @@ export class ConfirmDeleteComponent {
 
   doDelete(): void {
     this.inProgress = true;
-    this.deleteOperation().subscribe(() => this.dialogRef.close(true));
+    this.deleteOperation()
+      .pipe(untilDestroyed(this))
+      .subscribe(() => this.dialogRef.close(true));
+  }
+
+  ngOnDestroy() {
   }
 
 }

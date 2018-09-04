@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatSnackBar } from '@angular/material';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 import { Note } from '../../models/note';
 import { Contribution } from '../../models/contribution';
@@ -14,7 +15,7 @@ import { ShareListComponent } from '../share-list/share-list.component';
   templateUrl: './note-read.component.html',
   styleUrls: ['./note-read.component.scss']
 })
-export class NoteReadComponent implements OnInit {
+export class NoteReadComponent implements OnInit, OnDestroy {
 
   note: Note;
   contribution: Contribution;
@@ -40,22 +41,28 @@ export class NoteReadComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      const id = params['id'];
+    this.route.params
+      .pipe(untilDestroyed(this))
+      .subscribe(params => {
+        const id = params['id'];
 
-      this.noteService.allNotes
-        .subscribe(notes => {
-          if (notes && notes.length && id) {
-            this.note = null;
+        this.noteService.allNotes
+          .subscribe(notes => {
+            if (notes && notes.length && id) {
+              this.note = null;
 
-            this.contribution = this.noteService.getContributionForNote(id);
-            this.note = this.noteService.getNoteById(id);
-          }
-        });
+              this.contribution = this.noteService.getContributionForNote(id);
+              this.note = this.noteService.getNoteById(id);
+            }
+          });
 
-      this.noteService.contributions
-        .subscribe(() => this.contribution = this.noteService.getContributionForNote(id));
-    });
+        this.noteService.contributions
+          .pipe(untilDestroyed(this))
+          .subscribe(() => this.contribution = this.noteService.getContributionForNote(id));
+      });
+  }
+
+  ngOnDestroy() {
   }
 
   addShare(): void {
@@ -67,11 +74,13 @@ export class NoteReadComponent implements OnInit {
         panelClass: 'full-width-dialog'
       });
 
-    dialogRef.afterClosed().subscribe(shared => {
-      if (shared) {
-        this.showMessageInSnack('Note shared');
-      }
-    });
+    dialogRef.afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe(shared => {
+        if (shared) {
+          this.showMessageInSnack('Note shared');
+        }
+      });
   }
 
   viewShare(): void {
@@ -94,12 +103,14 @@ export class NoteReadComponent implements OnInit {
         }
       });
 
-    dialogRef.afterClosed().subscribe(isDeleted => {
-      if (isDeleted) {
-        this.router.navigate(['/app']);
-        this.showMessageInSnack('Note deleted');
-      }
-    });
+    dialogRef.afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe(isDeleted => {
+        if (isDeleted) {
+          this.router.navigate(['/app']);
+          this.showMessageInSnack('Note deleted');
+        }
+      });
   }
 
   private showMessageInSnack(message: string) {

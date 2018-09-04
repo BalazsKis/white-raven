@@ -1,7 +1,8 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 import { User } from '../../models/user';
 import { UserService } from '../../services/user.service';
@@ -12,7 +13,7 @@ import { ShareService } from '../../services/share.service';
   templateUrl: './share-add.component.html',
   styleUrls: ['./share-add.component.scss']
 })
-export class ShareAddComponent implements OnInit {
+export class ShareAddComponent implements OnInit, OnDestroy {
 
   emailFieldPristine = true;
 
@@ -64,12 +65,14 @@ export class ShareAddComponent implements OnInit {
   shareToRead(): void {
     this.addReadInProgress = true;
     this.shareService.createShare(this.noteId, this.getSelectedUser(), 1)
+      .pipe(untilDestroyed(this))
       .subscribe(() => this.dialogRef.close(true));
   }
 
   shareToEdit(): void {
     this.addEditInProgress = true;
     this.shareService.createShare(this.noteId, this.getSelectedUser(), 2)
+      .pipe(untilDestroyed(this))
       .subscribe(() => this.dialogRef.close(true));
   }
 
@@ -102,9 +105,10 @@ export class ShareAddComponent implements OnInit {
           if (this.emailFieldPristine && e && e.length) {
             this.emailField.markAsTouched();
             this.emailFieldPristine = false;
-           }
+          }
         }),
-        switchMap((query) => this.userService.searchByEmail(query))
+        switchMap((query) => this.userService.searchByEmail(query)),
+        untilDestroyed(this)
       )
       .subscribe(r => {
         this.emailSearchResults = r;
@@ -121,13 +125,17 @@ export class ShareAddComponent implements OnInit {
           this.isNameResultEmpty = true;
           this.selectedByName = '';
         }),
-        switchMap((query) => this.userService.searchByName(query.firstName, query.lastName))
+        switchMap((query) => this.userService.searchByName(query.firstName, query.lastName)),
+        untilDestroyed(this)
       )
       .subscribe(r => {
         this.nameSearchResults = r;
         this.isNameResultEmpty = r && r.length === 0;
         this.isNameResultLoading = false;
       });
+  }
+
+  ngOnDestroy() {
   }
 
 }

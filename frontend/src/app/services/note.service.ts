@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import { Note } from '../models/note';
@@ -66,54 +66,75 @@ export class NoteService {
   private downloadAllNotes(): void {
     const allNotesUrl = 'https://whiteraven.azurewebsites.net/api/notes/all';
 
-    this.http.get<Response<Note[]>>(allNotesUrl)
-      .subscribe(r => {
-        this.dataStore.allNotes = r.data;
-        this._allNotes.next([...this.dataStore.allNotes]);
-      }, error => this.handleDownloadError(error));
+    const s: Subscription = this.http.get<Response<Note[]>>(allNotesUrl)
+      .subscribe(
+        r => {
+          this.dataStore.allNotes = r.data;
+          this._allNotes.next([...this.dataStore.allNotes]);
+        },
+        error => this.handleDownloadError(error),
+        () => s.unsubscribe()
+      );
   }
 
   private downloadMyNotes(): void {
     const myNotesUrl = 'https://whiteraven.azurewebsites.net/api/notes/mine';
 
-    this.http.get<Response<Note[]>>(myNotesUrl)
-      .subscribe(r => {
-        this.dataStore.myNotes = r.data;
-        this._myNotes.next([...this.dataStore.myNotes]);
-      }, error => this.handleDownloadError(error));
+    const s: Subscription = this.http.get<Response<Note[]>>(myNotesUrl)
+      .subscribe(
+        r => {
+          this.dataStore.myNotes = r.data;
+          this._myNotes.next([...this.dataStore.myNotes]);
+        },
+        error => this.handleDownloadError(error),
+        () => s.unsubscribe()
+      );
   }
 
   private downloadReadOnlyNotes(): void {
     const readOnlyNotesUrl = 'https://whiteraven.azurewebsites.net/api/notes/shared/read';
 
-    this.http.get<Response<Note[]>>(readOnlyNotesUrl)
-      .subscribe(r => {
-        this.dataStore.readOnlyNotes = r.data;
-        this._readOnlyNotes.next([...this.dataStore.readOnlyNotes]);
-      }, error => this.handleDownloadError(error));
+    const s: Subscription = this.http.get<Response<Note[]>>(readOnlyNotesUrl)
+      .subscribe(
+        r => {
+          this.dataStore.readOnlyNotes = r.data;
+          this._readOnlyNotes.next([...this.dataStore.readOnlyNotes]);
+        },
+        error => this.handleDownloadError(error),
+        () => s.unsubscribe()
+      );
   }
 
   private downloadEditableNotes(): void {
     const editableNotesUrl = 'https://whiteraven.azurewebsites.net/api/notes/shared/write';
 
-    this.http.get<Response<Note[]>>(editableNotesUrl)
-      .subscribe(r => {
-        this.dataStore.editableNotes = r.data;
-        this._editableNotes.next([...this.dataStore.editableNotes]);
-      }, error => this.handleDownloadError(error));
+    const s: Subscription = this.http.get<Response<Note[]>>(editableNotesUrl)
+      .subscribe(
+        r => {
+          this.dataStore.editableNotes = r.data;
+          this._editableNotes.next([...this.dataStore.editableNotes]);
+        },
+        error => this.handleDownloadError(error),
+        () => s.unsubscribe()
+      );
   }
 
   public downloadContributions(): void {
     const contributionUrl = 'https://whiteraven.azurewebsites.net/api/contributions/all';
 
-    this.http.get<Response<Contribution[]>>(contributionUrl)
-      .subscribe(r => {
-        this.dataStore.contributions = r.data;
-        this._contributions.next([...this.dataStore.contributions]);
-      }, error => this.handleDownloadError(error));
+    const s: Subscription = this.http.get<Response<Contribution[]>>(contributionUrl)
+      .subscribe(
+        r => {
+          this.dataStore.contributions = r.data;
+          this._contributions.next([...this.dataStore.contributions]);
+        },
+        error => this.handleDownloadError(error),
+        () => s.unsubscribe()
+      );
   }
 
   private handleDownloadError(error: any) {
+    // TODO: add better error handling
     console.log(`Failed to fetch every note: ${error}`);
   }
 
@@ -159,7 +180,8 @@ export class NoteService {
           }
 
           throw new Error('Note was not found in the editable collections');
-        }), map(r => r.data));
+        }),
+        map(r => r.data));
   }
 
   public createNote(note: Note): Observable<Note> {

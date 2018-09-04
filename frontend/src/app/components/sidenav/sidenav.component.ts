@@ -1,7 +1,8 @@
-import { Component, OnInit, NgZone, ViewChild } from '@angular/core';
+import { Component, OnInit, NgZone, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSidenav } from '@angular/material';
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 import { StorageService } from '../../services/storage.service';
 
@@ -12,7 +13,7 @@ const SMALL_WIDTH_BREAKPOINT = 720;
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss']
 })
-export class SidenavComponent implements OnInit {
+export class SidenavComponent implements OnInit, OnDestroy {
 
   private mediaMatcher: MediaQueryList = matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
 
@@ -30,11 +31,16 @@ export class SidenavComponent implements OnInit {
   @ViewChild(MatSidenav) sidenav: MatSidenav;
 
   ngOnInit() {
-    this.router.events.subscribe(() => {
-      if (this.isScreenSmall()) {
-        this.sidenav.close();
-      }
-    });
+    this.router.events
+      .pipe(untilDestroyed(this))
+      .subscribe(() => {
+        if (this.isScreenSmall()) {
+          this.sidenav.close();
+        }
+      });
+  }
+
+  ngOnDestroy() {
   }
 
   isScreenSmall(): boolean {

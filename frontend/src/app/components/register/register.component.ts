@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 import { User } from '../../models/user';
 import { Router } from '@angular/router';
@@ -11,7 +12,7 @@ import { LoginService } from '../../services/login.service';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
 
   registrationForm: FormGroup;
 
@@ -33,8 +34,9 @@ export class RegisterComponent implements OnInit {
     user.password = this.registrationForm.controls.password1.value;
 
     this.loginService.registerUser(user)
+    .pipe(untilDestroyed(this))
       .subscribe(r => {
-        this.showMessageInSnack('Registration succsessful');
+        this.showMessageInSnack('Registration successful');
         this.router.navigate(['/login']);
       }, () => {
         this.showMessageInSnack('Registration failed');
@@ -54,6 +56,9 @@ export class RegisterComponent implements OnInit {
       password1: new FormControl('', [Validators.required, Validators.minLength(8)]),
       password2: new FormControl('', [Validators.required, Validators.minLength(8)])
     }, [this.passwordConfirming]);
+  }
+
+  ngOnDestroy() {
   }
 
   passwordConfirming(control: AbstractControl): { [key: string]: any } | null {
