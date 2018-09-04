@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { User } from '../models/user';
 import { StorageService } from './storage.service';
@@ -10,15 +10,24 @@ import { StorageService } from './storage.service';
 })
 export class LoginService {
 
-  isLoggedIn = false;
+  private isLoggedIn = false;
+
+  public get isUserLoggedIn(): boolean {
+    return this.isLoggedIn;
+  }
 
   constructor(
     private http: HttpClient,
     private storageService: StorageService) { }
 
-  public registerUser(user: User): Observable<any> {
+  public registerUser(user: User, onSuccess: Function, onError: Function): void {
     const userRegistrationUrl = 'https://whiteraven.azurewebsites.net/api/users';
-    return this.http.post(userRegistrationUrl, user);
+    const s: Subscription =  this.http.post(userRegistrationUrl, user)
+    .subscribe(
+      r => onSuccess(r),
+      error => onError(error),
+      () => s.unsubscribe()
+    );
   }
 
   public login(email: string, password: string, onValid: Function, onInvalid: Function): void {
@@ -54,10 +63,6 @@ export class LoginService {
         },
         () => s.unsubscribe()
       );
-  }
-
-  public isUserLoggedIn(): boolean {
-    return this.isLoggedIn;
   }
 
   private clearLoginInfoFromStorage(): void {
