@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { StorageService } from './services/storage.service';
 
 @Component({
   selector: 'wr-root',
@@ -8,11 +9,21 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private overlay: OverlayContainer) { }
+  constructor(
+    private overlay: OverlayContainer,
+    private storageService: StorageService) { }
 
   ngOnInit(): void {
-    document.body.classList.add('light-custom-theme', 'mat-app-background');
-    this.overlay.getContainerElement().classList.add('light-custom-theme');
+    let theme = 'light-custom-theme';
+
+    if (this.storageService.hasTheme()) {
+      theme = this.storageService.getTheme();
+    } else {
+      this.storageService.setTheme(theme);
+    }
+
+    document.body.classList.add(theme, 'mat-app-background');
+    this.overlay.getContainerElement().classList.add(theme);
   }
 
 }

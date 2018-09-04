@@ -16,6 +16,9 @@ export class SidenavComponent implements OnInit {
 
   private mediaMatcher: MediaQueryList = matchMedia(`(max-width: ${SMALL_WIDTH_BREAKPOINT}px)`);
 
+  private lightThemeClassName = 'light-custom-theme';
+  private darkThemeClassName = 'custom-theme';
+
   constructor(
     zone: NgZone,
     private router: Router,
@@ -44,25 +47,31 @@ export class SidenavComponent implements OnInit {
   }
 
   private switchThemeOnElementClassList(classList: DOMTokenList): void {
-    if (classList.contains('custom-theme')) {
-      classList.remove('custom-theme');
-      classList.add('light-custom-theme');
+    if (classList.contains(this.darkThemeClassName)) {
+      classList.remove(this.darkThemeClassName);
+      classList.add(this.lightThemeClassName);
+
+      this.storageService.setTheme(this.lightThemeClassName);
       return;
     }
 
-    if (classList.contains('light-custom-theme')) {
-      classList.remove('light-custom-theme');
-      classList.add('custom-theme');
+    if (classList.contains(this.lightThemeClassName)) {
+      classList.remove(this.lightThemeClassName);
+      classList.add(this.darkThemeClassName);
+
+      this.storageService.setTheme(this.darkThemeClassName);
       return;
     }
 
-    classList.add('light-custom-theme');
+    classList.add(this.lightThemeClassName);
+    this.storageService.setTheme(this.lightThemeClassName);
   }
 
 
   logOut(): void {
     this.storageService.removeEmail();
     this.storageService.removeToken();
+    this.storageService.removeTheme();
 
     this.router.navigate(['/login']);
   }
