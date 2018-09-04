@@ -21,6 +21,11 @@
     </form>
 
     <mat-card-actions>
+      <button mat-button [routerLink]="['/app/read', note.id]">
+        <mat-icon>arrow_back</mat-icon>
+        <span class="button-text">CANCEL</span>
+      </button>
+
       <button mat-button (click)="saveChanges()">
         <mat-icon>save</mat-icon>
         <span class="button-text">SAVE</span>
