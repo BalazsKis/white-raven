@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { MatSidenav } from '@angular/material';
 import { OverlayContainer } from '@angular/cdk/overlay';
 
-import { TokenService } from '../../services/token.service';
+import { StorageService } from '../../services/storage.service';
 
 const SMALL_WIDTH_BREAKPOINT = 720;
 
@@ -19,7 +19,7 @@ export class SidenavComponent implements OnInit {
   constructor(
     zone: NgZone,
     private router: Router,
-    private tokenService: TokenService,
+    private storageService: StorageService,
     private overlay: OverlayContainer) {
     this.mediaMatcher.addListener(mql => zone.run(() => this.mediaMatcher = mql));
   }
@@ -61,7 +61,9 @@ export class SidenavComponent implements OnInit {
 
 
   logOut(): void {
-    this.tokenService.removeToken();
+    this.storageService.removeEmail();
+    this.storageService.removeToken();
+
     this.router.navigate(['/login']);
   }
 

@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { User } from '../models/user';
 import { Response } from '../models/response';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,13 @@ export class UserService {
 
   emptyResult: User[][] = [[]];
 
-  constructor(private http: HttpClient) { }
+  private userEmail: string;
+
+  constructor(
+    private http: HttpClient,
+    storageService: StorageService) {
+      this.userEmail = storageService.getEmail();
+    }
 
   public getUserByEmail(fullEmailAddress: string): Observable<User> {
     const getUserUrl = `https://whiteraven.azurewebsites.net/api/users/${fullEmailAddress}`;
@@ -26,7 +33,7 @@ export class UserService {
     }
 
     const userSearchByEmailUrl = `https://whiteraven.azurewebsites.net/api/users/search/email/${emailFragment}`;
-    return this.http.get<Response<User[]>>(userSearchByEmailUrl).pipe(map(r => r.data));
+    return this.http.get<Response<User[]>>(userSearchByEmailUrl).pipe(map(r => r.data.filter(i => i.email !== this.userEmail)));
   }
 
   public searchByName(firstName?: string, lastName?: string): Observable<User[]> {
@@ -43,17 +50,17 @@ export class UserService {
     }
 
     const userSearchByName = `https://whiteraven.azurewebsites.net//api/users/search/fullname/${firstName}/${lastName}`;
-    return this.http.get<Response<User[]>>(userSearchByName).pipe(map(r => r.data));
+    return this.http.get<Response<User[]>>(userSearchByName).pipe(map(r => r.data.filter(i => i.email !== this.userEmail)));
   }
 
   private searchByFirstName(firstName: string): Observable<User[]> {
     const userSearchByFirstName = `https://whiteraven.azurewebsites.net/api/users/search/firstname/${firstName}`;
-    return this.http.get<Response<User[]>>(userSearchByFirstName).pipe(map(r => r.data));
+    return this.http.get<Response<User[]>>(userSearchByFirstName).pipe(map(r => r.data.filter(i => i.email !== this.userEmail)));
   }
 
   private searchByLastName(lastName: string): Observable<User[]> {
     const userSearchByLastName = `https://whiteraven.azurewebsites.net/api/users/search/lastname/${lastName}`;
-    return this.http.get<Response<User[]>>(userSearchByLastName).pipe(map(r => r.data));
+    return this.http.get<Response<User[]>>(userSearchByLastName).pipe(map(r => r.data.filter(i => i.email !== this.userEmail)));
   }
 
 }

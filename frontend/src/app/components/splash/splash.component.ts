@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { TokenService } from '../../services/token.service';
+import { StorageService } from '../../services/storage.service';
 import { LoginService } from '../../services/login.service';
 
 @Component({
@@ -13,18 +13,15 @@ export class SplashComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private tokenService: TokenService,
+    private storageService: StorageService,
     private loginService: LoginService
   ) { }
 
   ngOnInit() {
-    if (this.tokenService.hasToken()) {
+    if (this.storageService.hasToken()) {
       this.loginService.checkTokenValidity(
         () => this.toApp(),
-        () => {
-          this.tokenService.removeToken();
-          this.toLoginPage();
-        }
+        () => this.toLoginPage()
       );
     } else {
       this.toLoginPage();

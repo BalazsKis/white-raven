@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { User } from '../models/user';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,16 +12,28 @@ export class LoginService {
 
   isLoggedIn = false;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private storageService: StorageService) { }
 
   public registerUser(user: User): Observable<any> {
     const userRegistrationUrl = 'https://whiteraven.azurewebsites.net/api/users';
     return this.http.post(userRegistrationUrl, user);
   }
 
-  public login(email: string, password: string): Observable<{ token: string }> {
+  public login(email: string, password: string, onValid: Function, onInvalid: Function): void {
     const tokenUrl = 'https://whiteraven.azurewebsites.net/api/token';
-    return this.http.post<{ token: string }>(tokenUrl, { email, password });
+    this.http.post<{ token: string }>(tokenUrl, { email, password }).subscribe(
+      r => {
+        this.storageService.setEmail(email);
+        this.storageService.setToken(r.token);
+        onValid(r);
+      },
+      error => {
+        this.clearLoginInfoFromStorage();
+        onInvalid(error);
+      }
+    );
   }
 
   public checkTokenValidity(onValid: Function, onInvalid: Function): void {
@@ -34,6 +47,7 @@ export class LoginService {
         },
         () => {
           this.isLoggedIn = false;
+          this.clearLoginInfoFromStorage();
           onInvalid();
         }
       );
@@ -41,6 +55,11 @@ export class LoginService {
 
   public isUserLoggedIn(): boolean {
     return this.isLoggedIn;
+  }
+
+  private clearLoginInfoFromStorage(): void {
+    this.storageService.removeEmail();
+    this.storageService.removeToken();
   }
 
 }
