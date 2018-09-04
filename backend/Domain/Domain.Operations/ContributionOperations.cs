@@ -29,7 +29,15 @@ namespace WhiteRaven.Domain.Operations
             _contributionValidator.ValidateManualEdit(contribution);
 
             await CheckOwnerRight(editorEmail, contribution.NoteId);
-            await _contributionRepository.Insert(contribution);
+
+            if (await _contributionRepository.Contains(contribution))
+            {
+                await _contributionRepository.Update(contribution);
+            }
+            else
+            {
+                await _contributionRepository.Insert(contribution);
+            }
 
             return contribution;
         }
