@@ -8,18 +8,18 @@ using WhiteRaven.Repository.Contract.Exceptions;
 
 namespace WhiteRaven.Repository.InMemory
 {
-    public class Repository<T> : IRepository<T>
+    public class RepositoryBase<T> : IRepository<T>
     {
         private static readonly ConcurrentDictionary<string, T> Repo
             = new ConcurrentDictionary<string, T>();
 
-        private readonly Func<T, string> _getKey;
+        protected readonly Func<T, string> GetKey;
         private readonly Type _type;
 
 
-        public Repository(IKeyFor<T> keyGenerator)
+        public RepositoryBase(IKeyFor<T> keyGenerator)
         {
-            _getKey = keyGenerator?.KeyProvider ?? (item => item.GetHashCode().ToString());
+            GetKey = keyGenerator?.KeyProvider ?? (item => item.GetHashCode().ToString());
             _type = typeof(T);
         }
 
@@ -39,13 +39,13 @@ namespace WhiteRaven.Repository.InMemory
             {
                 try
                 {
-                    var key = _getKey(item);
+                    var key = GetKey(item);
 
                     if (Repo.ContainsKey(key))
                         throw new CreateFailedException(_type,
                             "Cannot create item with key '{key}' because it already exists");
 
-                    var added = Repo.TryAdd(_getKey(item), item);
+                    var added = Repo.TryAdd(GetKey(item), item);
 
                     if (!added)
                         throw new CreateFailedException(_type);
@@ -71,7 +71,7 @@ namespace WhiteRaven.Repository.InMemory
 
         #region Read
 
-        public Task<T> SelectByKey(string key)
+        public Task<T> GetByKey(string key)
         {
             if (string.IsNullOrWhiteSpace(key))
             {
@@ -106,7 +106,7 @@ namespace WhiteRaven.Repository.InMemory
             });
         }
 
-        public Task<IEnumerable<T>> Select(Func<T, bool> filter)
+        protected Task<IEnumerable<T>> Get(Func<T, bool> filter)
         {
             if (filter == null)
             {
@@ -126,7 +126,7 @@ namespace WhiteRaven.Repository.InMemory
             });
         }
 
-        public Task<IEnumerable<T>> SelectAll()
+        public Task<IEnumerable<T>> GetAll()
         {
             return Task.Run(() =>
             {
@@ -164,7 +164,7 @@ namespace WhiteRaven.Repository.InMemory
                 throw new ReadFailedException(_type, "Default values are not allowed in the repository");
             }
 
-            return ContainsKey(_getKey(item));
+            return ContainsKey(GetKey(item));
         }
 
         public Task<bool> ContainsKey(string key)
@@ -202,7 +202,7 @@ namespace WhiteRaven.Repository.InMemory
             {
                 try
                 {
-                    var key = _getKey(item);
+                    var key = GetKey(item);
 
                     CheckKey(key);
 
@@ -253,7 +253,7 @@ namespace WhiteRaven.Repository.InMemory
                 throw new DeleteFailedException(_type, "Default values are not allowed in the repository");
             }
 
-            return DeleteByKey(_getKey(item));
+            return DeleteByKey(GetKey(item));
         }
 
         public Task Delete(IEnumerable<T> items)
@@ -266,7 +266,7 @@ namespace WhiteRaven.Repository.InMemory
             return DoWithMany(items, Delete);
         }
 
-        public Task Delete(Func<T, bool> filter)
+        protected Task Delete(Func<T, bool> filter)
         {
             if (filter == null)
             {

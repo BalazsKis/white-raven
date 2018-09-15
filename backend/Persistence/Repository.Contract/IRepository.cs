@@ -33,13 +33,13 @@ namespace WhiteRaven.Repository.Contract
         /// </summary>
         /// <param name="key">The key of the item to select</param>
         /// <returns>The query result</returns>
-        Task<T> SelectByKey(string key);
+        Task<T> GetByKey(string key);
         
         /// <summary>
         /// Returns all items from the repository
         /// </summary>
         /// <returns>All objects from the repository</returns>
-        Task<IEnumerable<T>> SelectAll();
+        Task<IEnumerable<T>> GetAll();
 
         /// <summary>
         /// Returns the number of entities currently stored in the repository

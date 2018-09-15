@@ -2,7 +2,7 @@
 using WhiteRaven.Domain.Models.Note;
 using WhiteRaven.Repository.Contract;
 
-namespace WhiteRaven.Repository.Cosmos.Entities
+namespace WhiteRaven.Repository.Cosmos.Keys
 {
     internal class ContributionKey : IKeyFor<Contribution>
     {

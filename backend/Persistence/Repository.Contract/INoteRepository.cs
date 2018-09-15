@@ -6,6 +6,6 @@ namespace WhiteRaven.Repository.Contract
 {
     public interface INoteRepository : IRepository<Note>
     {
-        Task<IEnumerable<Note>> WhereIdIn(IEnumerable<string> noteIds);
+        Task<IEnumerable<Note>> GetByNoteIds(IEnumerable<string> noteIds);
     }
 }

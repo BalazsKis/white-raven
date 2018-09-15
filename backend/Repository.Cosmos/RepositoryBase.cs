@@ -17,25 +17,25 @@ namespace WhiteRaven.Repository.Cosmos
         // TODO: from config
         private readonly string _endpointUri = "https://localhost:8081";
         private readonly string _primaryKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
-        private readonly string _dbName = "WRN";
+        protected readonly string DbName = "WRN";
         // TODO: from config
 
         protected Uri DocumentCollectionUri { get; }
         protected DocumentClient Client { get; }
+        protected readonly IKeyFor<T> KeyProvider;
 
         private readonly string _collectionName;
-        private readonly IKeyFor<T> _keyProvider;
 
         protected RepositoryBase(string collectionName, IKeyFor<T> keyProvider)
         {
             _collectionName = collectionName;
-            _keyProvider = keyProvider;
+            KeyProvider = keyProvider;
 
             Client = new DocumentClient(new Uri(_endpointUri), _primaryKey);
-            DocumentCollectionUri = UriFactory.CreateDocumentCollectionUri(_dbName, _collectionName);
+            DocumentCollectionUri = UriFactory.CreateDocumentCollectionUri(DbName, _collectionName);
 
-            Client.CreateDatabaseIfNotExistsAsync(new Database { Id = _dbName }).GetAwaiter().GetResult();
-            Client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(_dbName),
+            Client.CreateDatabaseIfNotExistsAsync(new Database { Id = DbName }).GetAwaiter().GetResult();
+            Client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(DbName),
                 new DocumentCollection { Id = _collectionName }).GetAwaiter().GetResult();
         }
 
@@ -49,11 +49,11 @@ namespace WhiteRaven.Repository.Cosmos
             return Update(items);
         }
 
-        public async Task<T> SelectByKey(string key)
+        public async Task<T> GetByKey(string key)
         {
             try
             {
-                var response = await Client.ReadDocumentAsync<StoredEntity<T>>(UriFactory.CreateDocumentUri(_dbName, _collectionName, key));
+                var response = await Client.ReadDocumentAsync<StoredEntity<T>>(UriFactory.CreateDocumentUri(DbName, _collectionName, key));
                 return response.Document.Entity;
             }
             catch (DocumentClientException de) when (de.StatusCode == HttpStatusCode.NotFound)
@@ -66,7 +66,7 @@ namespace WhiteRaven.Repository.Cosmos
             }
         }
 
-        public async Task<IEnumerable<T>> SelectAll()
+        public async Task<IEnumerable<T>> GetAll()
         {
             try
             {
@@ -102,14 +102,14 @@ namespace WhiteRaven.Repository.Cosmos
 
         public Task<bool> Contains(T item)
         {
-            return ContainsKey(_keyProvider.KeyProvider(item));
+            return ContainsKey(KeyProvider.KeyProvider(item));
         }
 
         public async Task<bool> ContainsKey(string key)
         {
             try
             {
-                await SelectByKey(key);
+                await GetByKey(key);
                 return true;
             }
             catch (KeyNotFoundException)
@@ -122,7 +122,7 @@ namespace WhiteRaven.Repository.Cosmos
         {
             var storedEntity = new StoredEntity<T>
             {
-                Id = _keyProvider.KeyProvider(item),
+                Id = KeyProvider.KeyProvider(item),
                 Entity = item
             };
 
@@ -136,7 +136,7 @@ namespace WhiteRaven.Repository.Cosmos
 
         public Task Delete(T item)
         {
-            return DeleteByKey(_keyProvider.KeyProvider(item));
+            return DeleteByKey(KeyProvider.KeyProvider(item));
         }
 
         public Task Delete(IEnumerable<T> items)
@@ -146,7 +146,7 @@ namespace WhiteRaven.Repository.Cosmos
 
         public Task DeleteByKey(string key)
         {
-            return Client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(_dbName, _collectionName, key));
+            return Client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(DbName, _collectionName, key));
         }
 
         public Task DeleteByKeys(IEnumerable<string> keys)

@@ -48,7 +48,7 @@ namespace WhiteRaven.Domain.Operations
 
         public async Task<User> GetUser(string email)
         {
-            return (await _userRepository.SelectByKey(email)).WithoutPasswordHash();
+            return (await _userRepository.GetByKey(email)).WithoutPasswordHash();
         }
 
         public async Task<IEnumerable<User>> SearchUserByEmail(string partialEmail)
@@ -91,7 +91,7 @@ namespace WhiteRaven.Domain.Operations
 
         public async Task<User> ValidateLogin(Login login)
         {
-            var user = await _userRepository.SelectByKey(login.Email);
+            var user = await _userRepository.GetByKey(login.Email);
 
             if (!_passwordGuard.IsUserPasswordValid(user.HashedPassword, login.Password))
             {
@@ -121,7 +121,7 @@ namespace WhiteRaven.Domain.Operations
             _userValidator.ValidatePassword(passwordUpdate.OldPassword);
             _userValidator.ValidatePassword(passwordUpdate.NewPassword);
 
-            var user = await _userRepository.SelectByKey(email);
+            var user = await _userRepository.GetByKey(email);
 
             if (!_passwordGuard.IsUserPasswordValid(user.HashedPassword, passwordUpdate.OldPassword))
             {

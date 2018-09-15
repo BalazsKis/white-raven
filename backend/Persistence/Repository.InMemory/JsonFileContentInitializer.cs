@@ -5,7 +5,7 @@ using WhiteRaven.Repository.Contract;
 
 namespace WhiteRaven.Repository.InMemory
 {
-    public class JsonFileContentIntitializer : IContentInitializer
+    public class JsonFileContentInitializer : IContentInitializer
     {
         public Task LoadContent<T>(string fromPath, IRepository<T> toRepository)
         {

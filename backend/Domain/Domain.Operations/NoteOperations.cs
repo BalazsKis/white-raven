@@ -42,7 +42,7 @@ namespace WhiteRaven.Domain.Operations
         {
             await _contributionOperations.CheckReadRight(readerEmail, noteId);
 
-            return await _noteRepository.SelectByKey(noteId);
+            return await _noteRepository.GetByKey(noteId);
         }
 
         public async Task<IEnumerable<Note>> GetNotesByUser(string email, ContributionType? contributionType = null)
@@ -51,14 +51,14 @@ namespace WhiteRaven.Domain.Operations
 
             var contributedNoteIds = contributions.Select(c => c.NoteId).ToArray();
 
-            return await _noteRepository.WhereIdIn(contributedNoteIds);
+            return await _noteRepository.GetByNoteIds(contributedNoteIds);
         }
 
         public async Task<Note> UpdateNote(string editorEmail, string noteId, Commit commit)
         {
             await _contributionOperations.CheckEditRight(editorEmail, noteId);
 
-            var note = await _noteRepository.SelectByKey(noteId);
+            var note = await _noteRepository.GetByKey(noteId);
 
             var updatedNote = note.UpdateTitleAndContent(commit.Title, commit.Content);
 

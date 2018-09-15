@@ -18,7 +18,7 @@ namespace WhiteRaven.Repository.Cosmos
         {
         }
 
-        public async Task<IEnumerable<Note>> WhereIdIn(IEnumerable<string> noteIds)
+        public async Task<IEnumerable<Note>> GetByNoteIds(IEnumerable<string> noteIds)
         {
             try
             {

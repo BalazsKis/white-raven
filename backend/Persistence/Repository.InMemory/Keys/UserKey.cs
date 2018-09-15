@@ -2,7 +2,7 @@
 using WhiteRaven.Domain.Models.Authentication;
 using WhiteRaven.Repository.Contract;
 
-namespace WhiteRaven.Repository.Cosmos.Entities
+namespace WhiteRaven.Repository.InMemory.Keys
 {
     internal class UserKey : IKeyFor<User>
     {

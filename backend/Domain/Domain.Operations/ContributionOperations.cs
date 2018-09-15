@@ -113,7 +113,7 @@ namespace WhiteRaven.Domain.Operations
         {
             var c = await _contributionRepository.GetByEmailAndNoteId(email, noteId);
 
-            if (c.ContributionType >= ContributionType.Reader)
+            if (c.ContributionType < ContributionType.Reader)
             {
                 throw new UnauthorizedAccessException("The user has no contribution to this note, so cannot read it");
             }
@@ -123,7 +123,7 @@ namespace WhiteRaven.Domain.Operations
         {
             var c = await _contributionRepository.GetByEmailAndNoteId(email, noteId);
 
-            if (c.ContributionType >= ContributionType.Writer)
+            if (c.ContributionType < ContributionType.Writer)
             {
                 throw new UnauthorizedAccessException("The user has no right to edit this note");
             }
@@ -133,7 +133,7 @@ namespace WhiteRaven.Domain.Operations
         {
             var c = await _contributionRepository.GetByEmailAndNoteId(email, noteId);
 
-            if (c.ContributionType >= ContributionType.Owner)
+            if (c.ContributionType < ContributionType.Owner)
             {
                 throw new UnauthorizedAccessException("The user is not the owner of the note");
             }

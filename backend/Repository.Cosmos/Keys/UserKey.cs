@@ -2,11 +2,11 @@
 using WhiteRaven.Domain.Models.Authentication;
 using WhiteRaven.Repository.Contract;
 
-namespace WhiteRaven.Web.Api.Mock
+namespace WhiteRaven.Repository.Cosmos.Keys
 {
-    public class UserKey : IKeyFor<User>
+    internal class UserKey : IKeyFor<User>
     {
         public Func<User, string> KeyProvider =>
-            user => user.Email;
+            u => u.Email;
     }
 }

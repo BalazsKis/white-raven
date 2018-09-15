@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WhiteRaven.Domain.Models.Authentication;
+using WhiteRaven.Domain.Models.Note;
 using WhiteRaven.Repository.Contract;
+using WhiteRaven.Repository.Cosmos.Keys;
 using WhiteRaven.Shared.DependencyInjection;
 using WhiteRaven.Shared.Library.Configuration;
 
@@ -23,14 +25,19 @@ namespace WhiteRaven.Repository.Cosmos
 
 
         /// <summary>
-        /// Registers repositories
+        /// Registers repositories and entity key providers
         /// </summary>
         public override void Load(IServiceCollection serviceCollection)
         {
             serviceCollection
-                .AddSingleton<IRepository<User>, UserRepository>();
-            //.AddSingleton<IRepository<Note>, NoteRepository>()
-            //.AddSingleton<IRepository<Contribution>, ContributionRepository>();
+                .AddSingleton<IKeyFor<User>, UserKey>()
+                .AddSingleton<IKeyFor<Note>, NoteKey>()
+                .AddSingleton<IKeyFor<Contribution>, ContributionKey>();
+
+            serviceCollection
+                .AddSingleton<IUserRepository, UserRepository>()
+                .AddSingleton<INoteRepository, NoteRepository>()
+                .AddSingleton<IContributionRepository, ContributionRepository>();
         }
     }
 }
