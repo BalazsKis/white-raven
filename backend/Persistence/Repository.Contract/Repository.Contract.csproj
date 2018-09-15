@@ -6,4 +6,8 @@
     <RootNamespace>WhiteRaven.Repository.Contract</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\Domain.Models\Domain.Models.csproj" />
+  </ItemGroup>
+
 </Project>

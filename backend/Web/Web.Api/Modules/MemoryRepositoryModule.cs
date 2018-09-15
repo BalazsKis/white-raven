@@ -32,12 +32,12 @@ namespace WhiteRaven.Web.Api.Modules
         public override void Load(IServiceCollection serviceCollection)
         {
             serviceCollection
-                .AddSingleton<IKeyFor<User>, UserKey>()
+                //.AddSingleton<IKeyFor<User>, UserKey>()
                 .AddSingleton<IKeyFor<Note>, NoteKey>()
                 .AddSingleton<IKeyFor<Contribution>, ContributionKey>();
 
             serviceCollection
-                .AddTransient<IRepository<User>, Repository<User>>()
+                //.AddTransient<IRepository<User>, Repository<User>>()
                 .AddTransient<IRepository<Note>, Repository<Note>>()
                 .AddTransient<IRepository<Contribution>, Repository<Contribution>>();
 
@@ -51,11 +51,11 @@ namespace WhiteRaven.Web.Api.Modules
         {
             var repoInitializer = app.ApplicationServices.GetService<IContentInitializer>();
 
-            var userRepo = app.ApplicationServices.GetService<IRepository<User>>();
+            //var userRepo = app.ApplicationServices.GetService<IRepository<User>>();
             var noteRepo = app.ApplicationServices.GetService<IRepository<Note>>();
             var contributionRepo = app.ApplicationServices.GetService<IRepository<Contribution>>();
 
-            repoInitializer.LoadContent("Mock/Users.json", userRepo);
+            //repoInitializer.LoadContent("Mock/Users.json", userRepo);
             repoInitializer.LoadContent("Mock/Notes.json", noteRepo);
             repoInitializer.LoadContent("Mock/Contributions.json", contributionRepo);
         }

@@ -27,6 +27,7 @@
     <ProjectReference Include="..\..\Domain\Domain.Operations\Domain.Operations.csproj" />
     <ProjectReference Include="..\..\Persistence\Repository.Contract\Repository.Contract.csproj" />
     <ProjectReference Include="..\..\Persistence\Repository.InMemory\Repository.InMemory.csproj" />
+    <ProjectReference Include="..\..\Repository.Cosmos\Repository.Cosmos.csproj" />
     <ProjectReference Include="..\..\Shared\Shared.DependencyInjection\Shared.DependencyInjection.csproj" />
   </ItemGroup>
 

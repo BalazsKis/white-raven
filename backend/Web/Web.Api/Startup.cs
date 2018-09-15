@@ -6,9 +6,11 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using WhiteRaven.Repository.Cosmos;
 using WhiteRaven.Shared.DependencyInjection;
 using WhiteRaven.Shared.Library.Configuration;
 using WhiteRaven.Shared.Library.Extensions;
+
 
 namespace WhiteRaven.Web.Api
 {
@@ -25,6 +27,8 @@ namespace WhiteRaven.Web.Api
         /// </summary>
         public Startup(IConfiguration configuration)
         {
+            var assemblyRef1 = new CosmosRepositoryModule(null);
+
             _modules =
                 Assembly
                     .GetEntryAssembly()

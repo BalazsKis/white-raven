@@ -9,13 +9,13 @@ namespace WhiteRaven.Domain.Operations
 {
     public class NoteOperations : INoteOperations
     {
-        private readonly IRepository<Note> _noteRepository;
+        private readonly INoteRepository _noteRepository;
         private readonly IContributionOperations _contributionOperations;
         private readonly INoteValidator _noteValidator;
 
 
         public NoteOperations(
-            IRepository<Note> noteRepository,
+            INoteRepository noteRepository,
             IContributionOperations contributionOperations,
             INoteValidator noteValidator)
         {
@@ -51,7 +51,7 @@ namespace WhiteRaven.Domain.Operations
 
             var contributedNoteIds = contributions.Select(c => c.NoteId).ToArray();
 
-            return await _noteRepository.Select(n => contributedNoteIds.Contains(n.Id));
+            return await _noteRepository.WhereIdIn(contributedNoteIds);
         }
 
         public async Task<Note> UpdateNote(string editorEmail, string noteId, Commit commit)

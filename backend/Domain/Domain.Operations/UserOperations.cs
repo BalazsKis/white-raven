@@ -11,12 +11,12 @@ namespace WhiteRaven.Domain.Operations
 {
     public class UserOperations : IUserOperations
     {
-        private readonly IRepository<User> _userRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IPasswordGuard _passwordGuard;
         private readonly IUserValidator _userValidator;
 
 
-        public UserOperations(IRepository<User> userRepository, IPasswordGuard passwordGuard, IUserValidator userValidator)
+        public UserOperations(IUserRepository userRepository, IPasswordGuard passwordGuard, IUserValidator userValidator)
         {
             _userRepository = userRepository;
             _passwordGuard = passwordGuard;
@@ -56,7 +56,7 @@ namespace WhiteRaven.Domain.Operations
             _userValidator.ValidateSearchTerm(partialEmail);
 
             var emailTerm = partialEmail.ToLower();
-            var result = await _userRepository.Select(u => u.Email.Contains(emailTerm));
+            var result = await _userRepository.GetByPartialEmail(emailTerm);
 
             return result.Select(u => u.WithoutPasswordHash());
         }
@@ -65,7 +65,7 @@ namespace WhiteRaven.Domain.Operations
         {
             _userValidator.ValidateSearchTerm(partialFirstName);
 
-            var result = await _userRepository.Select(FirstNameFilter(partialFirstName));
+            var result = await _userRepository.GetByPartialFirstName(partialFirstName);
 
             return result.Select(u => u.WithoutPasswordHash());
         }
@@ -74,7 +74,7 @@ namespace WhiteRaven.Domain.Operations
         {
             _userValidator.ValidateSearchTerm(partialLastName);
 
-            var result = await _userRepository.Select(LastNameFilter(partialLastName));
+            var result = await _userRepository.GetByPartialLastName(partialLastName);
 
             return result.Select(u => u.WithoutPasswordHash());
         }
@@ -84,8 +84,7 @@ namespace WhiteRaven.Domain.Operations
             _userValidator.ValidateSearchTerm(partialFirstName);
             _userValidator.ValidateSearchTerm(partialLastName);
 
-            var result = await _userRepository.Select(LastNameFilter(partialLastName));
-            result = result.Where(FirstNameFilter(partialFirstName));
+            var result = await _userRepository.GetByPartialFirstAndLastName(partialFirstName, partialLastName);
 
             return result.Select(u => u.WithoutPasswordHash());
         }
@@ -135,19 +134,6 @@ namespace WhiteRaven.Domain.Operations
             _userValidator.Validate(userWithUpdatedPassword);
 
             await _userRepository.Update(userWithUpdatedPassword);
-        }
-
-
-        private static Func<User, bool> FirstNameFilter(string partialFirstName)
-        {
-            var firstNameTerm = partialFirstName.ToLower();
-            return u => u.FirstName.ToLower().Contains(firstNameTerm);
-        }
-
-        private static Func<User, bool> LastNameFilter(string partialLastName)
-        {
-            var lastNameTerm = partialLastName.ToLower();
-            return u => u.LastName.ToLower().Contains(lastNameTerm);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using WhiteRaven.Domain.Models.Note;
 using WhiteRaven.Domain.Operations.Validation;
@@ -10,12 +9,12 @@ namespace WhiteRaven.Domain.Operations
 {
     public class ContributionOperations : IContributionOperations
     {
-        private readonly IRepository<Contribution> _contributionRepository;
+        private readonly IContributionRepository _contributionRepository;
         private readonly IContributionValidator _contributionValidator;
 
 
         public ContributionOperations(
-            IRepository<Contribution> contributionRepository,
+            IContributionRepository contributionRepository,
             IContributionValidator contributionValidator)
         {
             _contributionRepository = contributionRepository;
@@ -44,8 +43,7 @@ namespace WhiteRaven.Domain.Operations
 
         public async Task<Contribution> GetContribution(string email, string noteId)
         {
-            var contributions = await _contributionRepository.Select(c => c.UserId == email && c.NoteId == noteId);
-            var contribution = contributions.SingleOrDefault();
+            var contribution = await _contributionRepository.GetByEmailAndNoteId(email, noteId);
 
             if (contribution == default(Contribution))
             {
@@ -57,22 +55,18 @@ namespace WhiteRaven.Domain.Operations
 
         public async Task<IEnumerable<Contribution>> GetContributionsByUser(string email, ContributionType? contributionType = null)
         {
-            var filter = contributionType == null
-                ? new Func<Contribution, bool>(c => c.UserId == email)
-                : new Func<Contribution, bool>(c => c.UserId == email && c.ContributionType == contributionType);
-
-            return await _contributionRepository.Select(filter);
+            return contributionType.HasValue
+                ? await _contributionRepository.GetByEmailAndContributionType(email, contributionType.Value)
+                : await _contributionRepository.GetByEmail(email);
         }
 
         public async Task<IEnumerable<Contribution>> GetContributionsByNote(string readerEmail, string noteId, ContributionType? contributionType = null)
         {
             await CheckReadRight(readerEmail, noteId);
 
-            var filter = contributionType == null
-                ? new Func<Contribution, bool>(c => c.NoteId == noteId)
-                : new Func<Contribution, bool>(c => c.NoteId == noteId && c.ContributionType == contributionType);
-
-            return await _contributionRepository.Select(filter);
+            return contributionType.HasValue
+                ? await _contributionRepository.GetByNoteIdAndContributionType(noteId, contributionType.Value)
+                : await _contributionRepository.GetByNoteId(noteId);
         }
 
         public async Task UpdateContribution(string editorEmail, Contribution contribution)
@@ -88,7 +82,7 @@ namespace WhiteRaven.Domain.Operations
         {
             _contributionValidator.Validate(contribution);
             _contributionValidator.ValidateManualEdit(contribution);
-            
+
             await CheckOwnerRight(editorEmail, contribution.NoteId);
             await _contributionRepository.Delete(contribution);
         }
@@ -111,15 +105,15 @@ namespace WhiteRaven.Domain.Operations
 
         public Task NoteDeleted(string noteId)
         {
-            return _contributionRepository.Delete(c => c.NoteId == noteId);
+            return _contributionRepository.DeleteByNoteId(noteId);
         }
 
 
         public async Task CheckReadRight(string email, string noteId)
         {
-            var contributions = await _contributionRepository.Select(c => c.NoteId == noteId && c.UserId == email);
+            var c = await _contributionRepository.GetByEmailAndNoteId(email, noteId);
 
-            if (!contributions.Any(c => c.ContributionType >= ContributionType.Reader))
+            if (c.ContributionType >= ContributionType.Reader)
             {
                 throw new UnauthorizedAccessException("The user has no contribution to this note, so cannot read it");
             }
@@ -127,9 +121,9 @@ namespace WhiteRaven.Domain.Operations
 
         public async Task CheckEditRight(string email, string noteId)
         {
-            var contributions = await _contributionRepository.Select(c => c.NoteId == noteId && c.UserId == email);
+            var c = await _contributionRepository.GetByEmailAndNoteId(email, noteId);
 
-            if (!contributions.Any(c => c.ContributionType >= ContributionType.Writer))
+            if (c.ContributionType >= ContributionType.Writer)
             {
                 throw new UnauthorizedAccessException("The user has no right to edit this note");
             }
@@ -137,9 +131,9 @@ namespace WhiteRaven.Domain.Operations
 
         public async Task CheckOwnerRight(string email, string noteId)
         {
-            var contributions = await _contributionRepository.Select(c => c.NoteId == noteId && c.UserId == email);
+            var c = await _contributionRepository.GetByEmailAndNoteId(email, noteId);
 
-            if (!contributions.Any(c => c.ContributionType >= ContributionType.Owner))
+            if (c.ContributionType >= ContributionType.Owner)
             {
                 throw new UnauthorizedAccessException("The user is not the owner of the note");
             }

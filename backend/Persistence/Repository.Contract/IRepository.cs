@@ -34,14 +34,7 @@ namespace WhiteRaven.Repository.Contract
         /// <param name="key">The key of the item to select</param>
         /// <returns>The query result</returns>
         Task<T> SelectByKey(string key);
-
-        /// <summary>
-        /// Returns the items from the repository which satisfy the given filter condition
-        /// </summary>
-        /// <param name="filter">The filter condition</param>
-        /// <returns>The query result</returns>
-        Task<IEnumerable<T>> Select(Func<T, bool> filter);
-
+        
         /// <summary>
         /// Returns all items from the repository
         /// </summary>
@@ -99,12 +92,6 @@ namespace WhiteRaven.Repository.Contract
         /// </summary>
         /// <param name="items">The items to delete</param>
         Task Delete(IEnumerable<T> items);
-
-        /// <summary>
-        /// Deletes the items from the repository which satisfy the given filter condition
-        /// </summary>
-        /// <param name="filter">The filter condition</param>
-        Task Delete(Func<T, bool> filter);
 
         /// <summary>
         /// Deletes an item from the repository by its unique key
