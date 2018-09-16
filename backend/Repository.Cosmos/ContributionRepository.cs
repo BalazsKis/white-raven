@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 using WhiteRaven.Domain.Models.Note;
 using WhiteRaven.Repository.Contract;
 using WhiteRaven.Repository.Contract.Exceptions;
+using WhiteRaven.Repository.Cosmos.Configurations;
 using WhiteRaven.Repository.Cosmos.Entities;
 
 namespace WhiteRaven.Repository.Cosmos
 {
     public sealed class ContributionRepository : RepositoryBase<Contribution>, IContributionRepository
     {
-        private const string CollectionName = "Contributions";
-
-        public ContributionRepository(IKeyFor<Contribution> keyProvider) : base(CollectionName, keyProvider)
+        public ContributionRepository(DbConnectionParameters dbConnection, IKeyFor<Contribution> keyProvider)
+            : base(dbConnection, "Contributions", keyProvider)
         {
         }
 

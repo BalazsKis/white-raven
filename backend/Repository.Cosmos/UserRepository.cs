@@ -6,15 +6,15 @@ using Microsoft.Azure.Documents.Linq;
 using WhiteRaven.Domain.Models.Authentication;
 using WhiteRaven.Repository.Contract;
 using WhiteRaven.Repository.Contract.Exceptions;
+using WhiteRaven.Repository.Cosmos.Configurations;
 using WhiteRaven.Repository.Cosmos.Entities;
 
 namespace WhiteRaven.Repository.Cosmos
 {
     public sealed class UserRepository : RepositoryBase<User>, IUserRepository
     {
-        private const string CollectionName = "Users";
-
-        public UserRepository(IKeyFor<User> keyProvider) : base(CollectionName, keyProvider)
+        public UserRepository(DbConnectionParameters dbConnection, IKeyFor<User> keyProvider)
+            : base(dbConnection, "Users", keyProvider)
         {
         }
 

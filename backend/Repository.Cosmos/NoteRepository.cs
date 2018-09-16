@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 using WhiteRaven.Domain.Models.Note;
 using WhiteRaven.Repository.Contract;
 using WhiteRaven.Repository.Contract.Exceptions;
+using WhiteRaven.Repository.Cosmos.Configurations;
 using WhiteRaven.Repository.Cosmos.Entities;
 
 namespace WhiteRaven.Repository.Cosmos
 {
     public sealed class NoteRepository : RepositoryBase<Note>, INoteRepository
     {
-        private const string CollectionName = "Notes";
-
-        public NoteRepository(IKeyFor<Note> keyProvider) : base(CollectionName, keyProvider)
+        public NoteRepository(DbConnectionParameters dbConnection, IKeyFor<Note> keyProvider)
+            : base(dbConnection, "Notes", keyProvider)
         {
         }
 

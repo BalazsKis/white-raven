@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WhiteRaven.Shared.DependencyInjection;
 using WhiteRaven.Shared.Library.Configuration;
-using WhiteRaven.Web.Api.ConfigurationObjects;
+using WhiteRaven.Web.Api.Configurations;
 
 namespace WhiteRaven.Web.Api.Modules
 {

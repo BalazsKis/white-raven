@@ -50,9 +50,9 @@ namespace WhiteRaven.Repository.InMemory
         {
             var repoInitializer = app.ApplicationServices.GetService<IContentInitializer>();
 
-            var userRepo = app.ApplicationServices.GetService<IRepository<User>>();
-            var noteRepo = app.ApplicationServices.GetService<IRepository<Note>>();
-            var contributionRepo = app.ApplicationServices.GetService<IRepository<Contribution>>();
+            var userRepo = app.ApplicationServices.GetService<IUserRepository>();
+            var noteRepo = app.ApplicationServices.GetService<INoteRepository>();
+            var contributionRepo = app.ApplicationServices.GetService<IContributionRepository>();
 
             repoInitializer.LoadContent("Mock/Users.json", userRepo);
             repoInitializer.LoadContent("Mock/Notes.json", noteRepo);

@@ -1,4 +1,4 @@
-﻿namespace WhiteRaven.Web.Api.ConfigurationObjects
+﻿namespace WhiteRaven.Web.Api.Configurations
 {
     public class SwaggerParameters
     {

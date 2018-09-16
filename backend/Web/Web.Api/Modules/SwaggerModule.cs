@@ -9,7 +9,7 @@ using System.Linq;
 using System.Reflection;
 using WhiteRaven.Shared.DependencyInjection;
 using WhiteRaven.Shared.Library.Configuration;
-using WhiteRaven.Web.Api.ConfigurationObjects;
+using WhiteRaven.Web.Api.Configurations;
 
 namespace WhiteRaven.Web.Api.Modules
 {

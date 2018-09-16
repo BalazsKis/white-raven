@@ -8,35 +8,33 @@ using System.Net;
 using System.Threading.Tasks;
 using WhiteRaven.Repository.Contract;
 using WhiteRaven.Repository.Contract.Exceptions;
+using WhiteRaven.Repository.Cosmos.Configurations;
 using WhiteRaven.Repository.Cosmos.Entities;
 
 namespace WhiteRaven.Repository.Cosmos
 {
     public abstract class RepositoryBase<T> : IRepository<T>
     {
-        // TODO: from config
-        private readonly string _endpointUri = "https://localhost:8081";
-        private readonly string _primaryKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
-        protected readonly string DbName = "WRN";
-        // TODO: from config
+        protected readonly DbConnectionParameters DbConnection;
+        protected readonly string CollectionName;
+        protected readonly IKeyFor<T> KeyProvider;
 
         protected Uri DocumentCollectionUri { get; }
         protected DocumentClient Client { get; }
-        protected readonly IKeyFor<T> KeyProvider;
-
-        private readonly string _collectionName;
-
-        protected RepositoryBase(string collectionName, IKeyFor<T> keyProvider)
+        
+        protected RepositoryBase(DbConnectionParameters dbConnection, string collectionName, IKeyFor<T> keyProvider)
         {
-            _collectionName = collectionName;
             KeyProvider = keyProvider;
+            DbConnection = dbConnection;
 
-            Client = new DocumentClient(new Uri(_endpointUri), _primaryKey);
-            DocumentCollectionUri = UriFactory.CreateDocumentCollectionUri(DbName, _collectionName);
+            CollectionName = collectionName;
 
-            Client.CreateDatabaseIfNotExistsAsync(new Database { Id = DbName }).GetAwaiter().GetResult();
-            Client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(DbName),
-                new DocumentCollection { Id = _collectionName }).GetAwaiter().GetResult();
+            Client = new DocumentClient(new Uri(DbConnection.EndpointUri), DbConnection.PrimaryKey);
+            DocumentCollectionUri = UriFactory.CreateDocumentCollectionUri(DbConnection.DbName, CollectionName);
+
+            Client.CreateDatabaseIfNotExistsAsync(new Database { Id = DbConnection.DbName }).GetAwaiter().GetResult();
+            Client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(DbConnection.DbName),
+                new DocumentCollection { Id = CollectionName }).GetAwaiter().GetResult();
         }
 
         public Task Insert(T item)
@@ -53,7 +51,7 @@ namespace WhiteRaven.Repository.Cosmos
         {
             try
             {
-                var response = await Client.ReadDocumentAsync<StoredEntity<T>>(UriFactory.CreateDocumentUri(DbName, _collectionName, key));
+                var response = await Client.ReadDocumentAsync<StoredEntity<T>>(UriFactory.CreateDocumentUri(DbConnection.DbName, CollectionName, key));
                 return response.Document.Entity;
             }
             catch (DocumentClientException de) when (de.StatusCode == HttpStatusCode.NotFound)
@@ -146,7 +144,7 @@ namespace WhiteRaven.Repository.Cosmos
 
         public Task DeleteByKey(string key)
         {
-            return Client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(DbName, _collectionName, key));
+            return Client.DeleteDocumentAsync(UriFactory.CreateDocumentUri(DbConnection.DbName, CollectionName, key));
         }
 
         public Task DeleteByKeys(IEnumerable<string> keys)
