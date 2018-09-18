@@ -21,7 +21,7 @@ namespace WhiteRaven.Repository.Cosmos
 
         protected Uri DocumentCollectionUri { get; }
         protected DocumentClient Client { get; }
-        
+
         protected RepositoryBase(DbConnectionParameters dbConnection, string collectionName, IKeyFor<T> keyProvider)
         {
             KeyProvider = keyProvider;
@@ -62,6 +62,14 @@ namespace WhiteRaven.Repository.Cosmos
             {
                 throw new ReadFailedException(typeof(T), ex);
             }
+        }
+
+        public async Task<IEnumerable<T>> GetByKeys(IEnumerable<string> keys)
+        {
+            var tasks = keys.Select(GetByKey).ToArray();
+            await Task.WhenAll(tasks);
+
+            return tasks.Select(t => t.Result);
         }
 
         public async Task<IEnumerable<T>> GetAll()

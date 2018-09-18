@@ -106,6 +106,14 @@ namespace WhiteRaven.Repository.InMemory
             });
         }
 
+        public async Task<IEnumerable<T>> GetByKeys(IEnumerable<string> keys)
+        {
+            var tasks = keys.Select(GetByKey).ToArray();
+            await Task.WhenAll(tasks);
+
+            return tasks.Select(t => t.Result);
+        }
+
         protected Task<IEnumerable<T>> Get(Func<T, bool> filter)
         {
             if (filter == null)

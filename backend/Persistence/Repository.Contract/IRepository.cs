@@ -34,7 +34,14 @@ namespace WhiteRaven.Repository.Contract
         /// <param name="key">The key of the item to select</param>
         /// <returns>The query result</returns>
         Task<T> GetByKey(string key);
-        
+
+        /// <summary>
+        /// Returns items from the repository by their unique keys
+        /// </summary>
+        /// <param name="keys">The keys of the items to select</param>
+        /// <returns>The query result</returns>
+        Task<IEnumerable<T>> GetByKeys(IEnumerable<string> keys);
+
         /// <summary>
         /// Returns all items from the repository
         /// </summary>

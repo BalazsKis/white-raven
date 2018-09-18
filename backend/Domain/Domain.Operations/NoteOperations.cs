@@ -51,7 +51,7 @@ namespace WhiteRaven.Domain.Operations
 
             var contributedNoteIds = contributions.Select(c => c.NoteId).ToArray();
 
-            return await _noteRepository.GetByNoteIds(contributedNoteIds);
+            return await _noteRepository.GetByKeys(contributedNoteIds);
         }
 
         public async Task<Note> UpdateNote(string editorEmail, string noteId, Commit commit)
