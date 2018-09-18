@@ -2,7 +2,7 @@
 
 namespace WhiteRaven.Repository.Cosmos.Entities
 {
-    internal class StoredEntity<T>
+    public class StoredEntity<T>
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }

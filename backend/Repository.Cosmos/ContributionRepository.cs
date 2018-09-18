@@ -1,15 +1,9 @@
-﻿using Microsoft.Azure.Documents;
-using Microsoft.Azure.Documents.Linq;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using WhiteRaven.Domain.Models.Note;
 using WhiteRaven.Repository.Contract;
-using WhiteRaven.Repository.Contract.Exceptions;
 using WhiteRaven.Repository.Cosmos.Configurations;
-using WhiteRaven.Repository.Cosmos.Entities;
 
 namespace WhiteRaven.Repository.Cosmos
 {
@@ -26,86 +20,27 @@ namespace WhiteRaven.Repository.Cosmos
             return GetByKey(key);
         }
 
-        public async Task<IEnumerable<Contribution>> GetByEmail(string email)
+        public Task<IEnumerable<Contribution>> GetByEmail(string email)
         {
-            try
-            {
-                var response = await Client
-                    .CreateDocumentQuery<StoredEntity<Contribution>>(DocumentCollectionUri)
-                    .Where(storedContribution => storedContribution.Entity.UserId == email)
-                    .AsDocumentQuery()
-                    .ExecuteNextAsync<StoredEntity<Contribution>>();
-
-                return response.Select(e => e.Entity).ToList();
-            }
-            catch (Exception ex)
-            {
-                throw new ReadFailedException(typeof(Contribution), ex);
-            }
+            return GetByFilters(storedContribution => storedContribution.Entity.UserId == email);
         }
 
-        public async Task<IEnumerable<Contribution>> GetByNoteId(string noteId)
+        public Task<IEnumerable<Contribution>> GetByNoteId(string noteId)
         {
-            try
-            {
-                var response = await Client
-                    .CreateDocumentQuery<StoredEntity<Contribution>>(DocumentCollectionUri)
-                    .Where(storedContribution => storedContribution.Entity.NoteId == noteId)
-                    .AsDocumentQuery()
-                    .ExecuteNextAsync<StoredEntity<Contribution>>();
-
-                return response.Select(e => e.Entity).ToList();
-            }
-            catch (Exception ex)
-            {
-                throw new ReadFailedException(typeof(Contribution), ex);
-            }
+            return GetByFilters(storedContribution => storedContribution.Entity.NoteId == noteId);
         }
 
-        public async Task<IEnumerable<Contribution>> GetByEmailAndContributionType(string email, ContributionType contributionType)
+        public Task<IEnumerable<Contribution>> GetByEmailAndContributionType(string email, ContributionType contributionType)
         {
-            try
-            {
-                var response = await Client
-                    .CreateDocumentQuery<StoredEntity<Contribution>>(DocumentCollectionUri)
-                    .Where(storedContribution => storedContribution.Entity.UserId == email &&
-                                                 storedContribution.Entity.ContributionType == contributionType)
-                    .AsDocumentQuery()
-                    .ExecuteNextAsync<StoredEntity<Contribution>>();
-
-                return response.Select(e => e.Entity).ToList();
-            }
-            catch (DocumentClientException de) when (de.StatusCode == HttpStatusCode.NotFound)
-            {
-                throw new KeyNotFoundException();
-            }
-            catch (Exception ex)
-            {
-                throw new ReadFailedException(typeof(Contribution), ex);
-            }
+            return GetByFilters(storedContribution => storedContribution.Entity.UserId == email,
+                                storedContribution => storedContribution.Entity.ContributionType == contributionType);
         }
 
-        public async Task<IEnumerable<Contribution>> GetByNoteIdAndContributionType(string noteId, ContributionType contributionType)
+        public Task<IEnumerable<Contribution>> GetByNoteIdAndContributionType(string noteId,
+            ContributionType contributionType)
         {
-            try
-            {
-                var response = await Client
-                    .CreateDocumentQuery<StoredEntity<Contribution>>(DocumentCollectionUri)
-                    .Where(storedContribution => storedContribution.Entity.NoteId == noteId &&
-                                                 storedContribution.Entity.ContributionType == contributionType)
-                    .AsDocumentQuery()
-                    .ExecuteNextAsync<StoredEntity<Contribution>>();
-
-                return response.Select(e => e.Entity).ToList();
-            }
-            catch (DocumentClientException de) when (de.StatusCode == HttpStatusCode.NotFound)
-            {
-                throw new KeyNotFoundException();
-            }
-            catch (Exception ex)
-            {
-                throw new ReadFailedException(typeof(Contribution), ex);
-            }
+            return GetByFilters(storedContribution => storedContribution.Entity.NoteId == noteId,
+                                storedContribution => storedContribution.Entity.ContributionType == contributionType);
         }
 
         public async Task DeleteByNoteId(string noteId)

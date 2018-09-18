@@ -159,5 +159,29 @@ namespace WhiteRaven.Repository.Cosmos
         {
             return Task.WhenAll(keys.Select(DeleteByKey));
         }
+
+
+        protected async Task<IEnumerable<T>> GetByFilters(params Func<StoredEntity<T>, bool>[] filters)
+        {
+            try
+            {
+                var documentQuery = Client
+                    .CreateDocumentQuery<StoredEntity<T>>(DocumentCollectionUri)
+                    .AsQueryable();
+                
+                documentQuery = filters
+                    .Aggregate(documentQuery, (current, filter) => current.Where(filter).AsQueryable());
+                
+                var response = await documentQuery
+                    .AsDocumentQuery()
+                    .ExecuteNextAsync<StoredEntity<T>>();
+
+                return response.Select(e => e.Entity).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new ReadFailedException(typeof(User), ex);
+            }
+        }
     }
 }
