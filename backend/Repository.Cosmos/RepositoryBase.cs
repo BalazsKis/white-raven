@@ -4,6 +4,7 @@ using Microsoft.Azure.Documents.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
 using WhiteRaven.Repository.Contract;
@@ -161,22 +162,21 @@ namespace WhiteRaven.Repository.Cosmos
         }
 
 
-        protected async Task<IEnumerable<T>> GetByFilters(params Func<StoredEntity<T>, bool>[] filters)
+        protected async Task<IEnumerable<T>> GetByFilters(params Expression<Func<StoredEntity<T>, bool>>[] filters)
         {
             try
             {
-                var documentQuery = Client
-                    .CreateDocumentQuery<StoredEntity<T>>(DocumentCollectionUri)
-                    .AsQueryable();
-                
-                documentQuery = filters
-                    .Aggregate(documentQuery, (current, filter) => current.Where(filter).AsQueryable());
-                
-                var response = await documentQuery
+                var query = filters.Aggregate(
+                    Client.CreateDocumentQuery<StoredEntity<T>>(DocumentCollectionUri).AsQueryable(),
+                    (current, filter) => current.Where(filter));
+
+                var response = await query
                     .AsDocumentQuery()
                     .ExecuteNextAsync<StoredEntity<T>>();
 
-                return response.Select(e => e.Entity).ToList();
+                return response
+                    .Select(e => e.Entity)
+                    .ToList();
             }
             catch (Exception ex)
             {
